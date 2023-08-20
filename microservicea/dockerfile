@@ -1,0 +1,5 @@
+FROM openjdk:11.0.9
+EXPOSE 8080
+ADD target/microservice-a.jar microservice-a.jar
+ENTRYPOINT ["java", "-jar", "microservice-a.jar"]
+
