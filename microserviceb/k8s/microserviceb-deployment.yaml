@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microserviceb-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: microserviceb
+  template:
+    metadata:
+      labels:
+        app: microserviceb
+    spec:
+      containers:
+        - name: microserviceb
+          image: microserviceb:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
