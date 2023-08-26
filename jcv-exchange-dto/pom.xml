@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.jcv</groupId>
-	<artifactId>jcv-universal-seglog</artifactId>
+	<artifactId>jcv-exchange-dto</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jcv-universal-seglog</name>
-	<description>Universal System Seglog</description>
+	<name>jcv-exchange-dto</name>
+	<description>Exchange DTO between services</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

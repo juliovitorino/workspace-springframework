@@ -1,10 +1,10 @@
-package br.com.jcv.universal.seglog;
+package br.com.jcv.microservice.seglog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JcvUniversalSeglogApplicationTests {
+class JcvMicroserviceSeglogApplicationTests {
 
 	@Test
 	void contextLoads() {
