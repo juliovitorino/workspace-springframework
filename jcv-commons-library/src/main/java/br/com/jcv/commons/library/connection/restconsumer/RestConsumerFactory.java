@@ -9,10 +9,10 @@ public class RestConsumerFactory {
     @Autowired private RestConsumerMicroserviceA restConsumerMicroserviceA;
     @Autowired private RestConsumerMicroserviceB restConsumerMicroserviceB;
 
-    public IRestConsumer<String> getInstanceMicroserviceA() {
+    public IRestConsumer getInstanceMicroserviceA() {
         return restConsumerMicroserviceA;
     }
-    public IRestConsumer<String> getInstanceMicroserviceB() {
+    public IRestConsumer getInstanceMicroserviceB() {
         return restConsumerMicroserviceB;
     }
 }

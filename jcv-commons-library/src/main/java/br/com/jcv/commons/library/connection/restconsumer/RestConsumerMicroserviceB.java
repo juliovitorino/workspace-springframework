@@ -1,18 +1,21 @@
 package br.com.jcv.commons.library.connection.restconsumer;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.UUID;
 
 @Service
-public class RestConsumerMicroserviceB extends AbstractRestConsumer implements IRestConsumer<String>{
+public class RestConsumerMicroserviceB extends AbstractRestConsumer {
     private final static String URL_REQUEST_MAPPING = "http://localhost:8082/v1/microserviceb/";
-    @Autowired
-    private RestTemplate restTemplate;
     @Override
-    public String executeGet(String urlGetMapping, Class<String> responseType) {
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL_REQUEST_MAPPING+urlGetMapping,responseType);
-        return responseEntity.getBody();
+    public <T> T executeGet(UUID processId, String url, Class<T> classType) {
+        ResponseEntity<T> response = null;
+        try {
+            response = (ResponseEntity<T>) super.executeGet(processId, URL_REQUEST_MAPPING + url, classType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return response.getBody();
     }
 }
