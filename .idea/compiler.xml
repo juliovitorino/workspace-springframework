@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="jcv-microservice-template" />
         <module name="jcv-microservice-seglog" />
         <module name="jcv-microservice-businessday" />
         <module name="microserviceb" />
@@ -32,6 +33,7 @@
       <module name="jcv-microservice-businessday" options="-parameters" />
       <module name="jcv-microservice-mailsender" options="-parameters" />
       <module name="jcv-microservice-seglog" options="-parameters" />
+      <module name="jcv-microservice-template" options="-parameters" />
       <module name="jcv-universal-seglog" options="-parameters" />
       <module name="microservicea" options="-parameters" />
       <module name="microserviceb" options="-parameters" />
