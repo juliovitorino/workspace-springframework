@@ -6,6 +6,13 @@
       <list>
         <option value="$PROJECT_DIR$/microservicea/pom.xml" />
         <option value="$PROJECT_DIR$/microserviceb/pom.xml" />
+        <option value="$PROJECT_DIR$/config/pom.xml" />
+        <option value="$PROJECT_DIR$/environment-config/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-environment-config/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-commons-library/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-universal-seglog/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-exchange-dto/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-microservice-seglog/pom.xml" />
       </list>
     </option>
   </component>
