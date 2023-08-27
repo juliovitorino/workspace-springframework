@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/jcv-exchange-dto/pom.xml" />
         <option value="$PROJECT_DIR$/jcv-microservice-seglog/pom.xml" />
         <option value="$PROJECT_DIR$/jcv-microservice-businessday/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-microservice-mailsender/pom.xml" />
       </list>
     </option>
   </component>
