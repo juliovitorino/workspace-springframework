@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/jcv-environment-config/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jcv-exchange-dto/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jcv-microservice-businessday/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jcv-microservice-invoice-manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jcv-microservice-mailsender/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jcv-microservice-seglog/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jcv-microservice-template/src/main/java" charset="UTF-8" />

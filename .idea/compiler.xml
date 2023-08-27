@@ -9,6 +9,7 @@
         <module name="jcv-microservice-template" />
         <module name="jcv-microservice-seglog" />
         <module name="jcv-microservice-businessday" />
+        <module name="jcv-microservice-invoice-manager" />
         <module name="microserviceb" />
         <module name="microservicea" />
         <module name="jcv-commons-library" />
@@ -31,6 +32,7 @@
       <module name="jcv-environment-config" options="-parameters" />
       <module name="jcv-exchange-dto" options="-parameters" />
       <module name="jcv-microservice-businessday" options="-parameters" />
+      <module name="jcv-microservice-invoice-manager" options="-parameters" />
       <module name="jcv-microservice-mailsender" options="-parameters" />
       <module name="jcv-microservice-seglog" options="-parameters" />
       <module name="jcv-microservice-template" options="-parameters" />
