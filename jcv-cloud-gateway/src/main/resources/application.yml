@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: ms-cloud-gateway
+
+# habilita do cloud gateway para interceptar e direcionar chamadas para o eurika loadbalancer
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+# configura porta padrao de recebimento das requisicoes no gateway
+server:
+  port: 8080
+
+# configura as informacoes de como o cloud gateway vai encontrar o eurika
+eurika:
+  client:
+    fetch-registry: true
+    register-with-eurika: true
+    service-url:
+      defaultZone: http://localhost:8761/eurika
+
+
