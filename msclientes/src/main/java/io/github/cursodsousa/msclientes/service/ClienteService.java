@@ -1,6 +1,6 @@
 package io.github.cursodsousa.msclientes.service;
 
-import io.github.cursodsousa.msclientes.domain.Cliente;
+import io.github.cursodsousa.msclientes.model.Cliente;
 import io.github.cursodsousa.msclientes.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

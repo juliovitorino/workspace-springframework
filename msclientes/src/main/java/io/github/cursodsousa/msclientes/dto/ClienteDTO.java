@@ -1,6 +1,6 @@
 package io.github.cursodsousa.msclientes.dto;
 
-import io.github.cursodsousa.msclientes.domain.Cliente;
+import io.github.cursodsousa.msclientes.model.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

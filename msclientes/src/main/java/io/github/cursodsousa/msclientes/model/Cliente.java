@@ -1,4 +1,4 @@
-package io.github.cursodsousa.msclientes.domain;
+package io.github.cursodsousa.msclientes.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

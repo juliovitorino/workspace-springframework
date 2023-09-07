@@ -1,6 +1,6 @@
 package io.github.cursodsousa.msclientes.controller;
 
-import io.github.cursodsousa.msclientes.domain.Cliente;
+import io.github.cursodsousa.msclientes.model.Cliente;
 import io.github.cursodsousa.msclientes.dto.ClienteDTO;
 import io.github.cursodsousa.msclientes.service.ClienteService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class ClienteController {
         return "ok";
     }
 
-    @GetMapping
+    @GetMapping(params = "cpf")
     public ResponseEntity<Cliente> getDadosCliente(@RequestParam("cpf") String cpf) {
         Optional<Cliente> cliente = clienteService.getByCPF(cpf);
         if(cliente.isEmpty()) {

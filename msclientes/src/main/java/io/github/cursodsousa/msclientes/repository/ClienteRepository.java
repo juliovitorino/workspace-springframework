@@ -1,6 +1,6 @@
 package io.github.cursodsousa.msclientes.repository;
 
-import io.github.cursodsousa.msclientes.domain.Cliente;
+import io.github.cursodsousa.msclientes.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
