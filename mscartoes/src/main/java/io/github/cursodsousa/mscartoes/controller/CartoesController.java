@@ -38,6 +38,7 @@ public class CartoesController {
     @PostMapping
     public ResponseEntity salvar(@RequestBody CartaoRequest cartaoRequest) {
         log.info("salvar:: is starting with request -> {}", gson.toJson(cartaoRequest));
+        cartaoService.save(cartaoRequest.toModel());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

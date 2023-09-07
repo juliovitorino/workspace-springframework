@@ -2,6 +2,13 @@ spring:
   application:
     name: mscartoes
 
+  jpa:
+    show_sql: true
+  h2:
+    console:
+      enable: true
+      path: /h2
+
 # vai subir o microservico em uma porta randomica ao inves da 8080
 # dentro do eureka server
 server:

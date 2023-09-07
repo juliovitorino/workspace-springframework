@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CartaoRepository extends JpaRepository<Cartao, Long> {
-    List<Cartao> findByRendaLessThan(Double renda);
+    List<Cartao> findByRendaLessThanEqual(Double renda);
 }
