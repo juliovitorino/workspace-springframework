@@ -13,6 +13,7 @@ eurika:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+# instanceid no eurika de forma dinamica no dashboard
 eureka:
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
