@@ -16,6 +16,8 @@
     <file url="file://$PROJECT_DIR$/jcv-universal-seglog/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservicea/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microserviceb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-cloud-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/msavaliadorcredito/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mscartoes/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/msclientes/src/main/java" charset="UTF-8" />

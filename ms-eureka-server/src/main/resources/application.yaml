@@ -1,0 +1,18 @@
+application:
+  title: Eureka Server Loadbalancer for MS microservices project
+  version: 1.0.0
+
+spring:
+  application:
+    name: ms-eureka-server
+
+# configura porta que o loadbalancer ira receber as requisicoes e registros de microservicos
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+

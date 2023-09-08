@@ -15,7 +15,9 @@
         <module name="jcv-exchange-dto" />
         <module name="jcv-environment-config" />
         <module name="jcv-microservice-mailsender" />
+        <module name="ms-cloud-gateway" />
         <module name="jcv-microservice-businessday" />
+        <module name="ms-eureka-server" />
         <module name="msclientes" />
         <module name="msavaliadorcredito" />
         <module name="jcv-microservice-invoice-manager" />
@@ -47,6 +49,8 @@
       <module name="jcv-universal-seglog" options="-parameters" />
       <module name="microservicea" options="-parameters" />
       <module name="microserviceb" options="-parameters" />
+      <module name="ms-cloud-gateway" options="-parameters" />
+      <module name="ms-eureka-server" options="-parameters" />
       <module name="msavaliadorcredito" options="-parameters" />
       <module name="mscartoes" options="-parameters" />
       <module name="msclientes" options="-parameters" />

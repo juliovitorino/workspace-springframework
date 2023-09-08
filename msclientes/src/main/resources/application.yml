@@ -1,3 +1,8 @@
+application:
+  title: Microservico Clientes
+  version: 1.0.0
+
+# IMPORTANT! USADO PARA REGISTRO NO GATEWAY E LOADBALANCER
 spring:
   application:
     name: msclientes
