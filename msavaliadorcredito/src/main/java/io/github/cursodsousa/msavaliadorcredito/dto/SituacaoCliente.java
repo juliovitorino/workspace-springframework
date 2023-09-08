@@ -1,4 +1,4 @@
-package io.github.cursodsousa.msavaliadorcredito.model;
+package io.github.cursodsousa.msavaliadorcredito.dto;
 
 import io.github.cursodsousa.msavaliadorcredito.dto.CartaoCliente;
 import io.github.cursodsousa.msavaliadorcredito.dto.DadosCliente;
