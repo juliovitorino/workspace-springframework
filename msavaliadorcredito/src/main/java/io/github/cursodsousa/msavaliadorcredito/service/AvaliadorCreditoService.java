@@ -7,16 +7,20 @@ import io.github.cursodsousa.msavaliadorcredito.dto.Cartao;
 import io.github.cursodsousa.msavaliadorcredito.dto.CartaoAprovado;
 import io.github.cursodsousa.msavaliadorcredito.dto.CartaoCliente;
 import io.github.cursodsousa.msavaliadorcredito.dto.DadosCliente;
+import io.github.cursodsousa.msavaliadorcredito.dto.DadosSolicitacaoEmissaoCartao;
+import io.github.cursodsousa.msavaliadorcredito.dto.ProtocoloSolicitacaoCartao;
 import io.github.cursodsousa.msavaliadorcredito.exception.DadosClienteNotFoundException;
 import io.github.cursodsousa.msavaliadorcredito.exception.IntegrationErrorClientConsumerException;
 import io.github.cursodsousa.msavaliadorcredito.dto.RetornoAvaliacaoCliente;
 import io.github.cursodsousa.msavaliadorcredito.dto.SituacaoCliente;
+import io.github.cursodsousa.msavaliadorcredito.producer.EmissaoCartaoProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +28,12 @@ public class AvaliadorCreditoService {
 
     @Autowired private ClienteConsumer clienteConsumer;
     @Autowired private CartaoConsumer cartaoConsumer;
+    @Autowired private EmissaoCartaoProducer emissaoCartaoProducer;
 
+    public ProtocoloSolicitacaoCartao solictarEmissaoCartao(DadosSolicitacaoEmissaoCartao dados) {
+        emissaoCartaoProducer.execute(dados);
+        return new ProtocoloSolicitacaoCartao(UUID.randomUUID().toString());
+    }
     public RetornoAvaliacaoCliente realizarAvaliacao(String cpf, Double renda) {
         try {
             ResponseEntity<DadosCliente> dadosClienteResponseEntity = clienteConsumer.getDadosCliente(cpf);

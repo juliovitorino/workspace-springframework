@@ -7,6 +7,13 @@ spring:
   application:
     name: msavaliadorcredito
 
+  # CONFIGURACOES DO SERVICO RABBITMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    user: guest
+    password: guest
+
 # vai subir o microservico em uma porta randomica ao inves da 8080
 # dentro do eureka server
 server:
@@ -21,4 +28,8 @@ eureka:
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
 
+# Configuracoes de filas e exchanges do rabbit
+mq:
+  queues:
+    emissao-cartoes: emissao-cartoes
 

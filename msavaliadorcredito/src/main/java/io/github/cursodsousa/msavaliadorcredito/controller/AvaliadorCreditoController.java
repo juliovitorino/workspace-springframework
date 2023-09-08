@@ -1,5 +1,7 @@
 package io.github.cursodsousa.msavaliadorcredito.controller;
 
+import io.github.cursodsousa.msavaliadorcredito.dto.DadosSolicitacaoEmissaoCartao;
+import io.github.cursodsousa.msavaliadorcredito.dto.ProtocoloSolicitacaoCartao;
 import io.github.cursodsousa.msavaliadorcredito.exception.DadosClienteNotFoundException;
 import io.github.cursodsousa.msavaliadorcredito.exception.IntegrationErrorClientConsumerException;
 import io.github.cursodsousa.msavaliadorcredito.dto.DadosAvaliacao;
@@ -28,6 +30,20 @@ public class AvaliadorCreditoController {
     public String getStatus() {
         log.info("Serviço avaliacoes-credito is up");
         return "ok";
+    }
+
+    @PostMapping("solicitacao-cartao")
+    public ResponseEntity solicitarCartao(@RequestBody DadosSolicitacaoEmissaoCartao dados) {
+        try {
+            ProtocoloSolicitacaoCartao protocoloSolicitacaoCartao = avaliadorCreditoService.solictarEmissaoCartao(dados);
+            return ResponseEntity.ok(protocoloSolicitacaoCartao);
+        } catch (DadosClienteNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch(IntegrationErrorClientConsumerException e) {
+            return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @PostMapping
