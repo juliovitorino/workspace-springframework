@@ -15,7 +15,7 @@ spring:
     password: guest
 
   jpa:
-    show_sql: true
+    show_sql: false
   h2:
     console:
       enable: true
