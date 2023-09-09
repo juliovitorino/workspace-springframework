@@ -31,9 +31,7 @@ public class AvaliadorCreditoService {
     @Autowired private EmissaoCartaoProducer emissaoCartaoProducer;
 
     public ProtocoloSolicitacaoCartao solictarEmissaoCartao(DadosSolicitacaoEmissaoCartao dados) {
-        for(int i=0; i<50000; i++) {
-            emissaoCartaoProducer.execute(dados);
-        }
+        emissaoCartaoProducer.execute(dados);
         return new ProtocoloSolicitacaoCartao(UUID.randomUUID().toString());
     }
     public RetornoAvaliacaoCliente realizarAvaliacao(String cpf, Double renda) {
