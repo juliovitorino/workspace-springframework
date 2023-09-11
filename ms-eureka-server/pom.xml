@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.cursodsousa</groupId>
 	<artifactId>ms-eureka-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>ms-eureka-server</name>
 	<description>Eureka Loadbalancer for projects Microservices</description>
 	<properties>
@@ -49,6 +49,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>ms-eureka-server</finalName>
 	</build>
 
 </project>
