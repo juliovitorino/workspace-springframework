@@ -20,3 +20,13 @@ eureka:
 # instanceid no eurika de forma dinamica no dashboard
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
+# expoe endpoint para actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  file:
+    name: ./logs/log-file.log
