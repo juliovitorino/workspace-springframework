@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.cursodsousa</groupId>
 	<artifactId>msclientes</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>msclientes</name>
 	<description>Microserviço de cliente</description>
 	<properties>
@@ -99,6 +99,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>msclientes</finalName>
 	</build>
 
 </project>

@@ -16,7 +16,9 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+# defaultZone, trocar localhost da url http://localhost:8761/eureka pelo --name do container se estiver usando docker
+      defaultZone: http://ms-eureka-server-container:8761/eureka
+
 # instanceid no eurika de forma dinamica no dashboard
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
