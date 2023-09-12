@@ -20,12 +20,12 @@ server:
   port: 8080
 
 # configura as informacoes de como o cloud gateway vai encontrar o eurika
-eurika:
+eureka:
   client:
     fetch-registry: true
-    register-with-eurika: true
+    register-with-eureka: true
     service-url:
-      defaultZone: http://localhost:8761/eurika
+      defaultZone: http://${EUREKA_SERVER}:8761/eureka
 
 
 

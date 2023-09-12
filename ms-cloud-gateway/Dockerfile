@@ -7,6 +7,6 @@ FROM openjdk:11.0.9
 WORKDIR /app
 COPY --from=build ./build/target/*.jar ./app.jar
 
-ARG RABBITMQ_SERVER=rabbitmq-server-container
 ARG EUREKA_SERVER=discovery-eureka-server-container
+
 ENTRYPOINT ["java", "-jar", "app.jar"]

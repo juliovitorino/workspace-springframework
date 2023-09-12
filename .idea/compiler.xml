@@ -10,7 +10,6 @@
         <module name="jcv-microservice-template" />
         <module name="jcv-microservice-seglog" />
         <module name="mscartoes" />
-        <module name="jcv-eurekaserver" />
         <module name="jcv-commons-library" />
         <module name="jcv-exchange-dto" />
         <module name="jcv-environment-config" />
@@ -22,13 +21,14 @@
         <module name="msavaliadorcredito" />
         <module name="jcv-microservice-invoice-manager" />
         <module name="microserviceb" />
-        <module name="jcv-cloud-gateway" />
         <module name="microservicea" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config" target="17" />
       <module name="environment-config" target="17" />
+      <module name="jcv-cloud-gateway" target="11" />
+      <module name="jcv-eurekaserver" target="11" />
       <module name="jcv-universal-seglog" target="11" />
     </bytecodeTargetLevel>
   </component>
