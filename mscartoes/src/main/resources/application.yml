@@ -9,7 +9,7 @@ spring:
 
 # CONFIGURACOES DO SERVICO RABBITMQ (172.17.0.1) gatway do docker network
   rabbitmq:
-    host: localhost
+    host: rabbitmq-container
     port: 5672
     user: guest
     password: guest
