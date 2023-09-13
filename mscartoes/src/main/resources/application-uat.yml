@@ -1,11 +1,18 @@
 application:
-  title: Microservico Clientes
+  title: Microservico Cartoes
   version: 1.0.0
 
 # IMPORTANT! USADO PARA REGISTRO NO GATEWAY E LOADBALANCER
 spring:
   application:
-    name: msclientes
+    name: mscartoes
+
+# CONFIGURACOES DO SERVICO RABBITMQ (172.17.0.1) gatway do docker network
+  rabbitmq:
+    host: ${RABBITMQ_SERVER}
+    port: ${RABBITMQ_SERVER_PORT}
+    user: guest
+    password: guest
 
 # vai subir o microservico em uma porta randomica ao inves da 8080
 # dentro do eureka server
@@ -16,19 +23,12 @@ server:
 eureka:
   client:
     service-url:
-# defaultZone, trocar localhost da url http://localhost:8761/eureka pelo --name do container se estiver usando docker
-      defaultZone: http://localhost:8761/eureka
-
+      defaultZone: http://${EUREKA_SERVER}:${EUREKA_SERVER_PORT}/eureka
 # instanceid no eurika de forma dinamica no dashboard
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
 
-# expoe endpoint para actuator
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-logging:
-  file:
-    name: ./logs/log-file.log
+# Configuracoes de filas e exchanges do rabbit
+mq:
+  queues:
+    emissao-cartoes: emissao-cartoes

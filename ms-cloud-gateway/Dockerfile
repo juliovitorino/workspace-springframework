@@ -8,5 +8,6 @@ WORKDIR /app
 COPY --from=build ./build/target/*.jar ./app.jar
 
 ARG EUREKA_SERVER=discovery-eureka-server-container
+ARG EUREKA_SERVER_PORT=8761
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

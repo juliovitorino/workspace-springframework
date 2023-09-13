@@ -9,7 +9,7 @@ spring:
 
 # CONFIGURACOES DO SERVICO RABBITMQ (172.17.0.1) gatway do docker network
   rabbitmq:
-    host: ${RABBITMQ_SERVER}
+    host: localhost
     port: 5672
     user: guest
     password: guest
@@ -30,7 +30,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://${EUREKA_SERVER}:8761/eureka
+      defaultZone: http://locahost:8761/eureka
 # instanceid no eurika de forma dinamica no dashboard
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
