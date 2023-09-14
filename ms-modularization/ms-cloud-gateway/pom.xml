@@ -6,28 +6,23 @@
 		<groupId>io.github.cursodsousa</groupId>
 		<artifactId>ms-modularization</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../ms-modularization/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>mscartoes</artifactId>
-	<version>${mscartoes.version}-SNAPSHOT</version>
-	<name>mscartoes</name>
-	<description>Microservico de cartoes</description>
+	<artifactId>ms-cloud-gateway</artifactId>
+	<version>${ms-cloud-gateway.version}-SNAPSHOT</version>
+	<name>ms-cloud-gateway</name>
+	<description>Cloud Gateway for projects Microservices</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
 
 		<dependency>
@@ -36,15 +31,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
-		<finalName>mscartoes-${mscartoes.version}</finalName>
+		<finalName>ms-cloud-gateway-${ms-cloud-gateway.version}</finalName>
 	</build>
 
 </project>

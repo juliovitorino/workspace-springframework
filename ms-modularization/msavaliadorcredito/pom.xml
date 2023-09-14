@@ -6,13 +6,13 @@
 		<groupId>io.github.cursodsousa</groupId>
 		<artifactId>ms-modularization</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../ms-modularization/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>msclientes</artifactId>
-	<version>${msclientes.version}-SNAPSHOT</version>
-	<name>msclientes</name>
-	<description>Microserviço de cliente</description>
+	<artifactId>msavaliadorcredito</artifactId>
+	<version>${msavaliadorcredito.version}-SNAPSHOT</version>
+	<name>msavaliadorcredito</name>
+	<description>Microservice para avaliar credito</description>
 
 	<dependencies>
 		<dependency>
@@ -22,25 +22,24 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 
-		<!-- DEPENDENCIA DO CLIENT DO EURIKA SERVER -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
+
 
 	</dependencies>
 
 	<build>
-		<finalName>msclientes-${msclientes.version}-SNAPSHOT</finalName>
+		<finalName>msavaliadorcredito-${msavaliadorcredito.version}</finalName>
 	</build>
 
 </project>

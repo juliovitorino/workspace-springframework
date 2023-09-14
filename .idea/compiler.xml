@@ -30,6 +30,7 @@
       <module name="jcv-cloud-gateway" target="11" />
       <module name="jcv-eurekaserver" target="11" />
       <module name="jcv-universal-seglog" target="11" />
+      <module name="ms-modularization" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

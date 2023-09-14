@@ -6,7 +6,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:11.0.9
 
 WORKDIR /app
-COPY --from=build ./build/target/ms-eureka-server.jar ./app.jar
+COPY --from=build ./build/target/*.jar ./app.jar
 
 ARG EUREKA_SERVER_PORT=8761
 
