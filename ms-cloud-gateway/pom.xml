@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>ms-cloud-gateway</artifactId>
-	<version>${ms-cloud-gateway.version}</version>
+	<version>${ms-cloud-gateway.version}-SNAPSHOT</version>
 	<name>ms-cloud-gateway</name>
 	<description>Cloud Gateway for projects Microservices</description>
 

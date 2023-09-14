@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>mscartoes</artifactId>
-	<version>${mscartoes.version}</version>
+	<version>${mscartoes.version}-SNAPSHOT</version>
 	<name>mscartoes</name>
 	<description>Microservico de cartoes</description>
 

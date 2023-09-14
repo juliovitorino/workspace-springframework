@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>msavaliadorcredito</artifactId>
-	<version>${msavaliadorcredito.version}</version>
+	<version>${msavaliadorcredito.version}-SNAPSHOT</version>
 	<name>msavaliadorcredito</name>
 	<description>Microservice para avaliar credito</description>
 

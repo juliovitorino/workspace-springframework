@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>ms-eureka-server</artifactId>
-	<version>${ms-eureka-server.version}</version>
+	<version>${ms-eureka-server.version}-SNAPSHOT</version>
 	<name>ms-eureka-server</name>
 	<description>Eureka Loadbalancer for projects Microservices</description>
 	<dependencies>

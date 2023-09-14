@@ -30,7 +30,7 @@
         <ms-eureka-server.version>1.0.0.10</ms-eureka-server.version>
         <ms-cloud-gateway.version>1.0.0.11</ms-cloud-gateway.version>
         <mscartoes.version>1.0.0.12</mscartoes.version>
-        <msclientes.version>1.0.0.13</msclientes.version>
+        <msclientes.version>1.0.0.14</msclientes.version>
         <msavaliadorcredito.version>1.0.0.14</msavaliadorcredito.version>
 
         <!-- outras versoes de dependencias comuns a todos os modulos do projeto ms -->
@@ -93,6 +93,27 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!-- If you want only to download dependencies from Sonatype Nexus, put this in the pom.xml: -->
+    <repositories>
+        <repository>
+            <id>maven-group</id>
+            <url>http://localhost:8081/repository/ms-maven-proxy/</url>
+        </repository>
+    </repositories>
+
+
+    <!-- And if you want also to publish your project, add: -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ms-nexus-snapshots</id>
+            <url>http://localhost:8081/repository/ms-maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ms-nexus-releases</id>
+            <url>http://localhost:8081/repository/ms-maven-releases/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>

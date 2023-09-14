@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>msclientes</artifactId>
-	<version>${msclientes.version}</version>
+	<version>${msclientes.version}-SNAPSHOT</version>
 	<name>msclientes</name>
 	<description>Microserviço de cliente</description>
 
@@ -40,7 +40,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>msclientes-${msclientes.version}</finalName>
+		<finalName>msclientes-${msclientes.version}-SNAPSHOT</finalName>
 	</build>
 
 </project>
