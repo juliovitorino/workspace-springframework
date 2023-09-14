@@ -24,6 +24,7 @@
         <option value="$PROJECT_DIR$/msavaliadorcredito/pom.xml" />
         <option value="$PROJECT_DIR$/ms-eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/ms-cloud-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-modularization/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
