@@ -13,7 +13,7 @@
 
     <groupId>io.github.cursodsousa</groupId>
     <artifactId>ms-modularization</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- apontamentos dos projetos pertecentes a esta modularizaaco -->
@@ -103,7 +103,8 @@
     </repositories>
 
 
-    <!-- And if you want also to publish your project, add: -->
+    <!-- And if you want also to publish (deploy) your project, it happens when mvn deploy command  -->
+    <!-- the id tags are referenced at settings.xml to get user and password -->
     <distributionManagement>
         <snapshotRepository>
             <id>ms-nexus-snapshots</id>
