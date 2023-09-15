@@ -10,6 +10,7 @@
         <module name="jcv-microservice-template" />
         <module name="jcv-microservice-seglog" />
         <module name="mscartoes" />
+        <module name="msadmin" />
         <module name="jcv-commons-library" />
         <module name="jcv-exchange-dto" />
         <module name="jcv-environment-config" />
@@ -17,9 +18,12 @@
         <module name="ms-cloud-gateway" />
         <module name="jcv-microservice-businessday" />
         <module name="ms-eureka-server" />
+        <module name="ms-mensageiro" />
+        <module name="msmarketing" />
         <module name="msclientes" />
         <module name="msavaliadorcredito" />
         <module name="jcv-microservice-invoice-manager" />
+        <module name="msfinance" />
         <module name="microserviceb" />
         <module name="microservicea" />
       </profile>
@@ -30,7 +34,9 @@
       <module name="jcv-cloud-gateway" target="11" />
       <module name="jcv-eurekaserver" target="11" />
       <module name="jcv-universal-seglog" target="11" />
-      <module name="ms-modularization" target="11" />
+      <module name="msadmin (1)" target="11" />
+      <module name="msadmin (2)" target="11" />
+      <module name="msfaturamento" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -52,9 +58,16 @@
       <module name="microserviceb" options="-parameters" />
       <module name="ms-cloud-gateway" options="-parameters" />
       <module name="ms-eureka-server" options="-parameters" />
+      <module name="ms-mensageiro" options="-parameters" />
+      <module name="msadmin" options="-parameters" />
+      <module name="msadmin (1)" options="-parameters" />
+      <module name="msadmin (2)" options="-parameters" />
       <module name="msavaliadorcredito" options="-parameters" />
       <module name="mscartoes" options="-parameters" />
       <module name="msclientes" options="-parameters" />
+      <module name="msfaturamento" options="-parameters" />
+      <module name="msfinance" options="-parameters" />
+      <module name="msmarketing" options="-parameters" />
     </option>
   </component>
 </project>

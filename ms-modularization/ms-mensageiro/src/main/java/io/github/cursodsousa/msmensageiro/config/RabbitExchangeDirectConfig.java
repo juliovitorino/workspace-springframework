@@ -47,6 +47,7 @@ public class RabbitExchangeDirectConfig {
     public Queue queueMarketing() {
         return new Queue(mqQueueMarketing,true);
     }
+
     @Bean(name = "queueHandshake")
     public Queue queueHandshake() {
         return new Queue(mqQueueHandshake,true);

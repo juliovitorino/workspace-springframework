@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -47,5 +48,37 @@ public class MensageiroServiceImpl implements MensageiroService {
         financeExchangeDirectProducer.execute(message);
         log.info("sendMessageToFinance :: message has been sent successfully.");
         return true;
+    }
+
+    @Override
+    public Boolean sendMessageToAdmin(GeneralRequest generalRequest, boolean isRnd) {
+        int totalMessages = isRnd ? getRnd() : 1;
+        for (int i = 0; i < totalMessages; i++) {
+            this.sendMessageToAdmin(generalRequest);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean sendMessageToMarketing(GeneralRequest generalRequest, boolean isRnd) {
+        int totalMessages = isRnd ? getRnd() : 1;
+        for (int i = 0; i < totalMessages; i++) {
+            this.sendMessageToMarketing(generalRequest);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean sendMessageToFinance(GeneralRequest generalRequest, boolean isRnd) {
+        int totalMessages = isRnd ? getRnd() : 1;
+        for (int i = 0; i < totalMessages; i++) {
+            this.sendMessageToFinance(generalRequest);
+        }
+        return true;
+    }
+
+    private int getRnd() {
+        Random rand = new Random();
+        return rand.nextInt(500);
     }
 }

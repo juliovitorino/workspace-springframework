@@ -24,7 +24,7 @@ public class MsCloudGatewayApplication {
 	 * Lei de formacao da rota r
 	 * Origem: Request Mapping do controller, ex: /cliente/**
 	 * Destino: lb = string hardcode loadbalancer eureka
-	 * + spring.application.name = ex: msclientes (dentro do arquivo yml do serviço)
+	 * spring.application.name = ex: msclientes (dentro do arquivo yml do serviço)
 	 */
 
 	@Bean
@@ -34,6 +34,8 @@ public class MsCloudGatewayApplication {
 				.route( r -> r.path("/clientes/**").uri("lb://msclientes") )
 				.route( r -> r.path("/cartoes/**").uri("lb://mscartoes") )
 				.route( r -> r.path("/avaliacoes-credito/**").uri("lb://msavaliadorcredito") )
+				.route( r -> r.path("/faturamento/**").uri("lb://msfaturamento") )
+				.route( r -> r.path("/mensageiro/**").uri("lb://msmensageiro") )
 				.build();
 	}
 

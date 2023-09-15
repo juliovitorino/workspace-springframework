@@ -35,11 +35,11 @@ public class MensageiroController {
     public ResponseEntity sendMessageToAdmin(@RequestBody GeneralRequest request, @PathVariable(name = "type") String type) {
         log.info("sendMessageToAdmin :: is starting with request -> {}", gson.toJson(request));
         if(type.toLowerCase().equals("admin")) {
-            mensageiroService.sendMessageToAdmin(request);
+            mensageiroService.sendMessageToAdmin(request,true);
         } else if(type.toLowerCase().equals("finance")) {
-            mensageiroService.sendMessageToFinance(request);
+            mensageiroService.sendMessageToFinance(request,true);
         } else {
-            mensageiroService.sendMessageToMarketing(request);
+            mensageiroService.sendMessageToMarketing(request,true);
         }
         return ResponseEntity.ok("Sua solicitação foi enviada para processamento.");
     }
