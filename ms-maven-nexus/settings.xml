@@ -1,0 +1,68 @@
+<!-- colocar essas configuraceos no settings.xml do maven -->
+<servers>
+    <!-- colocar essas configuraceos dentro da tag "servers" no settings.xml -->
+
+    <server>
+        <id>ms-nexus-repository</id>
+        <username>admin</username>
+        <password>admin</password>
+    </server>
+
+    <server>
+        <id>ms-nexus-snapshots</id>
+        <username>admin</username>
+        <password>admin</password>
+    </server>
+
+    <server>
+        <id>ms-nexus-releases</id>
+        <username>admin</username>
+        <password>admin</password>
+    </server>
+</servers>
+
+
+
+<mirrors>
+    <mirror>
+        <id>ms-nexus-repository</id>
+        <mirrorOf>*</mirrorOf>
+        <name>Pseudo repository to mirror external repositories initially using HTTP.</name>
+        <url>http://localhost:8081/repository/ms-maven-proxy/</url>
+    </mirror>
+</mirrors>
+
+<profiles>
+    <profile>
+        <id>ms-nexus-repository</id>
+        <repositories>
+            <repository>
+                <id>central</id>
+                <url>http://central</url>
+                <releases>
+                    <enabled>true</enabled>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+            </repository>
+        </repositories>
+        <pluginRepositories>
+            <pluginRepository>
+                <id>central</id>
+                <url>http://central</url>
+                <releases>
+                    <enabled>true</enabled>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+            </pluginRepository>
+        </pluginRepositories>
+    </profile>
+</profiles>
+
+<activeProfiles>
+    <activeProfile>ms-nexus-repository</activeProfile>
+</activeProfiles>
+

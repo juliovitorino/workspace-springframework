@@ -31,7 +31,6 @@
       <module name="jcv-eurekaserver" target="11" />
       <module name="jcv-universal-seglog" target="11" />
       <module name="ms-mensageiro" target="11" />
-      <module name="ms-modularization" target="11" />
       <module name="msadmin" target="11" />
       <module name="msfinance" target="11" />
       <module name="msmarketing" target="11" />
