@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitExchangeDirectConfig {
 
+    //
+    // REGISTRE SUAS PROPRIEDADES DENTRO DO SEU .properties OU .yaml
+    //
     @Value("${mq.queues.finance}")
     private String mqQueueFinance;
 
@@ -25,7 +28,9 @@ public class RabbitExchangeDirectConfig {
     private String mqRoutingKeyMensageiroHandshake;
 
 
-    // Beans de configuarcao somente das filas
+    //
+    // REGISTRE OS BEANS DAS SUAS FILAS QUE ESTÃO NO RABBIT E ESTE PROJETO PRECISA ACESSAR
+    //
     @Bean(name = "queueFinance")
     public Queue queueFinance() {
         return new Queue(mqQueueFinance,true);
@@ -36,13 +41,19 @@ public class RabbitExchangeDirectConfig {
         return new Queue(mqQueueMensageiroHandshake,true);
     }
 
-    // Beans de configuracao das exchanges (direct, fanout, headers, topic)
+
+    //
+    // REGISTRE OS BEANS DAS SUAS EXCHANGES QUE ESTÃO NO RABBIT E ESTE PROJETO PRECISA ACESSAR
+    // (direct, fanout, headers, topic)
+    //
     @Bean(name = "exchangeMsDirect")
     public DirectExchange directExchange() {
         return new DirectExchange(mqExchangesMsDirectExchangeDefault);
     }
 
-    // Beans de configuracao dos binds da fila com sua exchange
+    //
+    // REGISTRE OS BEANS QUE RELACIONAM AS EXCHANGES, FILAS E ROUTING KEYS (BIND) QUE ESTÃO NO RABBIT E ESTE PROJETO PRECISA ACESSAR
+    //
     @Bean(name = "mensageiroHandshakeBinding")
     public Binding mensageiroHandshakeBinding(@Qualifier("queueMensageiroHandshake") Queue  mensageiroHandshakeQueue, DirectExchange exchange) {
         return BindingBuilder.bind(mensageiroHandshakeQueue).to(exchange).with(mqRoutingKeyMensageiroHandshake);
