@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component(value = "marketingExchangeDirectProducer")
+@Component(value = "marketingExchangeTopicProducer")
 @Slf4j
 public class MarketingExchangeTopicProducer extends AbstractTopicProducer implements IProducer<String,Boolean> {
     public static final String ROUTING_KEY = "input.marketingRK";
 
     public Boolean execute(String dadosPublish) {
         log.info("execute :: will send message to exchange -> {} :: Routing key -> {}", topicExchange.getName(), ROUTING_KEY);
-        execute(topicExchange.getName(), ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
+        execute(ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
         log.info("execute :: has been sent successfully");
         return true;
 

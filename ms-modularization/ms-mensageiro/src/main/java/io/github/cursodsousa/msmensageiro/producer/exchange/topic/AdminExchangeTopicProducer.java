@@ -18,7 +18,7 @@ public class AdminExchangeTopicProducer extends AbstractTopicProducer implements
 
     public Boolean execute(String dadosPublish) {
         log.info("execute :: will send message to exchange -> {} :: Routing key -> {}", topicExchange.getName(), ROUTING_KEY);
-        execute(topicExchange.getName(), ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
+        execute(ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
         log.info("execute :: has been sent successfully");
         return true;
 

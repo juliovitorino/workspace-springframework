@@ -10,7 +10,7 @@ import java.util.UUID;
 public abstract class AbstractTopicProducer extends AbstractProducer {
     @Autowired protected @Qualifier("exchangeMsTopic") TopicExchange topicExchange;
 
-    protected Boolean execute(String exchange, String routingKey, String dadosPublish) {
+    protected Boolean execute(String routingKey, String dadosPublish) {
         log.info("execute :: will send message to exchange -> {} :: Routing key -> {}", topicExchange.getName(), routingKey);
         rabbitTemplate.convertAndSend(topicExchange.getName(), routingKey, dadosPublish);
         log.info("execute :: has been sent successfully");
