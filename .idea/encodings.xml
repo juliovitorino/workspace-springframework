@@ -18,6 +18,16 @@
     <file url="file://$PROJECT_DIR$/microserviceb/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-cloud-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/ms-cloud-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/ms-cloud-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/ms-eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/ms-eureka-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/msavaliadorcredito/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/msavaliadorcredito/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/mscartoes/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/mscartoes/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/msclientes/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-modularization/msclientes/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-modularization/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-modularization/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/msavaliadorcredito/src/main/java" charset="UTF-8" />
