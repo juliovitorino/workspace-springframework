@@ -25,6 +25,10 @@
         <option value="$PROJECT_DIR$/ms-cloud-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/ms-modularization/pom.xml" />
         <option value="$PROJECT_DIR$/ms-modularization/ms-eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-modularization/msfaturamento/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-modularization/ms-mensageiro/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-modularization/msadmin/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-modularization/msfinance/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

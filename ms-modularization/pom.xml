@@ -16,22 +16,31 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <!-- apontamentos dos projetos pertecentes a esta modularizaaco -->
+    <!-- apontamentos dos projetos pertecentes a esta modularizacao -->
     <modules>
         <module>ms-eureka-server</module>
         <module>ms-cloud-gateway</module>
+        <module>ms-mensageiro</module>
         <module>msclientes</module>
         <module>mscartoes</module>
         <module>msavaliadorcredito</module>
+        <module>msadmin</module>
+        <module>msfinance</module>
+        <module>msmarketing</module>
     </modules>
 
     <properties>
         <!-- controle das versoes dos microservicos do projeto -->
-        <ms-eureka-server.version>1.0.0.10</ms-eureka-server.version>
-        <ms-cloud-gateway.version>1.0.0.11</ms-cloud-gateway.version>
-        <mscartoes.version>1.0.0.12</mscartoes.version>
-        <msclientes.version>1.0.0.14</msclientes.version>
-        <msavaliadorcredito.version>1.0.0.14</msavaliadorcredito.version>
+        <ms-eureka-server.version>1.0.0</ms-eureka-server.version>
+        <ms-cloud-gateway.version>1.0.0</ms-cloud-gateway.version>
+        <ms-mensageiro.version>1.0.0</ms-mensageiro.version>
+        <mscartoes.version>1.0.0</mscartoes.version>
+        <msclientes.version>1.0.0</msclientes.version>
+        <msavaliadorcredito.version>1.0.0</msavaliadorcredito.version>
+        <msfatuarmento.version>1.0.0</msfatuarmento.version>
+        <msadmin.version>1.0.0</msadmin.version>
+        <msfinance.version>1.0.0</msfinance.version>
+        <msmarketing.version>1.0.0</msmarketing.version>
 
         <!-- outras versoes de dependencias comuns a todos os modulos do projeto ms -->
         <java.version>11</java.version>
@@ -41,6 +50,11 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

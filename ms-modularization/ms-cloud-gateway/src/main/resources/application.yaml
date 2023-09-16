@@ -7,6 +7,10 @@ spring:
   application:
     name: ms-cloud-gateway
 
+  # ncessario anular a heranca do pacote starter-web do spring boot, pois ja existe.
+  main:
+    web-application-type: reactive
+
   # habilita do cloud gateway para interceptar e direcionar chamadas para o eurika loadbalancer
   cloud:
     gateway:

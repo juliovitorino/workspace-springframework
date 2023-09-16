@@ -30,3 +30,42 @@ management:
       exposure:
         include: '*'
 
+# definicao das filas e exchanges que este projeto ira interagir
+
+mq:
+  queues:
+    admin: admin.input
+    finance: finance.input
+    marketing: marketing.input
+    handshake: mensageiro.handshake.input
+    allInput: all.input
+  exchanges:
+    ms:
+      direct:
+        exchangeDefault: exchange-default.input
+      fanOut:
+        exchangeDefault: exchange-default-fanout.input
+      topic:
+        exchangeDefault: exchange-default-topic.input
+  routingKey:
+    admin: adminRK
+    finance: financeRK
+    marketing: marketingRK
+    input:
+      admin: input.adminRK
+      finance: input.financeRK
+      marketing: input.marketingRK
+      all: input.*
+
+
+mensageiro:
+  context:
+    producer:
+      exchange:
+        direct:
+          admin:
+            qtde: 5000
+          marketing:
+            qtde: 6000
+          finance:
+            qtde: 7000

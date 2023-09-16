@@ -17,6 +17,5 @@ public class MensageiroListener implements IListener<String>{
     @RabbitListener(queues = "${mq.queues.handshake}")
     public void onMessage(@Payload String payload) {
         log.info("onMessage :: handshake message has been received from rabbit -> {}", payload);
-        log.info("onMessage :: your request has been processed.");
     }
 }
