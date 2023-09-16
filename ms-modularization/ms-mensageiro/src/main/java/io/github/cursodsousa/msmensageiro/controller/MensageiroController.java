@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -44,8 +45,16 @@ public class MensageiroController {
 
     @PostMapping("fanout")
     public ResponseEntity sendMessageToFanOutExchange(@RequestBody GeneralRequest request) {
-        log.info("sendMessageToAdmin :: is starting with request -> {}", gson.toJson(request));
+        log.info("sendMessageToFanOutExchange :: is starting with request -> {}", gson.toJson(request));
         mensageiroService.sendMessageToExchangeFanOut(request);
+        return ResponseEntity.ok("Sua solicitação foi enviada para processamento.");
+    }
+
+
+    @PostMapping(value = "topic", params = "type")
+    public ResponseEntity sendMessageToTopicExchange(@RequestBody GeneralRequest request, @RequestParam("type") Integer type) {
+        log.info("sendMessageToTopicExchange :: is starting with request -> {}", gson.toJson(request));
+        mensageiroService.sendMessageToExchangeTopic(request, type.intValue());
         return ResponseEntity.ok("Sua solicitação foi enviada para processamento.");
     }
 

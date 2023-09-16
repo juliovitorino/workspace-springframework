@@ -48,3 +48,20 @@ mq:
     admin: adminRK
     finance: financeRK
     marketing: marketingRK
+    input:
+      admin: input.adminRK
+      finance: input.financeRK
+      marketing: input.marketingRK
+      all: input.*
+
+mensageiro:
+  context:
+    producer:
+      exchange:
+        direct:
+          admin:
+            qtde: 5000
+          marketing:
+            qtde: 6000
+          finance:
+            qtde: 7000

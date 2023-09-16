@@ -11,4 +11,5 @@ public interface MensageiroService {
     Boolean sendMessageToFinance(GeneralRequest generalRequest, boolean isRnd);
 
     Boolean sendMessageToExchangeFanOut(GeneralRequest generalRequest);
+    Boolean sendMessageToExchangeTopic(GeneralRequest generalRequest, int type);
 }

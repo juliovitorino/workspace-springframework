@@ -5,9 +5,10 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.util.ConditionalOnBootstrapEnabled;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,18 +25,28 @@ public class RabbitConfig {
     private String mqQueueMarketing;
     @Value("${mq.queues.handshake}")
     private String mqQueueHandshake;
+    @Value("${mq.queues.allInput}")
+    private String mqQueueAllInput;
     @Value("${mq.exchanges.ms.direct.exchangeDefault}")
     private String mqExchangesMsDirectExchangeDefault;
     @Value("${mq.exchanges.ms.fanOut.exchangeDefault}")
     private String mqExchangesMsFanOutExchangeDefault;
+    @Value("${mq.exchanges.ms.topic.exchangeDefault}")
+    private String mqExchangesMsTopicExchangeDefault;
     @Value("${mq.routingKey.admin}")
     private String mqRoutingKeyAdmin;
-
     @Value("${mq.routingKey.finance}")
     private String mqRoutingKeyFinance;
-
     @Value("${mq.routingKey.marketing}")
     private String mqRoutingKeyMarketing;
+    @Value("${mq.routingKey.input.admin}")
+    private String mqRoutingKeyInputAdmin;
+    @Value("${mq.routingKey.input.finance}")
+    private String mqRoutingKeyInputFinance;
+    @Value("${mq.routingKey.input.marketing}")
+    private String mqRoutingKeyInputMarketing;
+    @Value("${mq.routingKey.input.all}")
+    private String mqRoutingKeyInputAll;
 
     // ATENCAO: Os registros dos beans abaixo NAO CRIAM AS FILAS, EXCHANGES E BINDS DE ROUTING KEYS no RabbitMQ
 
@@ -63,6 +74,11 @@ public class RabbitConfig {
         return new Queue(mqQueueHandshake,true);
     }
 
+    @Bean(name = "queueAllInput")
+    public Queue queueAllInput() {
+        return new Queue(mqQueueAllInput,true);
+    }
+
     //
     // REGISTRE OS BEANS DAS SUAS EXCHANGES QUE ESTÃO NO RABBIT E ESTE PROJETO PRECISA ACESSAR
     // (direct, fanout, headers, topic)
@@ -76,6 +92,11 @@ public class RabbitConfig {
     @Bean(name = "exchangeMsFanOut")
     public FanoutExchange fanoutExchange() {
         return new FanoutExchange(mqExchangesMsFanOutExchangeDefault);
+    }
+
+    @Bean(name = "exchangeMsTopic")
+    public TopicExchange topicExchange() {
+        return new TopicExchange(mqExchangesMsTopicExchangeDefault);
     }
 
     //
@@ -113,5 +134,28 @@ public class RabbitConfig {
     public Binding adminBindingFanOut(@Qualifier("queueAdmin") Queue queue, FanoutExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange);
     }
+
+
+    // Binds das filas para exchange TOPIC
+    @Bean(name = "marketingBindingTopic")
+    public Binding marketingBindingTopic(@Qualifier("queueMarketing") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(mqRoutingKeyInputMarketing);
+    }
+
+    @Bean(name = "financeBindingTopic")
+    public Binding financeBindingTopic(@Qualifier("queueFinance") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(mqRoutingKeyInputFinance);
+    }
+
+    @Bean(name = "adminBindingTopic")
+    public Binding adminBindingTopic(@Qualifier("queueAdmin") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(mqRoutingKeyInputAdmin);
+    }
+
+    @Bean(name = "allBindingTopic")
+    public Binding allBindingTopic(@Qualifier("queueAllInput") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(mqRoutingKeyInputAll);
+    }
+
 
 }
