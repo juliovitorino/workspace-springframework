@@ -42,6 +42,8 @@ mq:
     ms:
       direct:
         exchangeDefault: exchange-default.input
+      fanOut:
+        exchangeDefault: exchange-default-fanout.input
   routingKey:
     admin: adminRK
     finance: financeRK

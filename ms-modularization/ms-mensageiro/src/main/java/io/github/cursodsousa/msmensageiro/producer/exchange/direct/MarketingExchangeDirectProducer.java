@@ -1,5 +1,7 @@
-package io.github.cursodsousa.msmensageiro.producer;
+package io.github.cursodsousa.msmensageiro.producer.exchange.direct;
 
+import io.github.cursodsousa.msmensageiro.producer.AbstractProducer;
+import io.github.cursodsousa.msmensageiro.producer.IProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component(value = "financeExchangeDirectProducer")
+@Component(value = "marketingExchangeDirectProducer")
 @Slf4j
-public class FinanceExchangeDirectProducer extends AbstractProducer implements IProducer<String,Boolean> {
-    public static final String ROUTING_KEY = "financeRK";
+public class MarketingExchangeDirectProducer extends AbstractProducer implements IProducer<String,Boolean> {
+    public static final String ROUTING_KEY = "marketingRK";
     @Autowired private @Qualifier("exchangeMsDirect") DirectExchange directExchange;
 
     public Boolean execute(String dadosPublish) {

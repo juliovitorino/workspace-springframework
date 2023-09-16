@@ -23,7 +23,7 @@ public class FinanceListener implements IListener<String> {
     @RabbitListener(queues = "${mq.queues.finance}")
     public void onMessage(@Payload String payload) {
         log.info("onMessage :: message has been received from rabbit -> {}", payload);
-        final String handshake = UUID.randomUUID().toString().concat(" - HAND SHAKE OK : financeListener has processed message.");
+        final String handshake = UUID.randomUUID().toString().concat(" - HAND SHAKE OK from financeListener.");
         mensageiroProducer.execute(handshake);
         log.info("onMessage :: your request has been processed.");
     }

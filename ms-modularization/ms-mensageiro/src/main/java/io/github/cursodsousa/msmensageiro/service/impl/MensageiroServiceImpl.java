@@ -18,7 +18,18 @@ public class MensageiroServiceImpl implements MensageiroService {
     @Autowired private @Qualifier("AdminExchangeDirectProducer") IProducer<String,Boolean> adminExchangeDirectProducer;
     @Autowired private @Qualifier("financeExchangeDirectProducer") IProducer<String,Boolean> financeExchangeDirectProducer;
     @Autowired private @Qualifier("marketingExchangeDirectProducer") IProducer<String,Boolean> marketingExchangeDirectProducer;
+    @Autowired private @Qualifier("msDefaultExchangeFanoutProducer") IProducer<String,Boolean> defaultExchangeFanoutProducer;
     @Autowired private Gson gson;
+
+    @Override
+    public Boolean sendMessageToExchangeFanOut(GeneralRequest generalRequest) {
+        log.info("sendMessageToExchangeFanOut :: is starting with request -> {}", gson.toJson(generalRequest));
+        final String message = UUID.randomUUID().toString().concat(generalRequest.getDataString());
+        log.info("sendMessageToExchangeFanOut :: will send the following message -> {}", message);
+        defaultExchangeFanoutProducer.execute(message);
+        log.info("sendMessageToExchangeFanOut :: message has been sent successfully.");
+        return true;
+    }
 
     @Override
     public Boolean sendMessageToAdmin(GeneralRequest generalRequest) {

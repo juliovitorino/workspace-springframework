@@ -29,6 +29,22 @@ management:
     web:
       exposure:
         include: '*'
-logging:
-  file:
-    name: ./logs/log-file.log
+
+# definicao das filas e exchanges que este projeto ira interagir
+
+mq:
+  queues:
+    admin: admin.input
+    finance: finance.input
+    marketing: marketing.input
+    handshake: mensageiro.handshake.input
+  exchanges:
+    ms:
+      direct:
+        exchangeDefault: exchange-default.input
+      fanOut:
+        exchangeDefault: exchange-default-fanout.input
+  routingKey:
+    admin: adminRK
+    finance: financeRK
+    marketing: marketingRK

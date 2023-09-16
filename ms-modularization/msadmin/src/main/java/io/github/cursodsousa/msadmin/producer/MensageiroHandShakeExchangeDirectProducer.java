@@ -16,7 +16,7 @@ public class MensageiroHandShakeExchangeDirectProducer extends AbstractProducer 
 
     public Boolean execute(String dadosPublish) {
         log.info("execute :: will send message to exchange -> {} :: Routing key -> {}", directExchange.getName(), ROUTING_KEY);
-        rabbitTemplate.convertAndSend(directExchange.getName(), ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
+        rabbitTemplate.convertAndSend(directExchange.getName(), ROUTING_KEY, dadosPublish);
         log.info("execute :: has been sent successfully");
         return true;
 

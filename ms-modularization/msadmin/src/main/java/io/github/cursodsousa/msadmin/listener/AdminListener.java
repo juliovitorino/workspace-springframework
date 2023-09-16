@@ -23,7 +23,7 @@ public class AdminListener implements IListener<String> {
     @RabbitListener(queues = "${mq.queues.admin}")
     public void onMessage(@Payload String payload) {
         log.info("onMessage :: message has been received from rabbit -> {}", payload);
-        final String handshake = UUID.randomUUID().toString().concat(" - HAND SHAKE OK : adminListener has processed message.");
+        final String handshake = UUID.randomUUID().toString().concat(" - HAND SHAKE OK from adminListener.");
         mensageiroProducer.execute(handshake);
         log.info("onMessage :: your request has been processed.");
     }

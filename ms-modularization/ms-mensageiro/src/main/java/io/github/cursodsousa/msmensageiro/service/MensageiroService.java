@@ -9,4 +9,6 @@ public interface MensageiroService {
     Boolean sendMessageToAdmin(GeneralRequest generalRequest, boolean isRnd);
     Boolean sendMessageToMarketing(GeneralRequest generalRequest, boolean isRnd);
     Boolean sendMessageToFinance(GeneralRequest generalRequest, boolean isRnd);
+
+    Boolean sendMessageToExchangeFanOut(GeneralRequest generalRequest);
 }
