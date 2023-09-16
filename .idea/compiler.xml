@@ -30,6 +30,11 @@
       <module name="jcv-cloud-gateway" target="11" />
       <module name="jcv-eurekaserver" target="11" />
       <module name="jcv-universal-seglog" target="11" />
+      <module name="ms-mensageiro" target="11" />
+      <module name="ms-modularization" target="11" />
+      <module name="msadmin" target="11" />
+      <module name="msfinance" target="11" />
+      <module name="msmarketing" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -49,11 +54,11 @@
       <module name="jcv-universal-seglog" options="-parameters" />
       <module name="microservicea" options="-parameters" />
       <module name="microserviceb" options="-parameters" />
-      <module name="ms-cloud-gateway" options="-parameters" />
-      <module name="ms-eureka-server" options="-parameters" />
-      <module name="msavaliadorcredito" options="-parameters" />
-      <module name="mscartoes" options="-parameters" />
-      <module name="msclientes" options="-parameters" />
+      <module name="ms-cloud-gateway" options="" />
+      <module name="ms-eureka-server" options="" />
+      <module name="msavaliadorcredito" options="" />
+      <module name="mscartoes" options="" />
+      <module name="msclientes" options="" />
     </option>
   </component>
 </project>
