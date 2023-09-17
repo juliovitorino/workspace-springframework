@@ -16,10 +16,11 @@ public class MarketingExchangeDirectProducer extends AbstractProducer implements
     public static final String ROUTING_KEY = "marketingRK";
     @Autowired private @Qualifier("exchangeMsDirect") DirectExchange directExchange;
 
-    public Boolean execute(String dadosPublish) {
-        log.info("execute :: will send message to exchange -> {} :: Routing key -> {}", directExchange.getName(), ROUTING_KEY);
+    @Override
+    public Boolean dispatch(String dadosPublish) {
+        log.info("dispatch :: will send message to exchange -> {} :: Routing key -> {}", directExchange.getName(), ROUTING_KEY);
         rabbitTemplate.convertAndSend(directExchange.getName(), ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
-        log.info("execute :: has been sent successfully");
+        log.info("dispatch :: has been sent successfully");
         return true;
 
     }

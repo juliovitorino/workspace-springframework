@@ -5,12 +5,16 @@ import com.netflix.discovery.converters.Auto;
 import io.github.cursodsousa.msmensageiro.config.MensageiroConfig;
 import io.github.cursodsousa.msmensageiro.dto.GeneralRequest;
 import io.github.cursodsousa.msmensageiro.producer.IProducer;
+import io.github.cursodsousa.msmensageiro.producer.IProducerHeader;
 import io.github.cursodsousa.msmensageiro.service.MensageiroService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.lang.management.ManagementPermission;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -25,6 +29,7 @@ public class MensageiroServiceImpl implements MensageiroService {
     @Autowired private @Qualifier("financeExchangeTopicProducer") IProducer<String,Boolean> financeExchangeTopicProducer;
     @Autowired private @Qualifier("marketingExchangeTopicProducer") IProducer<String,Boolean> marketingExchangeTopicProducer;
     @Autowired private @Qualifier("allExchangeTopicProducer") IProducer<String,Boolean> allExchangeTopicProducer;
+    @Autowired private @Qualifier("msDefaultExchangeHeaderProducer") IProducerHeader<String,Boolean> defaultHeaderProducer;
     @Autowired private MensageiroConfig config;
     @Autowired private Gson gson;
 
@@ -35,15 +40,15 @@ public class MensageiroServiceImpl implements MensageiroService {
         switch (type) {
             case 0:
                 log.info("sendMessageToExchangeTopic :: send to adminExchangeTopicProducer the following message -> {}", message);
-                adminExchangeTopicProducer.execute(message);
+                adminExchangeTopicProducer.dispatch(message);
                 break;
             case 1:
                 log.info("sendMessageToExchangeTopic :: send to financeExchangeTopicProducer the following message -> {}", message);
-                financeExchangeTopicProducer.execute(message);
+                financeExchangeTopicProducer.dispatch(message);
                 break;
             case 2:
                 log.info("sendMessageToExchangeTopic :: send to marketingExchangeTopicProducer the following message -> {}", message);
-                marketingExchangeTopicProducer.execute(message);
+                marketingExchangeTopicProducer.dispatch(message);
                 break;
             default:
                 return false;
@@ -53,11 +58,21 @@ public class MensageiroServiceImpl implements MensageiroService {
     }
 
     @Override
+    public Boolean sendMessageToExchangeHeaderDepartment(GeneralRequest request, String department) {
+        log.info("sendMessageToExchangeHeaderDepartment :: is starting with department = {} and request -> {}", department, gson.toJson(request));
+        Map<String,Object> mapHeader = new HashMap<>();
+        mapHeader.put("department",department);
+        Boolean response = defaultHeaderProducer.dispatch(request.getDataString(), mapHeader);
+        log.info("sendMessageToExchangeHeaderDepartment :: message has been sent successfully.");
+        return response;
+    }
+
+    @Override
     public Boolean sendMessageToExchangeFanOut(GeneralRequest generalRequest) {
         log.info("sendMessageToExchangeFanOut :: is starting with request -> {}", gson.toJson(generalRequest));
         final String message = UUID.randomUUID().toString().concat(generalRequest.getDataString());
         log.info("sendMessageToExchangeFanOut :: will send the following message -> {}", message);
-        defaultExchangeFanoutProducer.execute(message);
+        defaultExchangeFanoutProducer.dispatch(message);
         log.info("sendMessageToExchangeFanOut :: message has been sent successfully.");
         return true;
     }
@@ -67,7 +82,7 @@ public class MensageiroServiceImpl implements MensageiroService {
         log.info("sendMessageToAdmin :: is starting with request -> {}", gson.toJson(generalRequest));
         final String message = UUID.randomUUID().toString().concat(generalRequest.getDataString());
         log.info("sendMessageToAdmin :: will send the following message -> {}", message);
-        adminExchangeDirectProducer.execute(message);
+        adminExchangeDirectProducer.dispatch(message);
         log.info("sendMessageToAdmin :: message has been sent successfully.");
         return true;
     }
@@ -77,7 +92,7 @@ public class MensageiroServiceImpl implements MensageiroService {
         log.info("sendMessageToMarketing :: is starting with request -> {}", gson.toJson(generalRequest));
         final String message = UUID.randomUUID().toString().concat(generalRequest.getDataString());
         log.info("sendMessageToMarketing :: will send the following message -> {}", message);
-        marketingExchangeDirectProducer.execute(message);
+        marketingExchangeDirectProducer.dispatch(message);
         log.info("sendMessageToMarketing :: message has been sent successfully.");
         return true;
     }
@@ -87,7 +102,7 @@ public class MensageiroServiceImpl implements MensageiroService {
         log.info("sendMessageToFinance :: is starting with request -> {}", gson.toJson(generalRequest));
         final String message = UUID.randomUUID().toString().concat(generalRequest.getDataString());
         log.info("sendMessageToFinance :: will send the following message -> {}", message);
-        financeExchangeDirectProducer.execute(message);
+        financeExchangeDirectProducer.dispatch(message);
         log.info("sendMessageToFinance :: message has been sent successfully.");
         return true;
     }

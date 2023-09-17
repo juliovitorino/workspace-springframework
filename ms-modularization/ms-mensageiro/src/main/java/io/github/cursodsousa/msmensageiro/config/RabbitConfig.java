@@ -4,11 +4,11 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.HeadersExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,6 +33,8 @@ public class RabbitConfig {
     private String mqExchangesMsFanOutExchangeDefault;
     @Value("${mq.exchanges.ms.topic.exchangeDefault}")
     private String mqExchangesMsTopicExchangeDefault;
+    @Value("${mq.exchanges.ms.header.exchangeDefault}")
+    private String mqExchangesMsHeaderExchangeDefault;
     @Value("${mq.routingKey.admin}")
     private String mqRoutingKeyAdmin;
     @Value("${mq.routingKey.finance}")
@@ -80,7 +82,7 @@ public class RabbitConfig {
     }
 
     //
-    // REGISTRE OS BEANS DAS SUAS EXCHANGES QUE ESTÃO NO RABBIT E ESTE PROJETO PRECISA ACESSAR
+    // REGISTRE OS BEANS DAS SUAS CONGIGURACOES DE EXCHANGES QUE ESTÃO NO RABBIT E ESTE PROJETO PRECISA ACESSAR
     // (direct, fanout, headers, topic)
     //
 
@@ -97,6 +99,11 @@ public class RabbitConfig {
     @Bean(name = "exchangeMsTopic")
     public TopicExchange topicExchange() {
         return new TopicExchange(mqExchangesMsTopicExchangeDefault);
+    }
+
+    @Bean(name = "exchangeMsHeader")
+    public HeadersExchange headerExchange() {
+        return new HeadersExchange(mqExchangesMsHeaderExchangeDefault);
     }
 
     //
@@ -156,6 +163,23 @@ public class RabbitConfig {
     public Binding allBindingTopic(@Qualifier("queueAllInput") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(mqRoutingKeyInputAll);
     }
+
+    // Bins das filas para exchange HEADER
+    @Bean(name = "adminBindingHeader")
+    public Binding adminBindingHeader(@Qualifier("queueAdmin") Queue queue, HeadersExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).where("department").matches("admin");
+    }
+
+    @Bean(name = "financeBindingHeader")
+    public Binding financeBindingHeader(@Qualifier("queueFinance") Queue queue, HeadersExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).where("department").matches("finance");
+    }
+
+    @Bean(name = "marketingBindingHeader")
+    public Binding marketingBindingHeader(@Qualifier("queueFinance") Queue queue, HeadersExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).where("department").matches("finance");
+    }
+
 
 
 }

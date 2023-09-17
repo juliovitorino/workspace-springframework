@@ -67,18 +67,18 @@
       <module name="microservice-template" options="-parameters" />
       <module name="microservicea" options="-parameters" />
       <module name="microserviceb" options="-parameters" />
-      <module name="ms-cloud-gateway" options="" />
-      <module name="ms-eureka-server" options="" />
-      <module name="ms-mensageiro" options="" />
+      <module name="ms-cloud-gateway" options="-parameters" />
+      <module name="ms-eureka-server" options="-parameters" />
+      <module name="ms-mensageiro" options="-parameters" />
       <module name="msadmin" options="-parameters" />
       <module name="msadmin (1)" options="-parameters" />
       <module name="msadmin (2)" options="-parameters" />
-      <module name="msavaliadorcredito" options="" />
-      <module name="mscartoes" options="" />
-      <module name="msclientes" options="" />
+      <module name="msavaliadorcredito" options="-parameters" />
+      <module name="mscartoes" options="-parameters" />
+      <module name="msclientes" options="-parameters" />
       <module name="msfaturamento" options="-parameters" />
-      <module name="msfinance" options="" />
-      <module name="msmarketing" options="" />
+      <module name="msfinance" options="-parameters" />
+      <module name="msmarketing" options="-parameters" />
     </option>
   </component>
 </project>

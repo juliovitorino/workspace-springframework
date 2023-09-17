@@ -22,6 +22,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="nexus-repository" />
+      <option name="name" value="nexus-repository" />
+      <option name="url" value="http://localhost:8081/repository/ms-maven-proxy/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="maven-group" />
       <option name="name" value="maven-group" />
       <option name="url" value="http://localhost:8081/repository/jcv-maven-proxy/" />

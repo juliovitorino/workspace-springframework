@@ -16,11 +16,12 @@ import java.util.UUID;
 public class MsDefaultExchangeFanoutProducer extends AbstractProducer implements IProducer<String,Boolean> {
     @Autowired private @Qualifier("exchangeMsFanOut") FanoutExchange exchange;
 
-    public Boolean execute(String dadosPublish) {
-        log.info("execute :: wll send data -> {}", dadosPublish);
-        log.info("execute :: will send message to exchange -> {}", exchange.getName());
+    @Override
+    public Boolean dispatch(String dadosPublish) {
+        log.info("dispatch :: will send data -> {}", dadosPublish);
+        log.info("dispatch :: will send message to exchange -> {}", exchange.getName());
         rabbitTemplate.convertAndSend(exchange.getName(), "",dadosPublish + " - " + UUID.randomUUID());
-        log.info("execute :: has been sent successfully");
+        log.info("dispatch :: has been sent successfully");
         return true;
 
     }
