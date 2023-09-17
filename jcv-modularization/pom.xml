@@ -101,8 +101,8 @@
     <!-- If you want only to download dependencies from Sonatype Nexus, put this in the pom.xml: -->
     <repositories>
         <repository>
-            <id>maven-group</id>
-            <url>http://localhost:8081/repository/jcv-maven-proxy/</url>
+            <id>nexus-repository</id>
+            <url>http://localhost:8081/repository/ms-maven-proxy/</url>
         </repository>
     </repositories>
 
