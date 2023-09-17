@@ -7,40 +7,48 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jcv-microservice-template" />
-        <module name="jcv-microservice-seglog" />
         <module name="mscartoes" />
         <module name="msadmin" />
-        <module name="jcv-commons-library" />
-        <module name="jcv-exchange-dto" />
-        <module name="jcv-environment-config" />
-        <module name="jcv-microservice-mailsender" />
+        <module name="microservice-invoice-manager" />
+        <module name="environment-config" />
+        <module name="microservice-seglog" />
         <module name="ms-cloud-gateway" />
-        <module name="jcv-microservice-businessday" />
+        <module name="exchange-dto" />
+        <module name="commons-library" />
+        <module name="microservice-businessday" />
         <module name="ms-eureka-server" />
         <module name="ms-mensageiro" />
         <module name="msmarketing" />
         <module name="msclientes" />
         <module name="msavaliadorcredito" />
-        <module name="jcv-microservice-invoice-manager" />
         <module name="msfinance" />
-        <module name="microserviceb" />
-        <module name="microservicea" />
+        <module name="microservice-mailsender" />
+        <module name="microservice-template" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config" target="17" />
-      <module name="environment-config" target="17" />
       <module name="jcv-cloud-gateway" target="11" />
+      <module name="jcv-commons-library" target="11" />
+      <module name="jcv-environment-config" target="11" />
       <module name="jcv-eurekaserver" target="11" />
+      <module name="jcv-exchange-dto" target="11" />
+      <module name="jcv-microservice-businessday" target="11" />
+      <module name="jcv-microservice-invoice-manager" target="11" />
+      <module name="jcv-microservice-mailsender" target="11" />
+      <module name="jcv-microservice-seglog" target="11" />
+      <module name="jcv-microservice-template" target="11" />
       <module name="jcv-universal-seglog" target="11" />
-      <module name="ms-modularization" target="11" />
+      <module name="microservicea" target="11" />
+      <module name="microserviceb" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="commons-library" options="-parameters" />
       <module name="config" options="-parameters" />
       <module name="environment-config" options="-parameters" />
+      <module name="exchange-dto" options="-parameters" />
       <module name="jcv-cloud-gateway" options="-parameters" />
       <module name="jcv-commons-library" options="-parameters" />
       <module name="jcv-environment-config" options="-parameters" />
@@ -52,20 +60,25 @@
       <module name="jcv-microservice-seglog" options="-parameters" />
       <module name="jcv-microservice-template" options="-parameters" />
       <module name="jcv-universal-seglog" options="-parameters" />
+      <module name="microservice-businessday" options="-parameters" />
+      <module name="microservice-invoice-manager" options="-parameters" />
+      <module name="microservice-mailsender" options="-parameters" />
+      <module name="microservice-seglog" options="-parameters" />
+      <module name="microservice-template" options="-parameters" />
       <module name="microservicea" options="-parameters" />
       <module name="microserviceb" options="-parameters" />
-      <module name="ms-cloud-gateway" options="-parameters" />
-      <module name="ms-eureka-server" options="-parameters" />
-      <module name="ms-mensageiro" options="-parameters" />
+      <module name="ms-cloud-gateway" options="" />
+      <module name="ms-eureka-server" options="" />
+      <module name="ms-mensageiro" options="" />
       <module name="msadmin" options="-parameters" />
       <module name="msadmin (1)" options="-parameters" />
       <module name="msadmin (2)" options="-parameters" />
-      <module name="msavaliadorcredito" options="-parameters" />
-      <module name="mscartoes" options="-parameters" />
-      <module name="msclientes" options="-parameters" />
+      <module name="msavaliadorcredito" options="" />
+      <module name="mscartoes" options="" />
+      <module name="msclientes" options="" />
       <module name="msfaturamento" options="-parameters" />
-      <module name="msfinance" options="-parameters" />
-      <module name="msmarketing" options="-parameters" />
+      <module name="msfinance" options="" />
+      <module name="msmarketing" options="" />
     </option>
   </component>
 </project>

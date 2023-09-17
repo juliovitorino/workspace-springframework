@@ -17,19 +17,18 @@
     <packaging>pom</packaging>
 
     <!-- apontamentos dos projetos pertecentes a esta modularizacao -->
-<!--
+
     <modules>
-        <module>ms-eureka-server</module>
-        <module>ms-cloud-gateway</module>
-        <module>ms-mensageiro</module>
-        <module>msclientes</module>
-        <module>mscartoes</module>
-        <module>msavaliadorcredito</module>
-        <module>msadmin</module>
-        <module>msfinance</module>
-        <module>msmarketing</module>
+        <module>jcv-microservice-template</module>
+        <module>jcv-microservice-seglog</module>
+        <module>jcv-microservice-mailsender</module>
+        <module>jcv-microservice-invoice-manager</module>
+        <module>jcv-microservice-businessday</module>
+        <module>jcv-exchange-dto</module>
+        <module>jcv-environment-config</module>
+        <module>jcv-commons-library</module>
     </modules>
--->
+
     <properties>
         <!-- controle das versoes dos microservicos do projeto -->
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
@@ -29,12 +30,22 @@
         <option value="$PROJECT_DIR$/ms-modularization/ms-mensageiro/pom.xml" />
         <option value="$PROJECT_DIR$/ms-modularization/msadmin/pom.xml" />
         <option value="$PROJECT_DIR$/ms-modularization/msfinance/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-exchange-dto/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-commons-library/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-environment-config/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-microservice-businessday/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-microservice-invoice-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-microservice-mailsender/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-microservice-seglog/pom.xml" />
+        <option value="$PROJECT_DIR$/jcv-modularization/jcv-microservice-template/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/jcv-cloud-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/jcv-eurekaserver/pom.xml" />
+        <option value="$PROJECT_DIR$/microservicea/pom.xml" />
+        <option value="$PROJECT_DIR$/microserviceb/pom.xml" />
       </set>
     </option>
   </component>
