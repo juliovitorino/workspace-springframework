@@ -58,6 +58,13 @@ public class MensageiroController {
         return ResponseEntity.ok("Sua solicitação foi enviada para processamento.");
     }
 
+    @PostMapping(value = "topic", params = "department")
+    public ResponseEntity sendMessageToHeaderExchange(@RequestBody GeneralRequest request, @RequestParam("department") String department) {
+        log.info("sendMessageToHeaderExchange :: is starting with request -> {}", gson.toJson(request));
+        mensageiroService.sendMessageToExchangeHeaderDepartment(request, department);
+        return ResponseEntity.ok("Sua solicitação foi enviada para processamento.");
+    }
+
 
 
 }

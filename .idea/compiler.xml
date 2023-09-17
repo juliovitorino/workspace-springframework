@@ -69,7 +69,7 @@
       <module name="microserviceb" options="-parameters" />
       <module name="ms-cloud-gateway" options="" />
       <module name="ms-eureka-server" options="" />
-      <module name="ms-mensageiro" options="" />
+      <module name="ms-mensageiro" options="-parameters" />
       <module name="msadmin" options="-parameters" />
       <module name="msadmin (1)" options="-parameters" />
       <module name="msadmin (2)" options="-parameters" />

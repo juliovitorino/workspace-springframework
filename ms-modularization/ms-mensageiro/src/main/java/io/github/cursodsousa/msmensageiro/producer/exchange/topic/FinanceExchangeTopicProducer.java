@@ -12,10 +12,11 @@ import java.util.UUID;
 public class FinanceExchangeTopicProducer extends AbstractTopicProducer implements IProducer<String,Boolean> {
     public static final String ROUTING_KEY = "input.financeRK";
 
-    public Boolean execute(String dadosPublish) {
+    @Override
+    public Boolean dispatch(String dadosPublish) {
         log.info("execute :: will send message to exchange -> {} :: Routing key -> {}", topicExchange.getName(), ROUTING_KEY);
-        execute(ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
-        log.info("execute :: has been sent successfully");
+        dispatch(ROUTING_KEY, dadosPublish + " - " + UUID.randomUUID());
+        log.info("dispatch :: has been sent successfully");
         return true;
 
     }

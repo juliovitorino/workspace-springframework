@@ -47,6 +47,8 @@ mq:
         exchangeDefault: exchange-default-fanout.input
       topic:
         exchangeDefault: exchange-default-topic.input
+      header:
+        exchangeDefault: exchange-default-header.input
   routingKey:
     admin: adminRK
     finance: financeRK
