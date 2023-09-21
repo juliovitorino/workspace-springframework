@@ -31,6 +31,14 @@
 
     <properties>
         <!-- controle das versoes dos microservicos do projeto -->
+        <jcv-microservice-template.version>1.0.0-SNAPSHOT</jcv-microservice-template.version>
+        <jcv-microservice-seglog.version>1.0.0-SNAPSHOT</jcv-microservice-seglog.version>
+        <jcv-microservice-mailsender.version>1.0.0-SNAPSHOT</jcv-microservice-mailsender.version>
+        <jcv-microservice-invoice-manager.version>1.0.0-SNAPSHOT</jcv-microservice-invoice-manager.version>
+        <jcv-microservice-businessday.version>1.0.0-SNAPSHOT</jcv-microservice-businessday.version>
+        <jcv-exchange-dto.version>1.0.0-SNAPSHOT</jcv-exchange-dto.version>
+        <jcv-environment-config.version>1.0.0-SNAPSHOT</jcv-environment-config.version>
+        <jcv-commons-library.version>1.0.0-SNAPSHOT</jcv-commons-library.version>
 
         <!-- outras versoes de dependencias comuns a todos os modulos do projeto ms -->
         <java.version>11</java.version>

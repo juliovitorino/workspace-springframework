@@ -12,12 +12,12 @@
 
 	<groupId>br.com.jcv.template</groupId>
 	<artifactId>microservice-template</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-microservice-template.version}</version>
 	<name>microservice-template</name>
 	<description>Microservice for template</description>
 
 	<build>
-		<finalName>microservice-template</finalName>
+		<finalName>microservice-template${jcv-microservice-template.version}</finalName>
 	</build>
 
 </project>

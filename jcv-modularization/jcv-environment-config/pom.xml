@@ -12,13 +12,13 @@
 
 	<groupId>br.com.jcv.environment</groupId>
 	<artifactId>environment-config</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-environment-config.version}</version>
 	<name>environment-config</name>
 	<description>Configuration for environment</description>
 
 
 	<build>
-		<finalName>environment-config</finalName>
+		<finalName>environment-config-${jcv-environment-config.version}</finalName>
 
 	</build>
 

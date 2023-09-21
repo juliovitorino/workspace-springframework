@@ -12,12 +12,12 @@
 
 	<groupId>br.com.jcv.seglog</groupId>
 	<artifactId>microservice-seglog</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-microservice-seglog.version}</version>
 	<name>microservice-seglog</name>
 	<description>Universal security for user and permissions control</description>
 
 	<build>
-		<finalName>microservice-seglog</finalName>
+		<finalName>microservice-seglog-${jcv-microservice-seglog.version}</finalName>
 	</build>
 
 </project>

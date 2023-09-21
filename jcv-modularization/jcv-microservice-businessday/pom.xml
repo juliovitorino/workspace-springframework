@@ -12,12 +12,12 @@
 
 	<groupId>br.com.jcv.businessday</groupId>
 	<artifactId>microservice-businessday</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-microservice-businessday.version}</version>
 	<name>microservice-businessday</name>
 	<description>Microservice for international business day</description>
 
 	<build>
-		<finalName>microservice-businessday</finalName>
+		<finalName>microservice-businessday-${jcv-microservice-businessday.version}</finalName>
 	</build>
 
 </project>

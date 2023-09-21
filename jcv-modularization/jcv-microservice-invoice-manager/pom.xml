@@ -12,12 +12,12 @@
 
 	<groupId>br.com.jcv.invoice</groupId>
 	<artifactId>microservice-invoice-manager</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-microservice-invoice-manager.version}</version>
 	<name>microservice-invoice-manager</name>
 	<description>Microservice for invoice manager</description>
 
 	<build>
-		<finalName>microservice-invoice-manager</finalName>
+		<finalName>microservice-invoice-manager-${jcv-microservice-invoice-manager.version}</finalName>
 	</build>
 
 </project>
