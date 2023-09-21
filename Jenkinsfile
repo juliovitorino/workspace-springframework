@@ -2,8 +2,9 @@ pipeline {
     agent any
     stages {
         stage ('First') {
-            sh 'echo executou'
-
+            steps {
+                sh 'echo executou'
+            }
         }
     }
 }
