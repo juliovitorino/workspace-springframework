@@ -34,6 +34,16 @@ pipeline {
                     waitForQualityGate abortPipeline: true
                 }
             }
+        }        
+        stage ('Deploy Backend') {
+            steps {
+                sh 'echo Deploy Backend via docker ... em breve'
+            }
+        }
+        stage ('API Endpoint Testes') {
+            steps {
+                sh 'echo Testes dos endpoints após deploy ... em breve'
+            }
         }
     }
 }
