@@ -1,6 +1,6 @@
 package br.com.jcv.commons.library.analyser;
 
-public abstract class AbstractAnalyser implements IAnalyser<String> {
+public abstract class AbstractAnalyser {
 
     protected static final String DEFAULT_MESSAGE = "FWL-0000:O conteúdo ${input} não está no formato correto. O formato correto deve ser ${format}";
     protected static final String DEFAULT_MESSAGE_URL = "FWL-0000:O conteúdo ${input} não está no formato correto";

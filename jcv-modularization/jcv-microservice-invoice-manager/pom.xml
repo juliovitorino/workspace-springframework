@@ -16,6 +16,13 @@
 	<name>microservice-invoice-manager</name>
 	<description>Microservice for invoice manager</description>
 
+	<dependencies>
+		<dependency>
+			<groupId>br.com.jcv.commons</groupId>
+			<artifactId>commons-library</artifactId>
+			<version>${jcv-commons-library.version}</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<finalName>microservice-invoice-manager-${jcv-microservice-invoice-manager.version}</finalName>
 	</build>

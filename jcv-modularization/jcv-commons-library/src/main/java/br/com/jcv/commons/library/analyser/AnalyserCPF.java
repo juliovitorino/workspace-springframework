@@ -5,11 +5,12 @@ import br.com.jcv.commons.library.constantes.RegexConstantes;
 import br.com.jcv.commons.library.exception.AnalyserException;
 import org.springframework.http.HttpStatus;
 
+import java.lang.annotation.Inherited;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AnalyserCPF extends AbstractAnalyser {
+public class AnalyserCPF extends AbstractAnalyser implements IAnalyser<String> {
 
     @Override
     public void execute(String input) {
