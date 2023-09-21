@@ -1,9 +1,11 @@
 pipeline {
     agent any
     stages {
-        stage ('First') {
+        stage ('Build Microservices Labs Modularizarion') {
             steps {
-                sh 'echo executou'
+                dir('labs-modularization') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
     }
