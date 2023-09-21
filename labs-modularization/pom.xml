@@ -19,14 +19,13 @@
   <!-- apontamentos dos projetos pertecentes a esta modularizacao -->
 
   <modules>
-    <!--
-    <module>jcv-microservice-template</module>
-    -->
+    <module>labs-microservice-a</module>
 
   </modules>
 
   <properties>
     <!-- controle das versoes dos microservicos do projeto -->
+    <labs-microservice-a.version>1.0.0</labs-microservice-a.version>
 
     <!-- outras versoes de dependencias comuns a todos os modulos do projeto ms -->
     <java.version>11</java.version>

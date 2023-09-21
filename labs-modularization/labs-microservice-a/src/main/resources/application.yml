@@ -1,0 +1,13 @@
+application:
+  title: Microservico A
+  version: 1.0.0
+
+# IMPORTANT! USADO PARA REGISTRO NO GATEWAY E LOADBALANCER
+spring:
+  application:
+    name: labs-microservice-a
+
+# configura porta padrao de recebimento das requisicoes no gateway
+server:
+  port: 0
+
