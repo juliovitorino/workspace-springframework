@@ -1,34 +1,29 @@
-package br.com.jcv.commons.library.analyser;
+package br.com.jcv.microservice.invoice.manager.analyser;
 
-import br.com.jcv.commons.library.constantes.GenericConstantes;
-import br.com.jcv.commons.library.constantes.RegexConstantes;
-import br.com.jcv.commons.library.exception.AnalyserException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.Inherited;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 public class AnalyserCPF extends AbstractAnalyser implements IAnalyser<String> {
+    public static String REGEX_CPF = "[0-9]{3}(\\.[0-9]{3}){2}-[0-9]{2}";
 
+    public static final String FORMAT_CPF = "999.999.999-99";
     @Override
     public void execute(String input) {
         if( Objects.isNull(input)) {
-            throw new AnalyserException(getErrorNullMessage("CPF"),
-                    HttpStatus.NOT_ACCEPTABLE);
+            throw new RuntimeException("CPF Está nulo");
         }
-        Pattern er = Pattern.compile(RegexConstantes.REGEX_CPF);
+        Pattern er = Pattern.compile(REGEX_CPF);
         Matcher result = er.matcher(input);
         if (!result.matches()) {
-            throw new AnalyserException(getErrorMessage(input, GenericConstantes.FORMAT_CPF),
-                    HttpStatus.NOT_ACCEPTABLE);
+            throw new RuntimeException(getErrorMessage(input, FORMAT_CPF));
         }
 
         if(!computeDigits(input.replaceAll("[.-]",""))) {
-            throw new AnalyserException("CPF não é válido. Verifique o CPF enviado.", HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("CPF não é válido. Verifique o CPF enviado.");
         }
     }
 

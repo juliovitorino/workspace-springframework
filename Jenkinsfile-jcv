@@ -1,13 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage ('Construir Libs compartilhadas') {
-            steps {
-                dir('jcv-modularization/jcv-commons-library') {
-                    sh 'mvn clean deploy -DskipTests'
-                }
-            }
-        }
         stage ('Construir Microservices JCV Modularization') {
             steps {
                 dir('jcv-modularization') {
