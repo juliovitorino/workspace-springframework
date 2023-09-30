@@ -22,6 +22,7 @@
         <module>jcv-commons-library</module>
         <module>jcv-exchange-dto</module>
         <module>jcv-environment-config</module>
+        <module>jcv-code-generator</module>
         <module>jcv-microservice-template</module>
         <module>jcv-microservice-seglog</module>
         <module>jcv-microservice-mailsender</module>
@@ -38,26 +39,15 @@
         <jcv-microservice-businessday.version>1.0.0-SNAPSHOT</jcv-microservice-businessday.version>
         <jcv-exchange-dto.version>1.0.0-SNAPSHOT</jcv-exchange-dto.version>
         <jcv-environment-config.version>1.0.0-SNAPSHOT</jcv-environment-config.version>
-        <jcv-commons-library.version>1.0.1</jcv-commons-library.version>
+        <jcv-commons-library.version>1.0.1-SNAPSHOT</jcv-commons-library.version>
 
         <!-- outras versoes de dependencias comuns a todos os modulos do projeto ms -->
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
         <com.google.code.gson.version>2.10.1</com.google.code.gson.version>
         <springdoc-openapi-ui.version>1.6.8</springdoc-openapi-ui.version>
+        <lombok.version>1.18.22</lombok.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
 
@@ -75,6 +65,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -106,16 +97,30 @@
 
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <!-- If you want only to download dependencies from Sonatype Nexus, put this in the pom.xml: -->
     <repositories>
         <repository>
-            <id>nexus-repository</id>
+            <id>maven-group</id>
             <url>http://localhost:8081/repository/ms-maven-proxy/</url>
         </repository>
+        <!--
         <repository>
             <id>local-repository</id>
             <url>file://Users/juliovitorino/.m2/repository</url>
         </repository>
+        -->
     </repositories>
 
 
