@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CodeGeneratorRequestFilter extends AbstractCodeGenerator implements ICodeGenerator {
+public class CodeGeneratorMensagemResponse extends AbstractCodeGenerator implements ICodeGenerator {
 
-    private static final String TEMPLATE = "static/requestFilter.template";
+    private static final String TEMPLATE = "static/mensagem-response.template";
     @Override
     public <Input> StringBuffer generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
@@ -18,7 +18,7 @@ public class CodeGeneratorRequestFilter extends AbstractCodeGenerator implements
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-        writeCode(sbCode,codegen, "/dto/RequestFilter","java");
+        writeCode(sbCode,codegen, "/dto/MensagemResponse","java");
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");

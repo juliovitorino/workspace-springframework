@@ -9,10 +9,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements ICodeGenerator {
 
-    @Autowired @Qualifier("CodeGeneratorIAnalyserInstance")ICodeGenerator generatorIAnalyser;
-    @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance")ICodeGenerator generatorBusinessService;
+    @Autowired @Qualifier("CodeGeneratorMensagemRConstantesInstance") ICodeGenerator generatorMensagemConstantes;
+    @Autowired @Qualifier("CodeGeneratorMensagemResponseInstance") ICodeGenerator generatorMensagemResponse;
+    @Autowired @Qualifier("CodeGeneratorCommoditiesBaseExceptionInstance") ICodeGenerator generatorCommoditiesBaseException;
+    @Autowired @Qualifier("CodeGeneratorAnalyserExceptionInstance") ICodeGenerator generatorAnalyserException;
+    @Autowired @Qualifier("CodeGeneratorIAnalyserInstance") ICodeGenerator generatorIAnalyser;
+    @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance") ICodeGenerator generatorBusinessService;
     @Autowired @Qualifier("CodeGeneratorRequestFilterInstance") ICodeGenerator generatorRequestFilter;
     @Autowired @Qualifier("CodeGeneratorLogbackInstance") ICodeGenerator generatorLogabck;
 
@@ -26,6 +31,10 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
         generatorRequestFilter.generate(inputClassModel);
         generatorLogabck.generate(inputClassModel);
         generatorIAnalyser.generate(inputClassModel);
+        generatorAnalyserException.generate(inputClassModel);
+        generatorCommoditiesBaseException.generate(inputClassModel);
+        generatorMensagemResponse.generate(inputClassModel);
+        generatorMensagemConstantes.generate(inputClassModel);
 
         log.info("generate :: has been executed");
         return sbCode;

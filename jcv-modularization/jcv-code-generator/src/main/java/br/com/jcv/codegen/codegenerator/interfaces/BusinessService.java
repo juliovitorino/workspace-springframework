@@ -1,4 +1,4 @@
-package br.com.jcv.codegen.codegenerator.service;
+package br.com.jcv.codegen.codegenerator.interfaces;
 
 import java.util.UUID;
 public interface BusinessService<Input, Output> {

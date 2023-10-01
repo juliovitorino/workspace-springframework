@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class CodeGeneratorBusinessService extends AbstractCodeGenerator implements ICodeGenerator {
 
     private static final String TEMPLATE = "static/businessService.template";

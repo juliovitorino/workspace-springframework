@@ -1,10 +1,14 @@
 package br.com.jcv.codegen.codegenerator.config;
 
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorHeadQuarter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorIAnalyser;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorLogback;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemConstantes;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemResponse;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +18,26 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorMensagemRConstantesInstance")
+    public ICodeGenerator CodeGeneratorMensagemRConstantesInstance() {
+        log.info("CodeGeneratorMensagemRConstantesInstance :: has started successfully");
+        return new CodeGeneratorMensagemConstantes();
+    }
+    @Bean("CodeGeneratorMensagemResponseInstance")
+    public ICodeGenerator CodeGeneratorCodeGeneratorMensagemResponseInstanceInstance() {
+        log.info("CodeGeneratorMensagemResponseInstance :: has started successfully");
+        return new CodeGeneratorMensagemResponse();
+    }
+    @Bean("CodeGeneratorCommoditiesBaseExceptionInstance")
+    public ICodeGenerator CodeGeneratorCommoditiesBaseExceptionInstance() {
+        log.info("CodeGeneratorCommoditiesBaseExceptionInstance :: has started successfully");
+        return new CodeGeneratorCommoditiesBaseException();
+    }
+    @Bean("CodeGeneratorAnalyserExceptionInstance")
+    public ICodeGenerator CodeGeneratorAnalyserExceptionInstance() {
+        log.info("CodeGeneratorAnalyserExceptionInstance :: has started successfully");
+        return new CodeGeneratorAnalyserException();
+    }
     @Bean("CodeGeneratorIAnalyserInstance")
     public ICodeGenerator CodeGeneratorIAnalyserInstance() {
         log.info("CodeGeneratorIAnalyserInstance :: has started successfully");

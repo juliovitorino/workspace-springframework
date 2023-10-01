@@ -4,8 +4,10 @@ import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.factory.codegen.AbstractCodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class CodeGeneratorLogback extends AbstractCodeGenerator implements ICodeGenerator {
 
     private static final String TEMPLATE = "static/logback.template";
