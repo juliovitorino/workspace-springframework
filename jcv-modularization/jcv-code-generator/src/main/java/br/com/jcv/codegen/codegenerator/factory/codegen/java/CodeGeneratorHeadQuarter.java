@@ -27,6 +27,7 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
     @Autowired @Qualifier("CodeGeneratorApiAdviceInstance") ICodeGenerator generatorApiAdvice;
     @Autowired @Qualifier("CodeGeneratorGenericResponseInstance") ICodeGenerator generatorGenericResponse;
     @Autowired @Qualifier("CodeGeneratorGenericStatusEnumInstance") ICodeGenerator generatorGenericStatusEnum;
+    @Autowired @Qualifier("CodeGeneratorSwaggerConfigInstance") ICodeGenerator generatorSwaggerConfig;
 
     @Override
     public <Input> StringBuffer generate(Class<Input> inputClassModel) {
@@ -48,6 +49,7 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
         generatorApiAdvice.generate(inputClassModel);
         generatorGenericResponse.generate(inputClassModel);
         generatorGenericStatusEnum.generate(inputClassModel);
+        //generatorSwaggerConfig.generate(inputClassModel);  // Verificar as dependencias
 
         log.info("generate :: has been executed");
         return sbCode;

@@ -17,6 +17,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensag
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemResponse;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRegexConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,11 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorSwaggerConfigInstance")
+    public ICodeGenerator CodeGeneratorSwaggerConfigInstance() {
+        log.info("CodeGeneratorSwaggerConfigInstance :: has started successfully");
+        return new CodeGeneratorSwaggerConfig();
+    }
     @Bean("CodeGeneratorGenericStatusEnumInstance")
     public ICodeGenerator CodeGeneratorGenericStatusEnumInstance() {
         log.info("CodeGeneratorGenericStatusEnumInstance :: has started successfully");

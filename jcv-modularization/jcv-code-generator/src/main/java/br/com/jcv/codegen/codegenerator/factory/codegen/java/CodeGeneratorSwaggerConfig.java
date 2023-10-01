@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CodeGeneratorGenericStatusEnum extends AbstractCodeGenerator implements ICodeGenerator {
+public class CodeGeneratorSwaggerConfig extends AbstractCodeGenerator implements ICodeGenerator {
 
-    private static final String TEMPLATE = "static/generic-status-enum.template";
+    private static final String TEMPLATE = "static/swagger.template";
     @Override
     public <Input> StringBuffer generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
@@ -18,7 +18,7 @@ public class CodeGeneratorGenericStatusEnum extends AbstractCodeGenerator implem
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-        writeCode(sbCode,codegen, "/enums/GenericStatusEnums","java");
+        writeCode(sbCode,codegen, "/config/SwaggerConfig","java");
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");
