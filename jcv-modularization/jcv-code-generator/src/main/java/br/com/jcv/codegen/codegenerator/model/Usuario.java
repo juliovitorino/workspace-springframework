@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_user", schema = "seglog")
+@Table(name = "tb_user")
 @CodeGeneratorDescriptor(outputDir = "/Users/juliovitorino/workspaces/workspace-springframework/jcv-modularization/jcv-code-generator/src/main/java/br/com/jcv/codegen/codegenerator",
         project = "aventura",
 fullDescription = "Manipular todos as informações de usuários")

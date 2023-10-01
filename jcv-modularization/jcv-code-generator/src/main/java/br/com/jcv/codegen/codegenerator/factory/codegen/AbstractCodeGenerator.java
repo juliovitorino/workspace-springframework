@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -68,7 +69,7 @@ public abstract class AbstractCodeGenerator {
         try {
             fos = new FileOutputStream(OutputFilename);
             DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
-            outStream.writeUTF(code.toString());
+            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
             outStream.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

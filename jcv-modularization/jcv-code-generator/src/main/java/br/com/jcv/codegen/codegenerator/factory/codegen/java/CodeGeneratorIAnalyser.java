@@ -4,12 +4,11 @@ import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.factory.codegen.AbstractCodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-public class CodeGeneratorBusinessService extends AbstractCodeGenerator implements ICodeGenerator {
+public class CodeGeneratorIAnalyser extends AbstractCodeGenerator implements ICodeGenerator {
 
-    private static final String TEMPLATE = "static/businessService.template";
+    private static final String TEMPLATE = "static/ianalyser.template";
     @Override
     public <Input> StringBuffer generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
@@ -17,7 +16,7 @@ public class CodeGeneratorBusinessService extends AbstractCodeGenerator implemen
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-        writeCode(sbCode,codegen, "/interfaces/BusinessService","java");
+        writeCode(sbCode,codegen, "/analyser/IAnalyser","java");
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");

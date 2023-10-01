@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements ICodeGenerator {
 
+    @Autowired @Qualifier("CodeGeneratorIAnalyserInstance")ICodeGenerator generatorIAnalyser;
     @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance")ICodeGenerator generatorBusinessService;
     @Autowired @Qualifier("CodeGeneratorRequestFilterInstance") ICodeGenerator generatorRequestFilter;
+    @Autowired @Qualifier("CodeGeneratorLogbackInstance") ICodeGenerator generatorLogabck;
 
     private static final String TEMPLATE = "static/businessService.template";
     @Override
@@ -22,6 +24,8 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
 
         generatorBusinessService.generate(inputClassModel);
         generatorRequestFilter.generate(inputClassModel);
+        generatorLogabck.generate(inputClassModel);
+        generatorIAnalyser.generate(inputClassModel);
 
         log.info("generate :: has been executed");
         return sbCode;

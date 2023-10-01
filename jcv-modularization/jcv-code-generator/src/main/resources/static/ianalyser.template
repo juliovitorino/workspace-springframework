@@ -1,0 +1,5 @@
+package ${package}.analyser;
+
+public interface IAnalyser<Input>{
+    public void execute(Input input);
+}
