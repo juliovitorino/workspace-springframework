@@ -1,14 +1,18 @@
 package br.com.jcv.codegen.codegenerator.config;
 
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAbstractAnalyser;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserCPF;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorHeadQuarter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorIAnalyser;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorLogback;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemResponse;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRegexConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +22,29 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
-    @Bean("CodeGeneratorMensagemRConstantesInstance")
-    public ICodeGenerator CodeGeneratorMensagemRConstantesInstance() {
-        log.info("CodeGeneratorMensagemRConstantesInstance :: has started successfully");
+    @Bean("CodeGeneratorGenericConstantesInstance")
+    public ICodeGenerator CodeGeneratorGenericConstantesInstance() {
+        log.info("CodeGeneratorGenericConstantesInstance :: has started successfully");
+        return new CodeGeneratorGenericConstantes();
+    }
+    @Bean("CodeGeneratorRegexConstantesInstance")
+    public ICodeGenerator CodeGeneratorRegexConstantesInstance() {
+        log.info("CodeGeneratorRegexConstantesInstance :: has started successfully");
+        return new CodeGeneratorRegexConstantes();
+    }
+    @Bean("CodeGeneratorAnalyserCpfInstance")
+    public ICodeGenerator CodeGeneratorAnalyserCpfInstance() {
+        log.info("CodeGeneratorAnalyserCpfInstance :: has started successfully");
+        return new CodeGeneratorAnalyserCPF();
+    }
+    @Bean("CodeGeneratorAbstractAnalyserInstance")
+    public ICodeGenerator CodeGeneratorAbstractAnalyserInstance() {
+        log.info("CodeGeneratorAbstractAnalyserInstance :: has started successfully");
+        return new CodeGeneratorAbstractAnalyser();
+    }
+    @Bean("CodeGeneratorMensagemConstantesInstance")
+    public ICodeGenerator CodeGeneratorMensagemConstantesInstance() {
+        log.info("CodeGeneratorMensagemConstantesInstance :: has started successfully");
         return new CodeGeneratorMensagemConstantes();
     }
     @Bean("CodeGeneratorMensagemResponseInstance")

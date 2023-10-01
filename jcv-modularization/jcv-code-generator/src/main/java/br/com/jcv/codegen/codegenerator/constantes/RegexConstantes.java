@@ -1,0 +1,14 @@
+package br.com.jcv.codegen.codegenerator.constantes;
+
+public class RegexConstantes {
+    public static String REGEX_EMAIL = "([A-Za-z0-9_.\\-])+@([A-Za-z0-9_])+\\.([A-Za-z])+\\.?([A-Za-z]){2}";
+    public static String REGEX_CPF = "[0-9]{3}(\\.[0-9]{3}){2}-[0-9]{2}";
+    public static String REGEX_ANYTHING = ".*";
+    public static String REGEX_ANYTHING_NOT_EMPTY = ".+";
+    public static String REGEX_INTEGER_POSITIVE = "[0-9]+";
+    public static String REGEX_INTEGER_NEGATIVE = "[-][0-9]+";
+    public static String REGEX_REAL_ONLY_POSITIVE = "[+\\s]?[0-9]+\\[.,]?[0-9]*";
+    public static String REGEX_REAL_ONLY_NEGATIVE = "[-][0-9]+\\[.,]?[0-9]*";
+    public static String REGEX_REAL_POSITIVE_OR_NEGATIVE = "[-+\\s]?[0-9]+\\[.,]?[0-9]*";
+    public static String REGEX_URL = "(http[s]?|s3|ftp|www\\.)?(://)?[a-z_/0-9\\-#=&.]+:?[0-9]{0,5}/?.*";
+}

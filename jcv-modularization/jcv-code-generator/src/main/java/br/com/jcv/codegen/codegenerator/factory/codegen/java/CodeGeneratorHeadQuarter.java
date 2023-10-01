@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements ICodeGenerator {
 
-    @Autowired @Qualifier("CodeGeneratorMensagemRConstantesInstance") ICodeGenerator generatorMensagemConstantes;
+    @Autowired @Qualifier("CodeGeneratorAnalyserCpfInstance") ICodeGenerator generatorAnalyserCpf;
+    @Autowired @Qualifier("CodeGeneratorAbstractAnalyserInstance") ICodeGenerator generatorAbstractAnalyser;
+    @Autowired @Qualifier("CodeGeneratorMensagemConstantesInstance") ICodeGenerator generatorMensagemConstantes;
     @Autowired @Qualifier("CodeGeneratorMensagemResponseInstance") ICodeGenerator generatorMensagemResponse;
     @Autowired @Qualifier("CodeGeneratorCommoditiesBaseExceptionInstance") ICodeGenerator generatorCommoditiesBaseException;
     @Autowired @Qualifier("CodeGeneratorAnalyserExceptionInstance") ICodeGenerator generatorAnalyserException;
@@ -20,6 +22,8 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
     @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance") ICodeGenerator generatorBusinessService;
     @Autowired @Qualifier("CodeGeneratorRequestFilterInstance") ICodeGenerator generatorRequestFilter;
     @Autowired @Qualifier("CodeGeneratorLogbackInstance") ICodeGenerator generatorLogabck;
+    @Autowired @Qualifier("CodeGeneratorRegexConstantesInstance") ICodeGenerator generatorRegexConstantes;
+    @Autowired @Qualifier("CodeGeneratorGenericConstantesInstance") ICodeGenerator generatorGenericConstantes;
 
     private static final String TEMPLATE = "static/businessService.template";
     @Override
@@ -35,6 +39,10 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
         generatorCommoditiesBaseException.generate(inputClassModel);
         generatorMensagemResponse.generate(inputClassModel);
         generatorMensagemConstantes.generate(inputClassModel);
+        generatorAbstractAnalyser.generate(inputClassModel);
+        generatorAnalyserCpf.generate(inputClassModel);
+        generatorRegexConstantes.generate(inputClassModel);
+        generatorGenericConstantes.generate(inputClassModel);
 
         log.info("generate :: has been executed");
         return sbCode;
