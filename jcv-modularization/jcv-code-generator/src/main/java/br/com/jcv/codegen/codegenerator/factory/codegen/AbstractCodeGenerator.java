@@ -15,16 +15,22 @@ import java.util.List;
 
 @Slf4j
 public abstract class AbstractCodeGenerator {
+
+    private String basePackage;
     @Autowired protected Gson gson;
 
     protected <Input> CodeGeneratorDTO prepareCodeGeneratorFromModel(Class<Input> inputClassModel) {
 
         CodeGeneratorDTO codegen = new CodeGeneratorDTO<>();
 
+        final String modelPackage = inputClassModel.getPackage().getName();
+        basePackage = modelPackage.substring(0, modelPackage.lastIndexOf("."));
+        log.info("prepareCodeGeneratorFromModel :: base package is -> {}", basePackage);
+
         CodeGeneratorDescriptor codeGeneratorDescriptor = inputClassModel.getAnnotation(CodeGeneratorDescriptor.class);
         Table tableAnnotation =  inputClassModel.getAnnotation(Table.class);
         if(codeGeneratorDescriptor == null) {
-            log.info("generate :: input class {} model hasn't been annoteded", inputClassModel.getClass().hashCode());
+            log.info("prepareCodeGeneratorFromModel :: input class {} model hasn't been annoteded", inputClassModel.getClass().hashCode());
             throw new RuntimeException("The input class model hasn't been annoteded");
         }
 
@@ -41,11 +47,11 @@ public abstract class AbstractCodeGenerator {
         }
 
         Field[] fields = inputClassModel.getDeclaredFields();
-        log.info("generate :: Input class has {} Declared Fields", fields.length);
+        log.info("prepareCodeGeneratorFromModel :: Input class has {} Declared Fields", fields.length);
 
         List<FieldDescriptor> fieldDescriptors = new ArrayList<>();
         for( Field fieldItem : fields) {
-            log.info("generate :: field name -> {}",fieldItem.getName());
+            log.info("prepareCodeGeneratorFromModel :: field name -> {}",fieldItem.getName());
 
             CodeGeneratorFieldDescriptor codeGeneratorFieldDescriptor = fieldItem.getAnnotation(CodeGeneratorFieldDescriptor.class);
             if(codeGeneratorFieldDescriptor != null) {
