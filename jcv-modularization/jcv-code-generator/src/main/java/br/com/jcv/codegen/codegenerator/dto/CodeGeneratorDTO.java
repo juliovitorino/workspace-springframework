@@ -16,13 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ToString
-public class CodeGeneratorDTO<Model> implements Serializable {
+public class CodeGeneratorDTO implements Serializable {
     private String basePackage;
     private String project;
     private String fullDescription;
     private String tableName;
     private String schema;
-    private Class<Model> modelName;
+    private String author;
+    private String baseClass;
     List<FieldDescriptor> fieldDescriptorList;
 
 }

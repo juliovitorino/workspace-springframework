@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CodeGeneratorFieldDescriptor {
-    String dtoFieldReference() default "";
+    String fieldReferenceInDto() default "";
     String fieldDescription() default  "";
 }

@@ -12,4 +12,5 @@ public @interface CodeGeneratorDescriptor {
     String basePackage() default "";
     String project() default "";
     String fullDescription() default "";
+    String author() default "";
 }

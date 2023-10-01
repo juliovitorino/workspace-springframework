@@ -12,8 +12,24 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FieldDescriptor implements Serializable {
-    public String name;
-    public String dtoFieldReference;
-    public String fieldDescription;
-    public String fieldType;
+    private String fieldName;
+    private String fieldTableName;
+    private String fieldType;
+    private String fieldReferenceInDto;
+    private String fieldDescription;
+    private boolean isPrimaryKey = false;
+    private boolean unique = false;
+    private boolean nullable = true;
+    private boolean insertable = true;
+    private boolean updatable = true;
+    private String columnDefinition = "";
+    private String table = "";
+    private int length = 255;
+    private int precision = 0;
+    private int scale = 0;
+
+    public void setIsPrimaryKey(boolean isPrimaryKey) {
+        this.isPrimaryKey = isPrimaryKey;
+    }
+
 }

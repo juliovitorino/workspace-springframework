@@ -12,14 +12,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_user", schema = "seglog")
-@CodeGeneratorDescriptor(basePackage = "br.com.jcv.projeto",project = "aventura",
+@CodeGeneratorDescriptor(project = "aventura",
 fullDescription = "Manipular todos as informações de usuários")
 public class Usuario {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @CodeGeneratorFieldDescriptor(dtoFieldReference = "id",fieldDescription = "Chave primaria de Usuario")
+    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Chave primaria de Usuario")
     private Long id;
 
     @Column()
