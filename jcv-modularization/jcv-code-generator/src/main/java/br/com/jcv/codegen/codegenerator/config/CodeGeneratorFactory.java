@@ -1,6 +1,6 @@
 package br.com.jcv.codegen.codegenerator.config;
 
-import br.com.jcv.codegen.codegenerator.factory.codegen.CodeGeneratorBusinessService;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

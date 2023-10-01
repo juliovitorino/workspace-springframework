@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @ToString
 public class CodeGeneratorDTO implements Serializable {
+    private String outputDir;
     private String basePackage;
     private String project;
     private String fullDescription;

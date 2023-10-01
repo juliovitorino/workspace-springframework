@@ -13,4 +13,5 @@ public @interface CodeGeneratorDescriptor {
     String project() default "";
     String fullDescription() default "";
     String author() default "";
+    String outputDir() default "/tmp/";
 }

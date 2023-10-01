@@ -1,5 +1,6 @@
 package br.com.jcv.codegen.codegenerator.factory.codegen;
 
+import br.com.jcv.codegen.codegenerator.CodeGeneratorTags;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
@@ -7,19 +8,74 @@ import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.convert.Jsr310Converters;
+import org.springframework.util.FileCopyUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @Slf4j
 public abstract class AbstractCodeGenerator {
 
     private String basePackage;
     @Autowired protected Gson gson;
+    @Autowired protected ResourceLoader resourceLoader;
+
+    protected StringBuffer readTemplateModeOne(String template){
+        StringBuffer sb = new StringBuffer();
+        Resource fileTemplateResource = resourceLoader.getResource(template);
+        try {
+            InputStream isFileTemplate = new FileInputStream(fileTemplateResource.getFile());
+            byte[] bdata = FileCopyUtils.copyToByteArray(isFileTemplate);
+            sb.append(new String(bdata));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sb;
+    }
+    protected void readTemplate(String template, StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO){
+        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + template);
+        try {
+            Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
+            while( scannerFileTemplate.hasNextLine()) {
+                String line = changeTagsUsing(scannerFileTemplate.nextLine(),codeGeneratorDTO);
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));
+            }
+            scannerFileTemplate.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    protected void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
+        String OutputFilename = codegen.getOutputDir() + codegen.getBaseClass() + filename + "." + extension;
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(OutputFilename);
+            DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
+            outStream.writeUTF(code.toString());
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
 
     protected <Input> CodeGeneratorDTO prepareCodeGeneratorFromModel(Class<Input> inputClassModel) {
 
@@ -37,6 +93,7 @@ public abstract class AbstractCodeGenerator {
         }
 
         codegen.setBasePackage(getContent(codeGeneratorDescriptor.basePackage(), basePackage));
+        codegen.setOutputDir(codeGeneratorDescriptor.outputDir());
         codegen.setProject(codeGeneratorDescriptor.project());
         codegen.setFullDescription(codeGeneratorDescriptor.fullDescription());
         codegen.setAuthor(codeGeneratorDescriptor.author());
@@ -54,6 +111,13 @@ public abstract class AbstractCodeGenerator {
         codegen.setFieldDescriptorList(fieldDescriptors);
         return codegen;
     }
+
+    private String changeTagsUsing(String content, CodeGeneratorDTO codegen) {
+        String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass())
+                .replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage());
+        return newContent;
+    }
+
 
     private String getContent(String content, String defaultContent) {
         return content.isBlank()

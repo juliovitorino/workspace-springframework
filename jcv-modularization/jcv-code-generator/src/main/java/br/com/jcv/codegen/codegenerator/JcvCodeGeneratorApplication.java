@@ -1,8 +1,6 @@
 package br.com.jcv.codegen.codegenerator;
 
-import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
-import br.com.jcv.codegen.codegenerator.model.User;
 import br.com.jcv.codegen.codegenerator.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +16,7 @@ public class JcvCodeGeneratorApplication {
 	public CommandLineRunner init(@Autowired @Qualifier("CodeGeneratorBusinessService")ICodeGenerator generator) {
 		return args -> {
 			generator.generate(Usuario.class);
-			generator.generate(User.class);
+//			generator.generate(User.class);
 		};
 	}
 	public static void main(String[] args) {
