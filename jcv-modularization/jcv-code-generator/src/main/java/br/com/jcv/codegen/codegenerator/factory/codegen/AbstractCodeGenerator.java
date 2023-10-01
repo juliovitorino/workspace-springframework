@@ -115,7 +115,8 @@ public abstract class AbstractCodeGenerator {
 
     private String changeTagsUsing(String content, CodeGeneratorDTO codegen) {
         String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass())
-                .replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage());
+                .replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage())
+                .replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
         return newContent;
     }
 

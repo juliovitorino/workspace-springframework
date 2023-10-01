@@ -24,8 +24,10 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
     @Autowired @Qualifier("CodeGeneratorLogbackInstance") ICodeGenerator generatorLogabck;
     @Autowired @Qualifier("CodeGeneratorRegexConstantesInstance") ICodeGenerator generatorRegexConstantes;
     @Autowired @Qualifier("CodeGeneratorGenericConstantesInstance") ICodeGenerator generatorGenericConstantes;
+    @Autowired @Qualifier("CodeGeneratorApiAdviceInstance") ICodeGenerator generatorApiAdvice;
+    @Autowired @Qualifier("CodeGeneratorGenericResponseInstance") ICodeGenerator generatorGenericResponse;
+    @Autowired @Qualifier("CodeGeneratorGenericStatusEnumInstance") ICodeGenerator generatorGenericStatusEnum;
 
-    private static final String TEMPLATE = "static/businessService.template";
     @Override
     public <Input> StringBuffer generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
@@ -43,6 +45,9 @@ public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements I
         generatorAnalyserCpf.generate(inputClassModel);
         generatorRegexConstantes.generate(inputClassModel);
         generatorGenericConstantes.generate(inputClassModel);
+        generatorApiAdvice.generate(inputClassModel);
+        generatorGenericResponse.generate(inputClassModel);
+        generatorGenericStatusEnum.generate(inputClassModel);
 
         log.info("generate :: has been executed");
         return sbCode;

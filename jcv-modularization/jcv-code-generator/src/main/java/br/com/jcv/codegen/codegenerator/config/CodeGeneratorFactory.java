@@ -3,10 +3,13 @@ package br.com.jcv.codegen.codegenerator.config;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAbstractAnalyser;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserCPF;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserException;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorApiControllerAdvice;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericConstantes;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericResponse;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericStatusEnum;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorHeadQuarter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorIAnalyser;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorLogback;
@@ -22,6 +25,21 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorGenericStatusEnumInstance")
+    public ICodeGenerator CodeGeneratorGenericStatusEnumInstance() {
+        log.info("CodeGeneratorGenericStatusEnumInstance :: has started successfully");
+        return new CodeGeneratorGenericStatusEnum();
+    }
+    @Bean("CodeGeneratorGenericResponseInstance")
+    public ICodeGenerator CodeGeneratorGenericResponseInstance() {
+        log.info("CodeGeneratorGenericResponseInstance :: has started successfully");
+        return new CodeGeneratorGenericResponse();
+    }
+    @Bean("CodeGeneratorApiAdviceInstance")
+    public ICodeGenerator CodeGeneratorApiAdviceInstance() {
+        log.info("CodeGeneratorApiAdviceInstance :: has started successfully");
+        return new CodeGeneratorApiControllerAdvice();
+    }
     @Bean("CodeGeneratorGenericConstantesInstance")
     public ICodeGenerator CodeGeneratorGenericConstantesInstance() {
         log.info("CodeGeneratorGenericConstantesInstance :: has started successfully");

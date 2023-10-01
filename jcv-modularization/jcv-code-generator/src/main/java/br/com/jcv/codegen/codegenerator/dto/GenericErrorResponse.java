@@ -1,0 +1,46 @@
+package br.com.jcv.codegen.codegenerator.dto;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+public class GenericErrorResponse<Type> {
+    private final Integer statusCode;
+    private final String message;
+    private final List<Map<String, ? extends Serializable>> stackTraceList;
+    private final Type errors;
+    private final String msgcode;
+
+    public GenericErrorResponse(
+            Integer statusCode,
+            String message,
+            List<Map<String, ? extends Serializable>> stackTraceList,
+            Type errors,
+            String msgcode
+    ) {
+        this.statusCode = statusCode;
+        this.message = message;
+        this.stackTraceList = stackTraceList;
+        this.errors = errors;
+        this.msgcode = msgcode;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public List<Map<String, ? extends Serializable>> getStackTraceList() {
+        return Collections.unmodifiableList(stackTraceList);
+    }
+
+    public Type getErrors() {
+        return errors;
+    }
+
+    public String getMsgcode() { return msgcode; }
+}
