@@ -9,14 +9,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Locale;
+
 @SpringBootApplication
 public class JcvCodeGeneratorApplication {
 
 	@Bean
-	public CommandLineRunner init(@Autowired @Qualifier("CodeGeneratorBusinessService")ICodeGenerator generator) {
+	public CommandLineRunner init(
+			@Autowired @Qualifier("CodeGeneratorHeadQuarterInstance") ICodeGenerator generatorHeadQuarter) {
 		return args -> {
-			generator.generate(Usuario.class);
-//			generator.generate(User.class);
+			generatorHeadQuarter.generate(Usuario.class);
 		};
 	}
 	public static void main(String[] args) {

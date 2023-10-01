@@ -4,10 +4,15 @@ import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.factory.codegen.AbstractCodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-public class CodeGeneratorBusinessService extends AbstractCodeGenerator implements ICodeGenerator {
+public class CodeGeneratorHeadQuarter extends AbstractCodeGenerator implements ICodeGenerator {
+
+    @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance")ICodeGenerator generatorBusinessService;
+    @Autowired @Qualifier("CodeGeneratorRequestFilterInstance") ICodeGenerator generatorRequestFilter;
 
     private static final String TEMPLATE = "static/businessService.template";
     @Override
@@ -15,11 +20,9 @@ public class CodeGeneratorBusinessService extends AbstractCodeGenerator implemen
         StringBuffer sbCode = new StringBuffer();
         log.info("generate :: is reading {} attributes", inputClassModel.getClass().hashCode());
 
-        CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
-        readTemplate(TEMPLATE, sbCode, codegen);
-        writeCode(sbCode,codegen, "/service/BusinessService","java");
+        generatorBusinessService.generate(inputClassModel);
+        generatorRequestFilter.generate(inputClassModel);
 
-        log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");
         return sbCode;
     }

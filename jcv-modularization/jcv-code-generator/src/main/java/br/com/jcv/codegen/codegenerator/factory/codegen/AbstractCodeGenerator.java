@@ -63,7 +63,7 @@ public abstract class AbstractCodeGenerator {
         }
     }
     protected void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
-        String OutputFilename = codegen.getOutputDir() + codegen.getBaseClass() + filename + "." + extension;
+        String OutputFilename = codegen.getOutputDir() + filename + "." + extension;
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(OutputFilename);
