@@ -1,0 +1,60 @@
+package ${package}.repository;
+
+import java.util.List;
+import ${package}.model.${classebase};
+import ${package}.constantes.${classebase}Constantes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.Date;
+
+
+/**
+*
+* ${classebase}Repository - Interface dos métodos de acesso aos dados da tabela ${schemap}${tabela}
+* Camada de dados ${classebase} - camada responsável SOMENTE pela acesso aos dados do sistema.
+* Não é uma camada visível para outros dispositivos, como as camadas de apresentação e aplicação.
+*
+* Changelog:
+*
+* @autor ${autor}
+* @since ${agora}
+*
+*/
+@Repository
+public interface ${classebase}Repository extends JpaRepository<${classebase}, Long>
+{
+    @Query(value = "SELECT * FROM ${schemap}${tabela} WHERE  IN_STATUS = :status", nativeQuery = true)
+    List<${classebase}> findAllByStatus(@Param(${classebase}Constantes.STATUS) String status);
+
+@Query(value = "SELECT * FROM ${schemap}${tabela} WHERE 1=1 " +
+#include static/inc/find-by-filter-select.inc
+        , nativeQuery = true)
+Page<${classebase}> find${classebase}ByFilter(
+#include static/inc/find-by-filter-parameter.inc
+        Pageable pageable);
+
+@Query(value = "SELECT * FROM ${schemap}${tabela} WHERE 1=1 " +
+#include static/inc/find-by-filter-select.inc
+        , nativeQuery = true)
+List<${classebase}> find${classebase}ByFilter(
+#include static/inc/find-by-filter-parameter.inc
+);
+
+#include static/inc/load-maxid-by-status.inc
+
+#include static/inc/update-field-by-id.inc
+
+#include static/inc/count-by-field-and-status.inc
+
+#include static/inc/find-by-field-and-status.inc
+
+#include static/inc/find-all-by-field-and-status.inc
+
+#include static/inc/delete-by-field.inc
+}

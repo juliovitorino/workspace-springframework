@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CodeGeneratorBusinessService extends AbstractCodeGenerator implements ICodeGeneratorIndividual {
+public class CodeGeneratorDtoPadrao extends AbstractCodeGenerator implements ICodeGeneratorIndividual {
 
-    private static final String TEMPLATE = "static/businessService.template";
+    private static final String TEMPLATE = "static/dto-padrao.template";
     @Override
     public <Input> WritableCode generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
@@ -22,8 +22,8 @@ public class CodeGeneratorBusinessService extends AbstractCodeGenerator implemen
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
-                TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),
-                TARGET_EXTENSION_JAVA);
+                TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath()
+                ,TARGET_EXTENSION_JAVA);
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");
@@ -31,3 +31,4 @@ public class CodeGeneratorBusinessService extends AbstractCodeGenerator implemen
     }
 
 }
+

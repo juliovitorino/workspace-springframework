@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,26 +32,22 @@ public abstract class AbstractCodeGenerator {
     @Autowired protected Gson gson;
     @Autowired protected ResourceLoader resourceLoader;
 
-    protected StringBuffer readTemplateModeOne(String template){
-        StringBuffer sb = new StringBuffer();
-        Resource fileTemplateResource = resourceLoader.getResource(template);
-        try {
-            InputStream isFileTemplate = new FileInputStream(fileTemplateResource.getFile());
-            byte[] bdata = FileCopyUtils.copyToByteArray(isFileTemplate);
-            sb.append(new String(bdata));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return sb;
-    }
     protected void readTemplate(String template, StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO){
         Resource fileTemplateResource = resourceLoader.getResource("classpath:" + template);
         try {
             Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
             while( scannerFileTemplate.hasNextLine()) {
-                String line = changeTagsUsing(scannerFileTemplate.nextLine(),codeGeneratorDTO);
-                sb.append(line);
+                final String line = scannerFileTemplate.nextLine();
+                final StringBuffer sbInclude = checkForIncludeLines(line);
+                if (sbInclude == null) {
+                    String lineChanged = changeTagsUsing(line,codeGeneratorDTO);
+                    sb.append(lineChanged);
+                } else {
+                    for(FieldDescriptor fieldItem: codeGeneratorDTO.getFieldDescriptorList()) {
+                        String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO, fieldItem);
+                        sb.append(includeBlock);
+                    }
+                }
                 sb.append(System.getProperty("line.separator"));
             }
             scannerFileTemplate.close();
@@ -58,20 +55,22 @@ public abstract class AbstractCodeGenerator {
             throw new RuntimeException(e);
         }
     }
-//    protected void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
-//        String OutputFilename = codegen.getOutputDir() + filename + "." + extension;
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(OutputFilename);
-//            DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
-//            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
-//            outStream.close();
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e){
-//            throw new RuntimeException(e);
-//        }
-//    }
+
+    protected StringBuffer readFile(String filePath) {
+        StringBuffer sb = new StringBuffer();
+        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + filePath);
+        try {
+            Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
+            while( scannerFileTemplate.hasNextLine()) {
+                sb.append(scannerFileTemplate.nextLine());
+                sb.append(System.getProperty("line.separator"));
+            }
+            scannerFileTemplate.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sb;
+    }
 
     protected String fullClassNameToSingle(String fullClassName) {
         return fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
@@ -112,13 +111,97 @@ public abstract class AbstractCodeGenerator {
     }
 
     private String changeTagsUsing(String content, CodeGeneratorDTO codegen) {
-        String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass())
-                .replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage())
-                .replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+//        String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass())
+//                .replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage())
+//                .replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+        return changeTagsUsing(content,codegen, null);
+    }
+
+    private String changeTagsUsing(String content, CodeGeneratorDTO codegen, FieldDescriptor field) {
+        log.info("changeTagsUsing :: field in working => {}", gson.toJson(field));
+        log.info("changeTagsUsing :: content => {}", content);
+        final String schemap = codegen.getSchema() != null && !codegen.getSchema().isEmpty()
+                ? codegen.getSchema().concat(".")
+                : ""  ;
+        final FieldDescriptor fieldPK = codegen.getFieldDescriptorList()
+                .stream()
+                .filter(FieldDescriptor::isPrimaryKey)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("changeTagsUsing :: There is no Primary Key definded in Model " + codegen.getBaseClass()));
+        log.info("changeTagsUsing :: PK => {}", gson.toJson(fieldPK));
+
+        String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+        newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.AUTOR.getTag(), codegen.getBaseClass());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.NOW.getTag(), Calendar.getInstance().getTime().toString());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.AGORA.getTag(), Calendar.getInstance().getTime().toString());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.TABELA.getTag(), codegen.getTableName());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.TABLE.getTag(), codegen.getTableName());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMAP.getTag(), schemap);
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMA.getTag(), codegen.getSchema());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.PK.getTag(), fieldPK.getFieldTableName());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.PKDTO.getTag(), fieldPK.getFieldReferenceInDto());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+//        log.info("changeTagsUsing :: newContent => {}", newContent);
+        if(field != null) {
+            newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.AUTOR.getTag(), codegen.getBaseClass());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.NOW.getTag(), Calendar.getInstance().getTime().toString());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.AGORA.getTag(), Calendar.getInstance().getTime().toString());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMAP.getTag(), schemap);
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMA.getTag(), codegen.getSchema());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.TABELA.getTag(), codegen.getTableName());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.TABLE.getTag(), codegen.getTableName());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO.getTag(), field.getFieldTableName());
+//            log.info("changeTagsUsing :: {} => {}", CodeGeneratorTags.CAMPO.getTag(), field.getFieldTableName());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.FIELD.getTag(), field.getFieldTableName());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.TYPE.getTag(), field.getFieldType());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.ADTO.getTag(), capitalize(field.getFieldReferenceInDto()));
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.UDTO.getTag(), field.getFieldReferenceInDto().toUpperCase());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.CCDTO.getTag(), camelCase(field.getFieldReferenceInDto()));
+//            log.info("changeTagsUsing :: {} => {}", CodeGeneratorTags.CCDTO.getTag(), camelCase(field.getFieldReferenceInDto()));
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+            newContent = newContent.replaceAll(CodeGeneratorTags.DTO.getTag(), field.getFieldReferenceInDto());
+//            log.info("changeTagsUsing :: {} => {}", CodeGeneratorTags.DTO.getTag(), field.getFieldReferenceInDto());
+//            log.info("changeTagsUsing :: newContent => {}", newContent);
+        }
         return newContent;
     }
 
-
+    private String camelCase(String field) {
+        return field.toUpperCase();
+    }
     private String getContent(String content, String defaultContent) {
         return content.isBlank()
                 ? defaultContent
@@ -128,6 +211,10 @@ public abstract class AbstractCodeGenerator {
     private <T> List<FieldDescriptor> processCodeGeneratorFieldDescriptorAnnotation(Class<T> inputClassModel) {
         Field[] fields = inputClassModel.getDeclaredFields();
         log.info("prepareCodeGeneratorFromModel :: Input class has {} Declared Fields", fields.length);
+
+        if(!checkFieldsStatusDateCreatedDateUpdated(fields)) {
+            throw new RuntimeException("Fields [status, dateCreated and dateUpdated] must be in " + inputClassModel.getName());
+        }
 
         List<FieldDescriptor> fieldDescriptorList = new ArrayList<>();
         for( Field fieldItem : fields) {
@@ -140,6 +227,40 @@ public abstract class AbstractCodeGenerator {
             }
         }
         return fieldDescriptorList;
+    }
+
+    private String capitalize(String content) {
+        if(content.isEmpty()) return content;
+        return content.substring(0,1).toUpperCase().concat(content.substring(1));
+    }
+
+    private boolean checkFieldsStatusDateCreatedDateUpdated(Field[] fields) {
+        boolean hasStatus = false;
+        boolean hasDateCreated = false;
+        boolean hasDateUpdated = false;
+        for(Field fieldItem: fields) {
+            if(fieldItem.getName().equals("status")) {
+                hasStatus = true;
+            }
+            if(fieldItem.getName().equals("dateCreated")) {
+                hasDateCreated = true;
+            }
+            if(fieldItem.getName().equals("dateUpdated")) {
+                hasDateUpdated = true;
+            }
+        }
+        return hasStatus && hasDateCreated && hasDateUpdated;
+    }
+
+    private StringBuffer checkForIncludeLines(String line) {
+        final String INCLUDE = "#include ";
+        int posInclude = line.indexOf(INCLUDE);
+        if(posInclude == 0) {
+            final String includeFile = line.substring(INCLUDE.length());
+            log.info("checkForIncludeLines :: get include lines at -> {}", includeFile);
+            return readFile(includeFile);
+        }
+        return null;
     }
 
     private static FieldDescriptor getFieldDescriptor(Field fieldItem, CodeGeneratorFieldDescriptor codeGeneratorFieldDescriptor) {
@@ -166,6 +287,8 @@ public abstract class AbstractCodeGenerator {
                     ? columnAnnotation.name()
                     : fieldItem.getName()
             );
+        } else {
+            throw new RuntimeException("field " + fieldItem.getName() + " hasn't been annoteded with @Column");
         }
 
         Id idAnnotation = fieldItem.getAnnotation(Id.class);

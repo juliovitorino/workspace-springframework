@@ -1,0 +1,15 @@
+package ${package}.constantes;
+
+/**
+* ${classebase}Constantes - Constantes para geral das Entity e DTO
+*
+* @author ${autor}
+* @since ${agora}
+* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
+*/
+
+public class ${classebase}Constantes
+{
+
+#include static/inc/public-static-final-string.inc
+}

@@ -7,13 +7,30 @@ import java.util.Arrays;
 @Getter
 public enum CodeGeneratorTags {
 
+    FIELD("\\$\\{field\\}"),
+    CAMPO("\\$\\{campo\\}"),
+    TABLE("\\$\\{table\\}"),
+    TABELA("\\$\\{tabela\\}"),
+    PKDTO("\\$\\{pkdto\\}"),
+    PK("\\$\\{pk\\}"),
+    SCHEMAP("\\$\\{schemap\\}"),
+    SCHEMA("\\$\\{schema\\}"),
+    TYPE("\\$\\{tipodart\\}"),
+    ADTO("\\$\\{Adto\\}"),
+    UDTO("\\$\\{Udto\\}"),
+    CCDTO("\\$\\{CCdto\\}"),
+    DTO("\\$\\{dto\\}"),
+    AUTHOR("\\$\\{author\\}"),
+    AUTOR("\\$\\{autor\\}"),
+    NOW("\\$\\{now\\}"),
+    AGORA("\\$\\{agora\\}"),
     BASE_PACKAGE("\\$\\{package\\}"),
     BASE_CLASS("\\$\\{classebase\\}"),
     BASE_CLASS_LOWER("\\$\\{lclassebase\\}")
     ;
 
     private String tag;
-    public static final CodeGeneratorTags VALUES[] = values();
+    public static final CodeGeneratorTags[] VALUES = values();
 
     CodeGeneratorTags(String tag) {
         this.tag = tag;

@@ -21,7 +21,6 @@ public class CodeGeneratorAnalyserException extends AbstractCodeGenerator implem
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-//        writeCode(sbCode,codegen, "/exception/AnalyserException","java");
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
                 TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath()
                 ,TARGET_EXTENSION_JAVA);

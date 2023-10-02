@@ -3,6 +3,7 @@ package br.com.jcv.codegen.codegenerator.factory.codegen.java;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.TargetFileCodeInfo;
 import br.com.jcv.codegen.codegenerator.dto.WritableCode;
+import br.com.jcv.codegen.codegenerator.enums.CodeGeneratorTags;
 import br.com.jcv.codegen.codegenerator.enums.TargetFileEnum;
 import br.com.jcv.codegen.codegenerator.factory.codegen.AbstractCodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CodeGeneratorBusinessService extends AbstractCodeGenerator implements ICodeGeneratorIndividual {
+public class CodeGeneratorDto extends AbstractCodeGenerator implements ICodeGeneratorIndividual {
 
-    private static final String TEMPLATE = "static/businessService.template";
+    private static final String TEMPLATE = "static/dto.template";
     @Override
     public <Input> WritableCode generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
@@ -21,8 +22,9 @@ public class CodeGeneratorBusinessService extends AbstractCodeGenerator implemen
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
+        String filePath = TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath();
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
-                TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),
+                filePath.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass()),
                 TARGET_EXTENSION_JAVA);
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
@@ -31,3 +33,5 @@ public class CodeGeneratorBusinessService extends AbstractCodeGenerator implemen
     }
 
 }
+
+

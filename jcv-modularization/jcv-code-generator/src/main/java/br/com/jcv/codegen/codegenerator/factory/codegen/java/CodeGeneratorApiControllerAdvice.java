@@ -21,7 +21,6 @@ public class CodeGeneratorApiControllerAdvice extends AbstractCodeGenerator impl
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-//        writeCode(sbCode,codegen, "/controller/Api" + codegen.getBaseClass() + "ControllerAdvice","java");
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
                 "/controller/Api" + codegen.getBaseClass() + "ControllerAdvice"
                 ,TARGET_EXTENSION_JAVA);

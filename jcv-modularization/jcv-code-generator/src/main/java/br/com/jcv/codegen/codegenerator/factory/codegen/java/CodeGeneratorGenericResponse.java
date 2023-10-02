@@ -21,7 +21,6 @@ public class CodeGeneratorGenericResponse extends AbstractCodeGenerator implemen
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-//        writeCode(sbCode,codegen, "/dto/GenericErrorResponse","java");
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
                 TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),
                 TARGET_EXTENSION_JAVA);

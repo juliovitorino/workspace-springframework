@@ -41,6 +41,10 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Autowired @Qualifier("CodeGeneratorGenericResponseInstance") ICodeGeneratorIndividual generatorGenericResponse;
     @Autowired @Qualifier("CodeGeneratorGenericStatusEnumInstance") ICodeGeneratorIndividual generatorGenericStatusEnum;
     @Autowired @Qualifier("CodeGeneratorSwaggerConfigInstance") ICodeGeneratorIndividual generatorSwaggerConfig;
+    @Autowired @Qualifier("CodeGeneratorConstantesInstance") ICodeGeneratorIndividual generatorConstantes;
+    @Autowired @Qualifier("CodeGeneratorDtoPadraoInstance") ICodeGeneratorIndividual generatorDtoPadrao;
+    @Autowired @Qualifier("CodeGeneratorDtoInstance") ICodeGeneratorIndividual generatorDto;
+    @Autowired @Qualifier("CodeGeneratorRepositoryInstance") ICodeGeneratorIndividual generatorRepository;
 
     @Override
     public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
@@ -64,6 +68,10 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         codeInBatch.add(generatorApiAdvice.generate(inputClassModel));
         codeInBatch.add(generatorGenericResponse.generate(inputClassModel));
         codeInBatch.add(generatorGenericStatusEnum.generate(inputClassModel));
+        codeInBatch.add(generatorConstantes.generate(inputClassModel));
+        codeInBatch.add(generatorDtoPadrao.generate(inputClassModel));
+        codeInBatch.add(generatorDto.generate(inputClassModel));
+        codeInBatch.add(generatorRepository.generate(inputClassModel));
         //generatorSwaggerConfig.generate(inputClassModel);  // Verificar as dependencias
 
         log.info("generate :: has been executed");

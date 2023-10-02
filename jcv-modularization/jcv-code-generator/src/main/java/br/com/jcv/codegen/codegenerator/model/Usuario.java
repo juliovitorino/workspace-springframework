@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_user")
@@ -18,7 +19,7 @@ fullDescription = "Manipular todos as informações de usuários")
 public class Usuario {
 
     @Id
-    @Column
+    @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Chave primaria de Usuario")
     private Long id;
@@ -28,6 +29,23 @@ public class Usuario {
     private String nome;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Idade do usuário")
+    @Column
     private Long idade;
+
+
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Status da entidade: (P)endende; (A)tivo; (B)loqueado; (D)eletado")
+    @Column(length = 1)
+    private String status;
+
+
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Idade do usuário")
+    @Column
+    private Date dateCreated;
+
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Idade do usuário")
+    @Column
+    private Date dateUpdated;
+
+
 
 }

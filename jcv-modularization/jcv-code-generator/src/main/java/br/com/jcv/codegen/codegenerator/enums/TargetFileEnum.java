@@ -8,15 +8,19 @@ import java.util.Arrays;
 
 @Getter
 public enum TargetFileEnum {
+    CodeGeneratorRepository("CodeGeneratorRepository", "/repository/${classebase}Repository"),
     CodeGeneratorAbstractAnalyser("CodeGeneratorAbstractAnalyser", "/analyser/AbstractAnalyser"),
     CodeGeneratorAnalyserCPF("CodeGeneratorAnalyserCPF","/analyser/AnalyserCPF"),
     CodeGeneratorInvalidFormatException("CodeGeneratorInvalidFormatException", "/exception/InvalidFormatException"),
     CodeGeneratorNotFoundException("CodeGeneratorNotFoundException", "/exception/${classebase}NotFoundException"),
+    CodeGeneratorDto("CodeGeneratorDto", "/dto/${classebase}DTO"),
+    CodeGeneratorConstantes("CodeGeneratorConstantes", "/constantes/${classebase}Constantes"),
     CodeGeneratorAnalyserException("CodeGeneratorAnalyserException", "/exception/AnalyserException"),
     CodeGeneratorBusinessService("CodeGeneratorBusinessService" ,"/interfaces/BusinessService"),
     CodeGeneratorCommoditiesBaseException("CodeGeneratorCommoditiesBaseException", "/exception/CommoditieBaseException"),
     CodeGeneratorGenericConstantes("CodeGeneratorGenericConstantes", "/constantes/GenericConstantes"),
     CodeGeneratorGenericResponse("CodeGeneratorGenericResponse","/dto/GenericErrorResponse"),
+    CodeGeneratorDtoPadrao("CodeGeneratorDtoPadrao","/dto/DTOPadrao"),
     CodeGeneratorGenericStatusEnum("CodeGeneratorGenericStatusEnum" ,"/enums/GenericStatusEnums"),
     CodeGeneratorIAnalyser("CodeGeneratorIAnalyser" ,"/analyser/IAnalyser"),
     CodeGeneratorLogback("CodeGeneratorLogback","/dto/logback"),
@@ -37,7 +41,8 @@ public enum TargetFileEnum {
     }
 
     public static TargetFileEnum fromCodeGeneratorClass(String codeGeneratorClass) {
-        return Arrays.stream(VALUES).filter(enumItem -> enumItem.codeGeneratorClass.trim().equals(codeGeneratorClass)).findFirst().orElse(null);
+        return Arrays.stream(VALUES).filter(enumItem -> enumItem.codeGeneratorClass.trim().equals(codeGeneratorClass))
+                .findFirst().orElseThrow(()-> new RuntimeException("codeGeneratorClass not found => " + codeGeneratorClass));
     }
 
 }

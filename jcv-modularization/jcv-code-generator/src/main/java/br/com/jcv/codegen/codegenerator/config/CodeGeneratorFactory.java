@@ -8,6 +8,9 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorApiCon
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorConstantes;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorDto;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorDtoPadrao;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericResponse;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericStatusEnum;
@@ -19,11 +22,15 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensag
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemResponse;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorNotFoundException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRegexConstantes;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRepository;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static br.com.jcv.codegen.codegenerator.enums.TargetFileEnum.CodeGeneratorDto;
 
 @Configuration
 @Slf4j
@@ -33,6 +40,26 @@ public class CodeGeneratorFactory {
     public ICodeGeneratorIndividual CodeGeneratorSwaggerConfigInstance() {
         log.info("CodeGeneratorSwaggerConfigInstance :: has started successfully");
         return new CodeGeneratorSwaggerConfig();
+    }
+    @Bean("CodeGeneratorRepositoryInstance")
+    public ICodeGeneratorIndividual CodeGeneratorRepositoryInstance() {
+        log.info("CodeGeneratorRepositoryInstance :: has started successfully");
+        return new CodeGeneratorRepository();
+    }
+    @Bean("CodeGeneratorDtoPadraoInstance")
+    public ICodeGeneratorIndividual CodeGeneratorDtoPadraoInstance() {
+        log.info("CodeGeneratorDtoPadraoInstance :: has started successfully");
+        return new CodeGeneratorDtoPadrao();
+    }
+    @Bean("CodeGeneratorDtoInstance")
+    public ICodeGeneratorIndividual CodeGeneratorDtoInstance() {
+        log.info("CodeGeneratorDtoInstance :: has started successfully");
+        return new CodeGeneratorDto();
+    }
+    @Bean("CodeGeneratorConstantesInstance")
+    public ICodeGeneratorIndividual CodeGeneratorConstantesInstance() {
+        log.info("CodeGeneratorConstantesInstance :: has started successfully");
+        return new CodeGeneratorConstantes();
     }
     @Bean("CodeGeneratorGenericStatusEnumInstance")
     public ICodeGeneratorIndividual CodeGeneratorGenericStatusEnumInstance() {
