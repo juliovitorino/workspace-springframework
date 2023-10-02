@@ -11,6 +11,7 @@ public enum TargetFileEnum {
     CodeGeneratorAbstractAnalyser("CodeGeneratorAbstractAnalyser", "/analyser/AbstractAnalyser"),
     CodeGeneratorAnalyserCPF("CodeGeneratorAnalyserCPF","/analyser/AnalyserCPF"),
     CodeGeneratorInvalidFormatException("CodeGeneratorInvalidFormatException", "/exception/InvalidFormatException"),
+    CodeGeneratorNotFoundException("CodeGeneratorNotFoundException", "/exception/${classebase}NotFoundException"),
     CodeGeneratorAnalyserException("CodeGeneratorAnalyserException", "/exception/AnalyserException"),
     CodeGeneratorBusinessService("CodeGeneratorBusinessService" ,"/interfaces/BusinessService"),
     CodeGeneratorCommoditiesBaseException("CodeGeneratorCommoditiesBaseException", "/exception/CommoditieBaseException"),

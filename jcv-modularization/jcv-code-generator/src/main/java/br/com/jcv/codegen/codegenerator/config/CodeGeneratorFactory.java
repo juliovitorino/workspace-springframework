@@ -17,6 +17,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorIAnaly
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorLogback;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemResponse;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorNotFoundException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRegexConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
@@ -92,6 +93,11 @@ public class CodeGeneratorFactory {
     public ICodeGeneratorIndividual CodeGeneratorInvalidFormatExceptionInstance() {
         log.info("CodeGeneratorInvalidFormatExceptionInstance :: has started successfully");
         return new CodeGeneratorInvalidFormatException();
+    }
+    @Bean("CodeGeneratorNotFoundExceptionInstance")
+    public ICodeGeneratorIndividual CodeGeneratorNotFoundExceptionInstance() {
+        log.info("CodeGeneratorNotFoundExceptionInstance :: has started successfully");
+        return new CodeGeneratorNotFoundException();
     }
     @Bean("CodeGeneratorIAnalyserInstance")
     public ICodeGeneratorIndividual CodeGeneratorIAnalyserInstance() {

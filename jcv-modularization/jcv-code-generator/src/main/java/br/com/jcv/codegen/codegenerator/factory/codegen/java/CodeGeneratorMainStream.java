@@ -29,6 +29,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Autowired @Qualifier("CodeGeneratorMensagemResponseInstance") ICodeGeneratorIndividual generatorMensagemResponse;
     @Autowired @Qualifier("CodeGeneratorCommoditiesBaseExceptionInstance") ICodeGeneratorIndividual generatorCommoditiesBaseException;
     @Autowired @Qualifier("CodeGeneratorAnalyserExceptionInstance") ICodeGeneratorIndividual generatorAnalyserException;
+    @Autowired @Qualifier("CodeGeneratorNotFoundExceptionInstance") ICodeGeneratorIndividual generatorNotFoundException;
     @Autowired @Qualifier("CodeGeneratorInvalidFormatExceptionInstance") ICodeGeneratorIndividual generatorInvalidFormatException;
     @Autowired @Qualifier("CodeGeneratorIAnalyserInstance") ICodeGeneratorIndividual generatorIAnalyser;
     @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance") ICodeGeneratorIndividual generatorBusinessService;
@@ -51,6 +52,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         codeInBatch.add(generatorLogabck.generate(inputClassModel));
         codeInBatch.add(generatorIAnalyser.generate(inputClassModel));
         codeInBatch.add(generatorAnalyserException.generate(inputClassModel));
+        codeInBatch.add(generatorNotFoundException.generate(inputClassModel));
         codeInBatch.add(generatorInvalidFormatException.generate(inputClassModel));
         codeInBatch.add(generatorCommoditiesBaseException.generate(inputClassModel));
         codeInBatch.add(generatorMensagemResponse.generate(inputClassModel));
