@@ -45,21 +45,21 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         List<WritableCode> codeInBatch = new ArrayList<>();
         log.info("generate :: is reading {} attributes", inputClassModel.getClass().hashCode());
 
-        generatorBusinessService.generate(inputClassModel);
-        generatorRequestFilter.generate(inputClassModel);
-        generatorLogabck.generate(inputClassModel);
-        generatorIAnalyser.generate(inputClassModel);
-        generatorAnalyserException.generate(inputClassModel);
-        generatorCommoditiesBaseException.generate(inputClassModel);
-        generatorMensagemResponse.generate(inputClassModel);
-        generatorMensagemConstantes.generate(inputClassModel);
-        generatorAbstractAnalyser.generate(inputClassModel);
-        generatorAnalyserCpf.generate(inputClassModel);
-        generatorRegexConstantes.generate(inputClassModel);
-        generatorGenericConstantes.generate(inputClassModel);
-        generatorApiAdvice.generate(inputClassModel);
-        generatorGenericResponse.generate(inputClassModel);
-        generatorGenericStatusEnum.generate(inputClassModel);
+        codeInBatch.add(generatorBusinessService.generate(inputClassModel));
+        codeInBatch.add(generatorRequestFilter.generate(inputClassModel));
+        codeInBatch.add(generatorLogabck.generate(inputClassModel));
+        codeInBatch.add(generatorIAnalyser.generate(inputClassModel));
+        codeInBatch.add(generatorAnalyserException.generate(inputClassModel));
+        codeInBatch.add(generatorCommoditiesBaseException.generate(inputClassModel));
+        codeInBatch.add(generatorMensagemResponse.generate(inputClassModel));
+        codeInBatch.add(generatorMensagemConstantes.generate(inputClassModel));
+        codeInBatch.add(generatorAbstractAnalyser.generate(inputClassModel));
+        codeInBatch.add(generatorAnalyserCpf.generate(inputClassModel));
+        codeInBatch.add(generatorRegexConstantes.generate(inputClassModel));
+        codeInBatch.add(generatorGenericConstantes.generate(inputClassModel));
+        codeInBatch.add(generatorApiAdvice.generate(inputClassModel));
+        codeInBatch.add(generatorGenericResponse.generate(inputClassModel));
+        codeInBatch.add(generatorGenericStatusEnum.generate(inputClassModel));
         //generatorSwaggerConfig.generate(inputClassModel);  // Verificar as dependencias
 
         log.info("generate :: has been executed");
@@ -69,6 +69,10 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Override
     public void flushCode(List<WritableCode> codes) {
         for(WritableCode writableCode: codes) {
+            log.info("flushCode :: is flushing source code -> {}.{}",
+                    writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                    writableCode.getTargetFileCodeInfo().getTargetExtension());
+
             writeCode(writableCode.getSourceCode(),
                     writableCode.getCodeGenerator(),
                     writableCode.getTargetFileCodeInfo().getTargetPathFile(),

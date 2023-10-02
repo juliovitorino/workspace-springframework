@@ -10,21 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.util.FileCopyUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -79,6 +73,9 @@ public abstract class AbstractCodeGenerator {
 //        }
 //    }
 
+    protected String fullClassNameToSingle(String fullClassName) {
+        return fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+    }
     protected <Input> CodeGeneratorDTO prepareCodeGeneratorFromModel(Class<Input> inputClassModel) {
 
         CodeGeneratorDTO codegen = new CodeGeneratorDTO();

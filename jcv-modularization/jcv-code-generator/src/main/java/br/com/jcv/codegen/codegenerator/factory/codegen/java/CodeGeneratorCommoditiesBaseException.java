@@ -23,7 +23,7 @@ public class CodeGeneratorCommoditiesBaseException extends AbstractCodeGenerator
         readTemplate(TEMPLATE, sbCode, codegen);
 //        writeCode(sbCode,codegen, "/exception/CommoditieBaseException","java");
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
-                TargetFileEnum.fromCodeGeneratorClass(this.getClass().getName()).getTargetFilePath(),
+                TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),
                 TARGET_EXTENSION_JAVA);
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));

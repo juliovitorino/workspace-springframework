@@ -11,7 +11,7 @@ public enum TargetFileEnum {
     CodeGeneratorAbstractAnalyser("CodeGeneratorAbstractAnalyser", "/analyser/AbstractAnalyser"),
     CodeGeneratorAnalyserCPF("CodeGeneratorAnalyserCPF","/analyser/AnalyserCPF"),
     CodeGeneratorAnalyserException("CodeGeneratorAnalyserException", "/exception/AnalyserException"),
-    CodeGeneratorBusinessService("CodeGeneratorBusinessService " ,"/interfaces/BusinessService"),
+    CodeGeneratorBusinessService("CodeGeneratorBusinessService" ,"/interfaces/BusinessService"),
     CodeGeneratorCommoditiesBaseException("CodeGeneratorCommoditiesBaseException", "/exception/CommoditieBaseException"),
     CodeGeneratorGenericConstantes("CodeGeneratorGenericConstantes", "/constantes/GenericConstantes"),
     CodeGeneratorGenericResponse("CodeGeneratorGenericResponse","/dto/GenericErrorResponse"),
@@ -35,7 +35,7 @@ public enum TargetFileEnum {
     }
 
     public static TargetFileEnum fromCodeGeneratorClass(String codeGeneratorClass) {
-        return Arrays.stream(VALUES).filter(enumItem -> enumItem.codeGeneratorClass.equals(codeGeneratorClass)).findFirst().orElse(null);
+        return Arrays.stream(VALUES).filter(enumItem -> enumItem.codeGeneratorClass.trim().equals(codeGeneratorClass)).findFirst().orElse(null);
     }
 
 }

@@ -20,6 +20,7 @@ public class JcvCodeGeneratorApplication {
 			@Autowired @Qualifier("CodeGeneratorMainStreamInstance") ICodeGeneratorBatch generatorMainStream) {
 		return args -> {
 			List<WritableCode> codes = generatorMainStream.generate(Usuario.class);
+			generatorMainStream.flushCode(codes);
 		};
 	}
 	public static void main(String[] args) {

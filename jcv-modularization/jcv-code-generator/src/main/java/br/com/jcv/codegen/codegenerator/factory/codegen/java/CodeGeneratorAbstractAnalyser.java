@@ -21,7 +21,7 @@ public class CodeGeneratorAbstractAnalyser extends AbstractCodeGenerator impleme
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-        TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(TargetFileEnum.fromCodeGeneratorClass(this.getClass().getName()).getTargetFilePath(),TARGET_EXTENSION_JAVA);
+        TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),TARGET_EXTENSION_JAVA);
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");

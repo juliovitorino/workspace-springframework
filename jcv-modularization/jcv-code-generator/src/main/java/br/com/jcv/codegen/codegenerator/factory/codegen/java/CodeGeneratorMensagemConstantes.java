@@ -23,7 +23,7 @@ public class CodeGeneratorMensagemConstantes extends AbstractCodeGenerator imple
         readTemplate(TEMPLATE, sbCode, codegen);
 //        writeCode(sbCode,codegen, "/dto/MensagemConstantes","java");
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
-                TargetFileEnum.fromCodeGeneratorClass(this.getClass().getName()).getTargetFilePath(),
+                TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),
                 TARGET_EXTENSION_JAVA);
 
         log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
