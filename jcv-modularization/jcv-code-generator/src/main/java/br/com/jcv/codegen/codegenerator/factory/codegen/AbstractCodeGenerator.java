@@ -31,7 +31,8 @@ import java.util.Scanner;
 
 @Slf4j
 public abstract class AbstractCodeGenerator {
-
+    public static final String TARGET_EXTENSION_JAVA = "java";
+    public static final String TARGET_EXTENSION_XML = "xml";
     private String basePackage;
     @Autowired protected Gson gson;
     @Autowired protected ResourceLoader resourceLoader;
@@ -63,20 +64,20 @@ public abstract class AbstractCodeGenerator {
             throw new RuntimeException(e);
         }
     }
-    protected void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
-        String OutputFilename = codegen.getOutputDir() + filename + "." + extension;
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(OutputFilename);
-            DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
-            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
-            outStream.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e){
-            throw new RuntimeException(e);
-        }
-    }
+//    protected void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
+//        String OutputFilename = codegen.getOutputDir() + filename + "." + extension;
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(OutputFilename);
+//            DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
+//            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
+//            outStream.close();
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e){
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     protected <Input> CodeGeneratorDTO prepareCodeGeneratorFromModel(Class<Input> inputClassModel) {
 
