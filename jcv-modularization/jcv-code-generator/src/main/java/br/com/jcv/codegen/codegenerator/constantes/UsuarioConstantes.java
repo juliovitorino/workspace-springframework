@@ -4,7 +4,7 @@ package br.com.jcv.codegen.codegenerator.constantes;
 * UsuarioConstantes - Constantes para geral das Entity e DTO
 *
 * @author Usuario
-* @since Mon Oct 02 16:54:35 BRT 2023
+* @since Mon Oct 02 19:21:57 BRT 2023
 * @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 

@@ -6,6 +6,9 @@ import java.util.Arrays;
 
 @Getter
 public enum GenericStatusEnums {
+    MANUTENCAO("MANUTENCAO", "W"),
+    BLOQUEADO("BLOQUEADO", "B"),
+    PENDENTE("PENDENTE", "P"),
     ATIVO("ATIVO", "A"),
     INATIVO("INATIVO", "I");
 

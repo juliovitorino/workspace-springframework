@@ -23,7 +23,7 @@ import java.util.Date;
 * Changelog:
 *
 * @autor Usuario
-* @since Mon Oct 02 16:54:35 BRT 2023
+* @since Mon Oct 02 17:13:42 BRT 2023
 *
 */
 @Repository
@@ -38,7 +38,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>
         "AND (:idade = '' OR idade = :idade) " +
         "AND (:status = '' OR status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " +
+        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) "
 
         , nativeQuery = true)
 Page<Usuario> findUsuarioByFilter(
@@ -57,7 +57,7 @@ Page<Usuario> findUsuarioByFilter(
         "AND (:idade = '' OR idade = :idade) " +
         "AND (:status = '' OR status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " +
+        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) "
 
         , nativeQuery = true)
 List<Usuario> findUsuarioByFilter(
@@ -66,7 +66,7 @@ List<Usuario> findUsuarioByFilter(
         @Param(UsuarioConstantes.IDADE) Long idade,
         @Param(UsuarioConstantes.STATUS) String status,
         @Param(UsuarioConstantes.DATECREATED) Date dateCreated,
-        @Param(UsuarioConstantes.DATEUPDATED) Date dateUpdated,
+        @Param(UsuarioConstantes.DATEUPDATED) Date dateUpdated
 
 );
 
@@ -76,17 +76,12 @@ List<Usuario> findUsuarioByFilter(
      Long loadMaxIdByNomeAndStatus(String nome, String status);
      @Query(value = "SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE idade = :idade AND IN_STATUS = :status ", nativeQuery = true)
      Long loadMaxIdByIdadeAndStatus(Long idade, String status);
-     @Query(value = "SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE status = :status AND IN_STATUS = :status ", nativeQuery = true)
-     Long loadMaxIdByStatusAndStatus(String status, String status);
      @Query(value = "SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE dateCreated = :dateCreated AND IN_STATUS = :status ", nativeQuery = true)
      Long loadMaxIdByDateCreatedAndStatus(Date dateCreated, String status);
      @Query(value = "SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE dateUpdated = :dateUpdated AND IN_STATUS = :status ", nativeQuery = true)
      Long loadMaxIdByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
-     @Modifying
-     @Query(value = "UPDATE tb_user SET id_usuario = :id, dt_updated = current_timestamp  WHERE id_usuario = :id", nativeQuery = true)
-     void updateIdById(@Param("id") Long id, @Param(UsuarioConstantes.ID) Long id);
      @Modifying
      @Query(value = "UPDATE tb_user SET nome = :nome, dt_updated = current_timestamp  WHERE id_usuario = :id", nativeQuery = true)
      void updateNomeById(@Param("id") Long id, @Param(UsuarioConstantes.NOME) String nome);
@@ -107,7 +102,6 @@ List<Usuario> findUsuarioByFilter(
      long countByIdAndStatus(Long id, String status);
      long countByNomeAndStatus(String nome, String status);
      long countByIdadeAndStatus(Long idade, String status);
-     long countByStatusAndStatus(String status, String status);
      long countByDateCreatedAndStatus(Date dateCreated, String status);
      long countByDateUpdatedAndStatus(Date dateUpdated, String status);
 
@@ -118,8 +112,7 @@ List<Usuario> findUsuarioByFilter(
     Optional<Usuario> findByNomeAndStatus(String nome, String status);
     @Query(value = "SELECT * FROM tb_user WHERE id_usuario = (SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE idade = :idade AND  IN_STATUS = :status) ", nativeQuery = true)
     Optional<Usuario> findByIdadeAndStatus(Long idade, String status);
-    @Query(value = "SELECT * FROM tb_user WHERE id_usuario = (SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE status = :status AND  IN_STATUS = :status) ", nativeQuery = true)
-    Optional<Usuario> findByStatusAndStatus(String status, String status);
+
     @Query(value = "SELECT * FROM tb_user WHERE id_usuario = (SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE dateCreated = :dateCreated AND  IN_STATUS = :status) ", nativeQuery = true)
     Optional<Usuario> findByDateCreatedAndStatus(Date dateCreated, String status);
     @Query(value = "SELECT * FROM tb_user WHERE id_usuario = (SELECT MAX(id_usuario) AS maxid FROM tb_user WHERE dateUpdated = :dateUpdated AND  IN_STATUS = :status) ", nativeQuery = true)
@@ -132,8 +125,7 @@ List<Usuario> findUsuarioByFilter(
      List<Usuario> findAllByNomeAndStatus(String nome, String status);
      @Query(value = "SELECT * FROM tb_user WHERE idade = :idade AND  IN_STATUS = :status ", nativeQuery = true)
      List<Usuario> findAllByIdadeAndStatus(Long idade, String status);
-     @Query(value = "SELECT * FROM tb_user WHERE status = :status AND  IN_STATUS = :status ", nativeQuery = true)
-     List<Usuario> findAllByStatusAndStatus(String status, String status);
+
      @Query(value = "SELECT * FROM tb_user WHERE dateCreated = :dateCreated AND  IN_STATUS = :status ", nativeQuery = true)
      List<Usuario> findAllByDateCreatedAndStatus(Date dateCreated, String status);
      @Query(value = "SELECT * FROM tb_user WHERE dateUpdated = :dateUpdated AND  IN_STATUS = :status ", nativeQuery = true)

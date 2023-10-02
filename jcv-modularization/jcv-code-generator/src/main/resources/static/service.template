@@ -1,0 +1,27 @@
+package ${package}.service;
+
+import ${package}.dto.${classebase}DTO;
+import ${package}.model.${classebase};
+import ${package}.interfaces.CommoditieBaseService;
+import ${package}.dto.RequestFilter;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.Map;
+import java.util.Date;
+
+/**
+* ${classebase}Service - Interface for ${classebase}
+*
+* @author ${autor}
+* @since ${agora}
+* @copyright(c), Julio Vitorino
+*/
+
+public interface ${classebase}Service extends CommoditieBaseService<${classebase}DTO,${classebase}>
+{
+#include static/inc/service-find-by-field-and-status.inc
+#include static/inc/service-all-find-by-field-and-status.inc
+#include static/inc/service-update-field-by-id.inc
+
+}

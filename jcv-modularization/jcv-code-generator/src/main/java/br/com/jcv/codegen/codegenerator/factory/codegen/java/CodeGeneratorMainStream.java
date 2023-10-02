@@ -45,6 +45,9 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Autowired @Qualifier("CodeGeneratorDtoPadraoInstance") ICodeGeneratorIndividual generatorDtoPadrao;
     @Autowired @Qualifier("CodeGeneratorDtoInstance") ICodeGeneratorIndividual generatorDto;
     @Autowired @Qualifier("CodeGeneratorRepositoryInstance") ICodeGeneratorIndividual generatorRepository;
+    @Autowired @Qualifier("CodeGeneratorCommoditieServiceInstance") ICodeGeneratorIndividual generatorCommoditieService;
+    @Autowired @Qualifier("CodeGeneratorServiceInstance") ICodeGeneratorIndividual generatorService;
+    @Autowired @Qualifier("CodeGeneratorServiceImplInstance") ICodeGeneratorIndividual generatorServiceImpl;
 
     @Override
     public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
@@ -71,7 +74,10 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         codeInBatch.add(generatorConstantes.generate(inputClassModel));
         codeInBatch.add(generatorDtoPadrao.generate(inputClassModel));
         codeInBatch.add(generatorDto.generate(inputClassModel));
-        codeInBatch.add(generatorRepository.generate(inputClassModel));
+        //codeInBatch.add(generatorRepository.generate(inputClassModel));
+        codeInBatch.add(generatorCommoditieService.generate(inputClassModel));
+        //codeInBatch.add(generatorService.generate(inputClassModel));
+        codeInBatch.add(generatorServiceImpl.generate(inputClassModel));
         //generatorSwaggerConfig.generate(inputClassModel);  // Verificar as dependencias
 
         log.info("generate :: has been executed");

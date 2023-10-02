@@ -7,6 +7,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalys
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorApiControllerAdvice;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditieService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorDto;
@@ -24,6 +25,8 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorNotFou
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRegexConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRepository;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorService;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImpl;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.apache.bcel.classfile.Code;
@@ -40,6 +43,21 @@ public class CodeGeneratorFactory {
     public ICodeGeneratorIndividual CodeGeneratorSwaggerConfigInstance() {
         log.info("CodeGeneratorSwaggerConfigInstance :: has started successfully");
         return new CodeGeneratorSwaggerConfig();
+    }
+    @Bean("CodeGeneratorServiceInstance")
+    public ICodeGeneratorIndividual CodeGeneratorServiceInstance() {
+        log.info("CodeGeneratorServiceInstance :: has started successfully");
+        return new CodeGeneratorService();
+    }
+    @Bean("CodeGeneratorServiceImplInstance")
+    public ICodeGeneratorIndividual CodeGeneratorServiceImplInstance() {
+        log.info("CodeGeneratorServiceImplInstance :: has started successfully");
+        return new CodeGeneratorServiceImpl();
+    }
+    @Bean("CodeGeneratorCommoditieServiceInstance")
+    public ICodeGeneratorIndividual CodeGeneratorCommoditieServiceInstance() {
+        log.info("CodeGeneratorCommoditieServiceInstance :: has started successfully");
+        return new CodeGeneratorCommoditieService();
     }
     @Bean("CodeGeneratorRepositoryInstance")
     public ICodeGeneratorIndividual CodeGeneratorRepositoryInstance() {

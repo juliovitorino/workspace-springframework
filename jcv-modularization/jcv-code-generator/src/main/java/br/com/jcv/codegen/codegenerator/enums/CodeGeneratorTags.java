@@ -7,6 +7,8 @@ import java.util.Arrays;
 @Getter
 public enum CodeGeneratorTags {
 
+    PROJECT("\\$\\{project\\}"),
+    PROJETO("\\$\\{projeto\\}"),
     FIELD("\\$\\{field\\}"),
     CAMPO("\\$\\{campo\\}"),
     TABLE("\\$\\{table\\}"),
