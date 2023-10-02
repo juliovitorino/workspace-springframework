@@ -1,7 +1,6 @@
-package br.com.jcv.codegen.codegenerator;
+package br.com.jcv.codegen.codegenerator.enums;
 
 import lombok.Getter;
-import org.aspectj.apache.bcel.classfile.Code;
 
 import java.util.Arrays;
 

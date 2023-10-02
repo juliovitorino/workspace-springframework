@@ -10,6 +10,7 @@ import java.util.Arrays;
 public enum TargetFileEnum {
     CodeGeneratorAbstractAnalyser("CodeGeneratorAbstractAnalyser", "/analyser/AbstractAnalyser"),
     CodeGeneratorAnalyserCPF("CodeGeneratorAnalyserCPF","/analyser/AnalyserCPF"),
+    CodeGeneratorInvalidFormatException("CodeGeneratorInvalidFormatException", "/exception/InvalidFormatException"),
     CodeGeneratorAnalyserException("CodeGeneratorAnalyserException", "/exception/AnalyserException"),
     CodeGeneratorBusinessService("CodeGeneratorBusinessService" ,"/interfaces/BusinessService"),
     CodeGeneratorCommoditiesBaseException("CodeGeneratorCommoditiesBaseException", "/exception/CommoditieBaseException"),
@@ -20,7 +21,7 @@ public enum TargetFileEnum {
     CodeGeneratorLogback("CodeGeneratorLogback","/dto/logback"),
     CodeGeneratorMensagemConstantes("CodeGeneratorMensagemConstantes","/dto/MensagemConstantes"),
     CodeGeneratorMensagemResponse("CodeGeneratorMensagemResponse","/dto/MensagemResponse"),
-    CodeGeneratorRegexConstantes("CodeGeneratorRegexConstantes","/constantes/regexConstantes"),
+    CodeGeneratorRegexConstantes("CodeGeneratorRegexConstantes","/constantes/RegexConstantes"),
     CodeGeneratorRequestFilter("CodeGeneratorRequestFilter","/dto/RequestFilter"),
     CodeGeneratorSwaggerConfig("CodeGeneratorSwaggerConfig","/config/SwaggerConfig")
     ;

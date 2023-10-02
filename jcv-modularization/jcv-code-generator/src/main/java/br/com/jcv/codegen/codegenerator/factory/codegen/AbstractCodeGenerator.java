@@ -1,6 +1,6 @@
 package br.com.jcv.codegen.codegenerator.factory.codegen;
 
-import br.com.jcv.codegen.codegenerator.CodeGeneratorTags;
+import br.com.jcv.codegen.codegenerator.enums.CodeGeneratorTags;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;

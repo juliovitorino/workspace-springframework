@@ -11,6 +11,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommod
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericResponse;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericStatusEnum;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorInvalidFormatException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMainStream;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorIAnalyser;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorLogback;
@@ -86,6 +87,11 @@ public class CodeGeneratorFactory {
     public ICodeGeneratorIndividual CodeGeneratorAnalyserExceptionInstance() {
         log.info("CodeGeneratorAnalyserExceptionInstance :: has started successfully");
         return new CodeGeneratorAnalyserException();
+    }
+    @Bean("CodeGeneratorInvalidFormatExceptionInstance")
+    public ICodeGeneratorIndividual CodeGeneratorInvalidFormatExceptionInstance() {
+        log.info("CodeGeneratorInvalidFormatExceptionInstance :: has started successfully");
+        return new CodeGeneratorInvalidFormatException();
     }
     @Bean("CodeGeneratorIAnalyserInstance")
     public ICodeGeneratorIndividual CodeGeneratorIAnalyserInstance() {
