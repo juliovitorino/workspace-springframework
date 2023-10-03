@@ -44,7 +44,7 @@ import java.util.Date;
 * Changelog:
 *
 * @autor Usuario
-* @since Tue Oct 03 18:59:46 BRT 2023
+* @since Tue Oct 03 19:44:52 BRT 2023
 *
 */
 @Repository
@@ -57,7 +57,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>
         "AND (:id = '' OR id_usuario = :id) " +
         "AND (:nome = '' OR nome = :nome) " +
         "AND (:idade = '' OR idade = :idade) " +
-        "AND (:status = '' OR status = :status) " +
+        "AND (:status = '' OR in_status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
         "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
 
@@ -76,7 +76,7 @@ Page<Usuario> findUsuarioByFilter(Pageable pageable,
         "AND (:id = '' OR id_usuario = :id) " +
         "AND (:nome = '' OR nome = :nome) " +
         "AND (:idade = '' OR idade = :idade) " +
-        "AND (:status = '' OR status = :status) " +
+        "AND (:status = '' OR in_status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
         "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
 
@@ -110,7 +110,7 @@ List<Usuario> findUsuarioByFilter(
      @Query(value = "UPDATE tb_user SET idade = :idade, dt_updated = current_timestamp  WHERE id_usuario = :id", nativeQuery = true)
      void updateIdadeById(@Param("id") Long id, @Param(UsuarioConstantes.IDADE) Long idade);
      @Modifying
-     @Query(value = "UPDATE tb_user SET status = :status, dt_updated = current_timestamp  WHERE id_usuario = :id", nativeQuery = true)
+     @Query(value = "UPDATE tb_user SET in_status = :status, dt_updated = current_timestamp  WHERE id_usuario = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(UsuarioConstantes.STATUS) String status);
      @Modifying
      @Query(value = "UPDATE tb_user SET dateCreated = :dateCreated, dt_updated = current_timestamp  WHERE id_usuario = :id", nativeQuery = true)
@@ -161,7 +161,7 @@ List<Usuario> findUsuarioByFilter(
     @Query(value = "DELETE FROM tb_user WHERE idade = :idade", nativeQuery = true)
     void deleteByIdade(@Param(UsuarioConstantes.IDADE) Long idade);
     @Modifying
-    @Query(value = "DELETE FROM tb_user WHERE status = :status", nativeQuery = true)
+    @Query(value = "DELETE FROM tb_user WHERE in_status = :status", nativeQuery = true)
     void deleteByStatus(@Param(UsuarioConstantes.STATUS) String status);
     @Modifying
     @Query(value = "DELETE FROM tb_user WHERE dateCreated = :dateCreated", nativeQuery = true)

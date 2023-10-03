@@ -35,7 +35,7 @@ import java.util.Date;
 * UsuarioService - Interface for Usuario
 *
 * @author Usuario
-* @since Tue Oct 03 14:14:29 BRT 2023
+* @since Tue Oct 03 19:44:52 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 

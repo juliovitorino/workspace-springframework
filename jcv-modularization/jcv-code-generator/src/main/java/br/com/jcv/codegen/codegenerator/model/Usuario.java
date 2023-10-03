@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @Table(name = "tb_user")
 @CodeGeneratorDescriptor(outputDir = "/Users/juliovitorino/workspaces/workspace-springframework/jcv-modularization/jcv-code-generator/src/main/java/br/com/jcv/codegen/codegenerator",
-        project = "aventura",
+        project = "",
 fullDescription = "Manipular todos as informações de usuários")
 public class Usuario {
 
@@ -36,7 +36,7 @@ public class Usuario {
 
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status da entidade: (P)endende; (A)tivo; (B)loqueado; (D)eletado")
-    @Column(length = 1)
+    @Column(length = 1, name = "in_status")
     private String status;
 
 

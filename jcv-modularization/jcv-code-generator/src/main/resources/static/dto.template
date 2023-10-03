@@ -27,7 +27,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ${classebase}DTO extends DTOPadrao implements Serializable
 {
-#include static/inc/dto.inc
+#include static/inc/dto.inc && excludeFields[id,status,dateCreated,dateUpdated]
 
     @SerializedName("mensagemResponse")
     @JsonProperty("mensagemResponse")

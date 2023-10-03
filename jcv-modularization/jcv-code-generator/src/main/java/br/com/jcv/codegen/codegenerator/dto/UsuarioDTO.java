@@ -32,7 +32,7 @@ import java.util.Date;
 * UsuarioDTO - Data Transfer Object
 *
 * @author Usuario
-* @since Tue Oct 03 14:14:29 BRT 2023
+* @since Tue Oct 03 19:44:52 BRT 2023
 * @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 
@@ -47,10 +47,6 @@ import java.util.Date;
 public class UsuarioDTO extends DTOPadrao implements Serializable
 {
 
-    @SerializedName(UsuarioConstantes.ID)
-    @JsonProperty(UsuarioConstantes.ID)
-    private Long id;
-
     @SerializedName(UsuarioConstantes.NOME)
     @JsonProperty(UsuarioConstantes.NOME)
     private String nome;
@@ -58,18 +54,6 @@ public class UsuarioDTO extends DTOPadrao implements Serializable
     @SerializedName(UsuarioConstantes.IDADE)
     @JsonProperty(UsuarioConstantes.IDADE)
     private Long idade;
-
-    @SerializedName(UsuarioConstantes.STATUS)
-    @JsonProperty(UsuarioConstantes.STATUS)
-    private String status;
-
-    @SerializedName(UsuarioConstantes.DATECREATED)
-    @JsonProperty(UsuarioConstantes.DATECREATED)
-    private Date dateCreated;
-
-    @SerializedName(UsuarioConstantes.DATEUPDATED)
-    @JsonProperty(UsuarioConstantes.DATEUPDATED)
-    private Date dateUpdated;
 
 
     @SerializedName("mensagemResponse")

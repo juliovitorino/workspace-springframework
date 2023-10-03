@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 * UsuarioServiceImpl - Implementation for Usuario interface
 *
 * @author Usuario
-* @since Tue Oct 03 19:03:05 BRT 2023
+* @since Tue Oct 03 19:44:52 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
@@ -62,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService
     @Autowired private UsuarioRepository usuarioRepository;
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
         propagation = Propagation.REQUIRED,
         rollbackFor = Throwable.class,
         noRollbackFor = UsuarioNotFoundException.class
@@ -80,7 +80,7 @@ public class UsuarioServiceImpl implements UsuarioService
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
         propagation = Propagation.REQUIRED,
         rollbackFor = Throwable.class,
         noRollbackFor = UsuarioNotFoundException.class
@@ -98,7 +98,7 @@ public class UsuarioServiceImpl implements UsuarioService
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
         propagation = Propagation.REQUIRED,
         rollbackFor = Throwable.class,
         noRollbackFor = UsuarioNotFoundException.class
@@ -119,7 +119,7 @@ public class UsuarioServiceImpl implements UsuarioService
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
         propagation = Propagation.REQUIRED,
         rollbackFor = Throwable.class,
         noRollbackFor = UsuarioNotFoundException.class
@@ -157,7 +157,7 @@ public class UsuarioServiceImpl implements UsuarioService
 
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
         propagation = Propagation.REQUIRED,
         rollbackFor = Throwable.class,
         noRollbackFor = UsuarioNotFoundException.class
@@ -186,7 +186,7 @@ public class UsuarioServiceImpl implements UsuarioService
     }
 
 @Override
-@Transactional(transactionManager="aventuratransactionManager",
+@Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -233,7 +233,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
 
     @Override
-@Transactional(transactionManager="aventuratransactionManager",
+@Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -270,7 +270,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -279,7 +279,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return usuarioRepository.findAllByIdAndStatus(id, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -288,7 +288,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return usuarioRepository.findAllByNomeAndStatus(nome, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -297,7 +297,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return usuarioRepository.findAllByIdadeAndStatus(idade, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -306,7 +306,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return usuarioRepository.findAllByDateCreatedAndStatus(dateCreated, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -317,7 +317,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -337,7 +337,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -347,7 +347,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -367,7 +367,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -377,7 +377,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -397,7 +397,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -407,7 +407,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -427,7 +427,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -437,7 +437,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
@@ -457,7 +457,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     @Override
-    @Transactional(transactionManager="aventuratransactionManager",
+    @Transactional(transactionManager="transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class,
     noRollbackFor = UsuarioNotFoundException.class
