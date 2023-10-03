@@ -22,8 +22,8 @@ import java.util.Date;
 
 public interface ${classebase}Service extends CommoditieBaseService<${classebase}DTO,${classebase}>
 {
-#include static/inc/service-find-by-field-and-status.inc
-#include static/inc/service-all-find-by-field-and-status.inc
-#include static/inc/service-update-field-by-id.inc
+#include static/inc/service-find-by-field-and-status.inc && excludeFields[status]
+#include static/inc/service-all-find-by-field-and-status.inc && excludeFields[status]
+#include static/inc/service-update-field-by-id.inc && excludeFields[id]
 
 }

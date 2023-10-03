@@ -19,33 +19,26 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package br.com.jcv.codegen.codegenerator.interfaces;
+package br.com.jcv.codegen.codegenerator.config;
 
-import br.com.jcv.codegen.codegenerator.dto.RequestFilter;
-import br.com.jcv.codegen.codegenerator.dto.DTOPadrao;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.List;
-import java.util.Map;
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
 
-/**
-* CommoditieBaseService - Interface for CommoditieBaseService
-*
-* All classes should be implement this class for commodities method
-*
-* @author Usuario
-* @since Tue Oct 03 14:14:29 BRT 2023
-*/
-public interface CommoditieBaseService<DTO extends DTOPadrao, Model> {
-  void delete(Long id);
-  DTO salvar(DTO dto);
-  DTO findById(Long id);
-  boolean partialUpdate(Long id, Map<String, Object> updates);
-  DTO updateStatusById(Long id, String status);
-  List<DTO> findAllByStatus(String status);
-  Map<String, Object> findPageByFilter(RequestFilter filtro);
-  List<DTO> findAllByFilter(RequestFilter filtro);
-  public Model toEntity(DTO dto);
-  public DTO toDTO(Model model);
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+    }
 }

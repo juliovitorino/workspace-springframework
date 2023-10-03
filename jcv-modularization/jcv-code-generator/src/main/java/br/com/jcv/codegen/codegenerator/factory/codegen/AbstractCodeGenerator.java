@@ -5,6 +5,7 @@ import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
+import br.com.jcv.codegen.codegenerator.enums.IncludeExtraCommandEnum;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 @Slf4j
@@ -46,12 +49,26 @@ public abstract class AbstractCodeGenerator {
                     final StringBuffer sbInclude = checkForIncludeLines(line, isIncludeTag ? INCLUDE : INCLUDE_ONCE);
 
                     if(isIncludeOnceTag) {
+                        String[] excludeFields = getExcludeFields(line);
+                        if(excludeFields.length > 0) {
+                            throw new RuntimeException("IncludeExtraCommand " + IncludeExtraCommandEnum.excludeFields.getCommand() + " not allowed for " + line);
+                        }
                         String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO);
                         sb.append(includeBlock);
                     } else {
+                        log.info("readTemplate :: checking out for extra commands = {}", Arrays.toString(IncludeExtraCommandEnum.values()));
+                        String[] excludeFields = getExcludeFields(line);
+                        log.info("readTemplate :: excluded fields are = {}", Arrays.toString(excludeFields));
                         for(FieldDescriptor fieldItem: codeGeneratorDTO.getFieldDescriptorList()) {
-                            String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO, fieldItem);
-                            sb.append(includeBlock);
+                            String fieldExcluded = Arrays.stream(excludeFields)
+                                    .filter(fieldExclude -> fieldExclude.equals(fieldItem.getFieldReferenceInDto()))
+                                    .findFirst()
+                                    .orElse(null);
+                            if(Objects.isNull(fieldExcluded)) {
+                                assert sbInclude != null;
+                                String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO, fieldItem);
+                                sb.append(includeBlock);
+                            }
                         }
                     }
                 } else {
@@ -64,6 +81,15 @@ public abstract class AbstractCodeGenerator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String[] getExcludeFields(String line) {
+        int posExcludeFields = line.indexOf(IncludeExtraCommandEnum.excludeFields.getCommand());
+        if(posExcludeFields > -1) {
+            String extractedFields = line.substring(posExcludeFields + IncludeExtraCommandEnum.excludeFields.getCommand().length(), line.length() -1);
+            return extractedFields.split(",");
+        }
+        return new String[]{};
     }
 
     protected StringBuffer readFile(String filePath) {
@@ -128,8 +154,7 @@ public abstract class AbstractCodeGenerator {
     }
 
     private String changeTagsUsing(String content, CodeGeneratorDTO codegen, FieldDescriptor field) {
-        log.info("changeTagsUsing :: field in working => {}", gson.toJson(field));
-        log.info("changeTagsUsing :: content => {}", content);
+        log.debug("changeTagsUsing :: field in working => {}", gson.toJson(field));
         final String schemap = codegen.getSchema() != null && !codegen.getSchema().isEmpty()
                 ? codegen.getSchema().concat(".")
                 : ""  ;
@@ -138,7 +163,7 @@ public abstract class AbstractCodeGenerator {
                 .filter(FieldDescriptor::isPrimaryKey)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("changeTagsUsing :: There is no Primary Key definded in Model " + codegen.getBaseClass()));
-        log.info("changeTagsUsing :: PK => {}", gson.toJson(fieldPK));
+        log.debug("changeTagsUsing :: PK => {}", gson.toJson(fieldPK));
 
         String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
         newContent = newContent.replaceAll(CodeGeneratorTags.PROJETO.getTag(), codegen.getProject());
@@ -234,7 +259,14 @@ public abstract class AbstractCodeGenerator {
     private StringBuffer checkForIncludeLines(String line, String includeTag) {
         int posInclude = line.indexOf(includeTag);
         if(posInclude == 0) {
-            final String includeFile = line.substring(includeTag.length()).trim();
+            log.info("checkForIncludeLines :: checking out for extra commands");
+            String includeFile;
+            int pos = line.indexOf("&&");
+            if( pos == -1) {
+                includeFile = line.substring(includeTag.length()).trim();
+            } else {
+                includeFile = line.substring(includeTag.length(), pos).trim();
+            }
             log.info("checkForIncludeLines :: get include lines at -> {}", includeFile);
             return readFile(includeFile);
         }

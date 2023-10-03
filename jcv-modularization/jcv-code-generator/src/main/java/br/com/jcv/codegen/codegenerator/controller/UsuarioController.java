@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 * UsuarioController - Controller for Usuario API
 *
 * @author Usuario
-* @since Tue Oct 03 11:43:33 BRT 2023
+* @since Tue Oct 03 14:14:29 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
@@ -311,26 +311,6 @@ public class UsuarioController
     public ResponseEntity<UsuarioDTO> findUsuarioByIdade(@RequestParam(UsuarioConstantes.IDADE) Long idade) {
         try{
             UsuarioDTO usuarioDTO = usuarioService.findUsuarioByIdadeAndStatus(idade, GenericStatusEnums.ATIVO.getShortValue());
-            return Objects.nonNull(usuarioDTO)
-                ? new ResponseEntity<>(usuarioDTO, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (UsuarioNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch(CommoditieBaseException e) {
-            return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
-        } catch(Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo Usuario foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo Usuario foi executado com sucesso"),
-            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
-    })
-    @GetMapping(params = "status")
-    public ResponseEntity<UsuarioDTO> findUsuarioByStatus(@RequestParam(UsuarioConstantes.STATUS) String status) {
-        try{
-            UsuarioDTO usuarioDTO = usuarioService.findUsuarioByStatusAndStatus(status, GenericStatusEnums.ATIVO.getShortValue());
             return Objects.nonNull(usuarioDTO)
                 ? new ResponseEntity<>(usuarioDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

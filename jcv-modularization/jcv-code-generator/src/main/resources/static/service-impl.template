@@ -125,6 +125,10 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         }
         return false;
     }
+        return false;
+    }
+
+
 
 
     @Override
@@ -205,9 +209,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return lst${classebase}.stream().map(m->toDTO(m)).collect(Collectors.toList());
     }
 
-#include static/inc/service-impl-method-findAllModelByFieldAndStatus-list.inc
-#include static/inc/service-impl-method-findModelByFieldAndStatus-list.inc
-#include static/inc/service-impl-method-updateFieldById.inc
+#include static/inc/service-impl-method-findAllModelByFieldAndStatus-list.inc && excludeFields[status]
+#include static/inc/service-impl-method-findModelByFieldAndStatus-list.inc && excludeFields[status]
+#include static/inc/service-impl-method-updateFieldById.inc && excludeFields[id,status]
 
     public ${classebase}DTO toDTO(${classebase} ${lclassebase}) {
         ${classebase}DTO ${lclassebase}DTO = new ${classebase}DTO();

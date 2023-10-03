@@ -75,12 +75,12 @@
             <version>${com.google.code.gson.version}</version>
         </dependency>
 
-        <!-- DEPENDENCIA DO ACTUATOR PARA MMONITORAR MICROSERVICO DE DENTRO DO EURIKA -->
+        <!-- DEPENDENCIA DO ACTUATOR PARA MMONITORAR MICROSERVICO DE DENTRO DO EURIKA
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
+-->
         <!-- DEPENDENCIA DO OPEN API, SWAGGER -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -88,6 +88,17 @@
             <version>${springdoc-openapi-ui.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

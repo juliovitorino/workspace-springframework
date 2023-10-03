@@ -48,15 +48,15 @@ List<${classebase}> find${classebase}ByFilter(
 #include static/inc/find-by-filter-parameter.inc
 );
 
-#include static/inc/load-maxid-by-status.inc
+#include static/inc/load-maxid-by-status.inc && excludeFields[status]
 
-#include static/inc/update-field-by-id.inc
+#include static/inc/update-field-by-id.inc && excludeFields[id]
 
-#include static/inc/count-by-field-and-status.inc
+#include static/inc/count-by-field-and-status.inc && excludeFields[status]
 
-#include static/inc/find-by-field-and-status.inc
+#include static/inc/find-by-field-and-status.inc && excludeFields[status]
 
-#include static/inc/find-all-by-field-and-status.inc
+#include static/inc/find-all-by-field-and-status.inc && excludeFields[status]
 
 #include static/inc/delete-by-field.inc
 }

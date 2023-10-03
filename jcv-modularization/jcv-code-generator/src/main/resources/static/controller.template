@@ -198,6 +198,6 @@ public class ${classebase}Controller
       }
     }
 
-#include static/inc/controller-method-findClasseByField.inc
+#include static/inc/controller-method-findClasseByField.inc && excludeFields[status]
 
 }

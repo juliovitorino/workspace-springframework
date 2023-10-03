@@ -1,3 +1,24 @@
+/*
+Copyright <YEAR> <COPYRIGHT HOLDER>
+
+This software is Open Source and is under MIT license agreement
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the “Software”), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+
 package br.com.jcv.codegen.codegenerator.service.impl;
 
 import java.text.SimpleDateFormat;
@@ -19,26 +40,25 @@ import org.springframework.transaction.annotation.Propagation;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
 * UsuarioServiceImpl - Implementation for Usuario interface
 *
 * @author Usuario
-* @since Mon Oct 02 19:21:57 BRT 2023
+* @since Tue Oct 03 14:14:29 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
+
+@Slf4j
 @Service
 public class UsuarioServiceImpl implements UsuarioService
 {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired private UsuarioRepository usuarioRepository;
 
     @Override
@@ -48,7 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService
         noRollbackFor = UsuarioNotFoundException.class
     )
     public void delete(Long id) {
-        logger.info("Deletando Usuario com id = {}", id);
+        log.info("Deletando Usuario com id = {}", id);
         Optional<Usuario> usuarioData =
             Optional.ofNullable(usuarioRepository.findById(id)
                 .orElseThrow(
@@ -123,13 +143,17 @@ public class UsuarioServiceImpl implements UsuarioService
                 if(entry.getKey().equalsIgnoreCase(UsuarioConstantes.STATUS)) usuario.setStatus((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(UsuarioConstantes.DATECREATED)) usuario.setDateCreated((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(UsuarioConstantes.DATEUPDATED)) usuario.setDateUpdated((Date)entry.getValue());
-            }
+
             if(updates.get(UsuarioConstantes.DATEUPDATED) == null) usuario.setDateUpdated(new Date());
             usuarioRepository.save(usuario);
             return true;
         }
         return false;
     }
+        return false;
+    }
+
+
 
 
     @Override
@@ -189,7 +213,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
     Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
     Page<Usuario> paginaUsuario = usuarioRepository.findUsuarioByFilter(
-        id
+        ,id
         ,nome
         ,idade
         ,status
@@ -234,7 +258,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         }
 
         List<Usuario> lstUsuario = usuarioRepository.findUsuarioByFilter(
-            id
+            ,id
             ,nome
             ,idade
             ,status
@@ -273,7 +297,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public List<UsuarioDTO> findAllUsuarioByIdadeAndStatus(Long idade, String status) {
         return usuarioRepository.findAllByIdadeAndStatus(idade, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
-
     @Override
     @Transactional(transactionManager="aventuratransactionManager",
     propagation = Propagation.REQUIRED,
@@ -464,7 +487,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         usuarioRepository.updateIdadeById(id, idade);
         return findById(id);
     }
-
     @Override
     @Transactional(
     transactionManager = "transactionManager",
