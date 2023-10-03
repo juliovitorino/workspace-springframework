@@ -10,6 +10,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditieService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorConstantes;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorController;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorDto;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorDtoPadrao;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGenericConstantes;
@@ -39,6 +40,11 @@ import static br.com.jcv.codegen.codegenerator.enums.TargetFileEnum.CodeGenerato
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorControllerInstance")
+    public ICodeGeneratorIndividual CodeGeneratorControllerInstance() {
+        log.info("CodeGeneratorControllerInstance :: has started successfully");
+        return new CodeGeneratorController();
+    }
     @Bean("CodeGeneratorSwaggerConfigInstance")
     public ICodeGeneratorIndividual CodeGeneratorSwaggerConfigInstance() {
         log.info("CodeGeneratorSwaggerConfigInstance :: has started successfully");

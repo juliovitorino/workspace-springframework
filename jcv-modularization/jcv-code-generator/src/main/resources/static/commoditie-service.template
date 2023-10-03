@@ -1,3 +1,5 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
 package ${package}.interfaces;
 
 import ${package}.dto.RequestFilter;
@@ -15,7 +17,6 @@ import java.util.Map;
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino
 */
 public interface CommoditieBaseService<DTO extends DTOPadrao, Model> {
   void delete(Long id);

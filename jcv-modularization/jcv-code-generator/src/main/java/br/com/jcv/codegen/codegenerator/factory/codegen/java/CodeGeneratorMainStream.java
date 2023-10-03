@@ -48,6 +48,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Autowired @Qualifier("CodeGeneratorCommoditieServiceInstance") ICodeGeneratorIndividual generatorCommoditieService;
     @Autowired @Qualifier("CodeGeneratorServiceInstance") ICodeGeneratorIndividual generatorService;
     @Autowired @Qualifier("CodeGeneratorServiceImplInstance") ICodeGeneratorIndividual generatorServiceImpl;
+    @Autowired @Qualifier("CodeGeneratorControllerInstance") ICodeGeneratorIndividual generatorController;
 
     @Override
     public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
@@ -77,7 +78,8 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         //codeInBatch.add(generatorRepository.generate(inputClassModel));
         codeInBatch.add(generatorCommoditieService.generate(inputClassModel));
         //codeInBatch.add(generatorService.generate(inputClassModel));
-        codeInBatch.add(generatorServiceImpl.generate(inputClassModel));
+        //codeInBatch.add(generatorServiceImpl.generate(inputClassModel));
+        codeInBatch.add(generatorController.generate(inputClassModel));
         //generatorSwaggerConfig.generate(inputClassModel);  // Verificar as dependencias
 
         log.info("generate :: has been executed");
@@ -90,6 +92,8 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
             log.info("flushCode :: is flushing source code -> {}.{}",
                     writableCode.getTargetFileCodeInfo().getTargetPathFile(),
                     writableCode.getTargetFileCodeInfo().getTargetExtension());
+
+            //TODO Antes de gravar o codigo fonte verificar um flag se o dono quer sobrescrever o código existente
 
             writeCode(writableCode.getSourceCode(),
                     writableCode.getCodeGenerator(),

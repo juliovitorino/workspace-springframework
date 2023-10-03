@@ -1,3 +1,5 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
 package ${package}.service;
 
 import ${package}.dto.${classebase}DTO;

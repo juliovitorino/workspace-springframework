@@ -1,5 +1,10 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
 package ${package}.analyser;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class AbstractAnalyser implements IAnalyser<String> {
 
     protected static final String DEFAULT_MESSAGE = "FWL-0000:O conteúdo ${input} não está no formato correto. O formato correto deve ser ${format}";

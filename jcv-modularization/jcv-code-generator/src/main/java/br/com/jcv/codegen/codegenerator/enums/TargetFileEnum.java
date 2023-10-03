@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 @Getter
 public enum TargetFileEnum {
+    CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}Controller"),
     CodeGeneratorServiceImpl("CodeGeneratorServiceImpl", "/service/impl/${classebase}ServiceImpl"),
     CodeGeneratorService("CodeGeneratorService", "/service/${classebase}Service"),
     CodeGeneratorCommoditieService("CodeGeneratorCommoditieService", "/interfaces/CommoditieBaseService"),
@@ -45,7 +46,7 @@ public enum TargetFileEnum {
 
     public static TargetFileEnum fromCodeGeneratorClass(String codeGeneratorClass) {
         return Arrays.stream(VALUES).filter(enumItem -> enumItem.codeGeneratorClass.trim().equals(codeGeneratorClass))
-                .findFirst().orElseThrow(()-> new RuntimeException("You must mapping in TargetFileEnum : Error not found => " + codeGeneratorClass));
+                .findFirst().orElseThrow(()-> new RuntimeException("You must have mapping in TargetFileEnum : Error not found => " + codeGeneratorClass));
     }
 
 }

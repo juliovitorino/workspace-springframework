@@ -1,3 +1,5 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
 package ${package}.service.impl;
 
 import java.text.SimpleDateFormat;
@@ -19,11 +21,10 @@ import org.springframework.transaction.annotation.Propagation;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -34,11 +35,11 @@ import org.springframework.data.domain.Pageable;
 * @copyright(c), Julio Vitorino
 */
 
+
+@Slf4j
 @Service
 public class ${classebase}ServiceImpl implements ${classebase}Service
 {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired private ${classebase}Repository ${lclassebase}Repository;
 
     @Override
@@ -48,7 +49,7 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         noRollbackFor = ${classebase}NotFoundException.class
     )
     public void delete(Long id) {
-        logger.info("Deletando ${classebase} com id = {}", id);
+        log.info("Deletando ${classebase} com id = {}", id);
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(

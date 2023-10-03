@@ -17,10 +17,3 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-
-package br.com.jcv.codegen.codegenerator.analyser;
-
-public interface IAnalyser<Input>{
-    public void execute(Input input);
-}

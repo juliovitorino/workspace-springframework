@@ -28,6 +28,8 @@ import java.util.Scanner;
 public abstract class AbstractCodeGenerator {
     public static final String TARGET_EXTENSION_JAVA = "java";
     public static final String TARGET_EXTENSION_XML = "xml";
+    public static final String INCLUDE = "#include ";
+    public static final String INCLUDE_ONCE = "#include_once ";
     private String basePackage;
     @Autowired protected Gson gson;
     @Autowired protected ResourceLoader resourceLoader;
@@ -38,15 +40,23 @@ public abstract class AbstractCodeGenerator {
             Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
             while( scannerFileTemplate.hasNextLine()) {
                 final String line = scannerFileTemplate.nextLine();
-                final StringBuffer sbInclude = checkForIncludeLines(line);
-                if (sbInclude == null) {
+                boolean isIncludeTag = line.indexOf(INCLUDE) == 0 ;
+                boolean isIncludeOnceTag = line.indexOf(INCLUDE_ONCE) == 0;
+                if (isIncludeOnceTag || isIncludeTag) {
+                    final StringBuffer sbInclude = checkForIncludeLines(line, isIncludeTag ? INCLUDE : INCLUDE_ONCE);
+
+                    if(isIncludeOnceTag) {
+                        String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO);
+                        sb.append(includeBlock);
+                    } else {
+                        for(FieldDescriptor fieldItem: codeGeneratorDTO.getFieldDescriptorList()) {
+                            String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO, fieldItem);
+                            sb.append(includeBlock);
+                        }
+                    }
+                } else {
                     String lineChanged = changeTagsUsing(line,codeGeneratorDTO);
                     sb.append(lineChanged);
-                } else {
-                    for(FieldDescriptor fieldItem: codeGeneratorDTO.getFieldDescriptorList()) {
-                        String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO, fieldItem);
-                        sb.append(includeBlock);
-                    }
                 }
                 sb.append(System.getProperty("line.separator"));
             }
@@ -221,11 +231,10 @@ public abstract class AbstractCodeGenerator {
         return hasStatus && hasDateCreated && hasDateUpdated;
     }
 
-    private StringBuffer checkForIncludeLines(String line) {
-        final String INCLUDE = "#include ";
-        int posInclude = line.indexOf(INCLUDE);
+    private StringBuffer checkForIncludeLines(String line, String includeTag) {
+        int posInclude = line.indexOf(includeTag);
         if(posInclude == 0) {
-            final String includeFile = line.substring(INCLUDE.length());
+            final String includeFile = line.substring(includeTag.length()).trim();
             log.info("checkForIncludeLines :: get include lines at -> {}", includeFile);
             return readFile(includeFile);
         }
