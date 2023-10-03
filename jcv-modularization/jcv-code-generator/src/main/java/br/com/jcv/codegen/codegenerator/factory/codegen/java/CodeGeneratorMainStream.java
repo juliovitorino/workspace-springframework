@@ -54,7 +54,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
         List<WritableCode> codeInBatch = new ArrayList<>();
         log.info("generate :: is reading {} attributes", inputClassModel.getClass().hashCode());
-        codeInBatch.add(generatorBusinessService.generate(inputClassModel));
+        /*codeInBatch.add(generatorBusinessService.generate(inputClassModel));
         codeInBatch.add(generatorRequestFilter.generate(inputClassModel));
         codeInBatch.add(generatorLogabck.generate(inputClassModel));
         codeInBatch.add(generatorIAnalyser.generate(inputClassModel));
@@ -74,13 +74,12 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         codeInBatch.add(generatorConstantes.generate(inputClassModel));
         codeInBatch.add(generatorDtoPadrao.generate(inputClassModel));
         codeInBatch.add(generatorDto.generate(inputClassModel));
-        codeInBatch.add(generatorRepository.generate(inputClassModel));
         codeInBatch.add(generatorCommoditieService.generate(inputClassModel));
-        codeInBatch.add(generatorService.generate(inputClassModel));
+        codeInBatch.add(generatorService.generate(inputClassModel));*/
+//        codeInBatch.add(generatorRepository.generate(inputClassModel));
         codeInBatch.add(generatorServiceImpl.generate(inputClassModel));
-        codeInBatch.add(generatorSwaggerConfig.generate(inputClassModel));
-        codeInBatch.add(generatorController.generate(inputClassModel));
-
+/*        codeInBatch.add(generatorSwaggerConfig.generate(inputClassModel));
+        codeInBatch.add(generatorController.generate(inputClassModel));*/
         log.info("generate :: has been executed");
         return codeInBatch;
     }

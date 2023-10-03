@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 @Getter
 public enum IncludeExtraCommandEnum {
+    excludeCharAtBeginFromFirstField("&& excludeCharAtBeginFromFirstField["),
+    excludeCharAtEndOfLineFromLastField("&& excludeCharAtEndOfLineFromLastField["),
     excludeFields("&& excludeFields[");
 
     private String command;

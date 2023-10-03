@@ -11,14 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.FileCopyUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,27 +46,13 @@ public abstract class AbstractCodeGenerator {
                     final StringBuffer sbInclude = checkForIncludeLines(line, isIncludeTag ? INCLUDE : INCLUDE_ONCE);
 
                     if(isIncludeOnceTag) {
-                        String[] excludeFields = getExcludeFields(line);
-                        if(excludeFields.length > 0) {
-                            throw new RuntimeException("IncludeExtraCommand " + IncludeExtraCommandEnum.excludeFields.getCommand() + " not allowed for " + line);
-                        }
-                        String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO);
-                        sb.append(includeBlock);
-                    } else {
-                        log.info("readTemplate :: checking out for extra commands = {}", Arrays.toString(IncludeExtraCommandEnum.values()));
-                        String[] excludeFields = getExcludeFields(line);
-                        log.info("readTemplate :: excluded fields are = {}", Arrays.toString(excludeFields));
-                        for(FieldDescriptor fieldItem: codeGeneratorDTO.getFieldDescriptorList()) {
-                            String fieldExcluded = Arrays.stream(excludeFields)
-                                    .filter(fieldExclude -> fieldExclude.equals(fieldItem.getFieldReferenceInDto()))
-                                    .findFirst()
-                                    .orElse(null);
-                            if(Objects.isNull(fieldExcluded)) {
-                                assert sbInclude != null;
-                                String includeBlock = changeTagsUsing(sbInclude.toString(),codeGeneratorDTO, fieldItem);
-                                sb.append(includeBlock);
-                            }
-                        }
+                        checkIncludeOnceCommandsDenied(line);
+                        assert sbInclude != null;
+                        sb.append(changeTagsUsing(sbInclude.toString(),codeGeneratorDTO));
+                    }
+
+                    if(isIncludeTag) {
+                        processIgnoredFields(sb, codeGeneratorDTO, line, sbInclude);
                     }
                 } else {
                     String lineChanged = changeTagsUsing(line,codeGeneratorDTO);
@@ -83,13 +66,89 @@ public abstract class AbstractCodeGenerator {
         }
     }
 
+    private void processExcludeCharAtEndFromLastField(FieldDescriptor field, StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO, String line, String sbInclude) {
+        char[] excludeChars = getExcludeCharAtEndOfLineFromLastField(line).toCharArray();
+        assert sbInclude != null;
+        String blockAfterChangeTag = changeTagsUsing(sbInclude, codeGeneratorDTO, field);
+        for (char excludeChar : excludeChars) {
+            blockAfterChangeTag = blockAfterChangeTag.replaceAll("\\".concat(String.valueOf(excludeChar)), "");
+        }
+        sb.append(blockAfterChangeTag);
+    }
+    private void processExcludeCharAtBeginFromFirstField(FieldDescriptor field, StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO, String line, String sbInclude) {
+        char[] excludeChars = getExcludeCharAtBeginFromFirstField(line).toCharArray();
+        assert sbInclude != null;
+        String blockAfterChangeTag = changeTagsUsing(sbInclude, codeGeneratorDTO, field);
+        for (char excludeChar : excludeChars) {
+            blockAfterChangeTag = blockAfterChangeTag.replaceAll("\\".concat(String.valueOf(excludeChar)), "");
+        }
+        sb.append(blockAfterChangeTag);
+    }
+    private void processIgnoredFields(StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO, String line, StringBuffer sbInclude) {
+        log.info("readTemplate :: checking out for extra commands = {}", Arrays.toString(IncludeExtraCommandEnum.values()));
+        String[] excludeFields = getExcludeFields(line);
+        log.info("readTemplate :: excluded fields are = {}", Arrays.toString(excludeFields));
+        int idx = 0;
+        int idxLastField = codeGeneratorDTO.getFieldDescriptorList().size() - 1;
+        for(FieldDescriptor fieldItem: codeGeneratorDTO.getFieldDescriptorList()) {
+            String fieldExcluded = Arrays.stream(excludeFields)
+                    .filter(fieldExclude -> fieldExclude.equals(fieldItem.getFieldReferenceInDto()))
+                    .findFirst()
+                    .orElse(null);
+            if(Objects.isNull(fieldExcluded)) {
+                if(idx == 0) {
+                    processExcludeCharAtBeginFromFirstField(fieldItem, sb, codeGeneratorDTO, line, sbInclude.toString());
+                } else if(idx == idxLastField) {
+                    processExcludeCharAtEndFromLastField(fieldItem, sb, codeGeneratorDTO, line, sbInclude.toString());
+                } else {
+                    sb.append(changeTagsUsing(sbInclude.toString(), codeGeneratorDTO, fieldItem));
+                }
+                idx++;
+            }
+        }
+    }
+
+    private void checkIncludeOnceCommandsDenied(String line) {
+        String[] excludeFields = getExcludeFields(line);
+        if(excludeFields.length > 0) {
+            throw new RuntimeException("IncludeExtraCommand "
+                    + IncludeExtraCommandEnum.excludeFields.getCommand() + " not allowed for " + line);
+        }
+
+        if(!getExcludeCharAtBeginFromFirstField(line).isEmpty()){
+            throw new RuntimeException("IncludeExtraCommand "
+                    + IncludeExtraCommandEnum.excludeCharAtBeginFromFirstField.getCommand() + " not allowed for " + line);
+        }
+        if(!getExcludeCharAtEndOfLineFromLastField(line).isEmpty()){
+            throw new RuntimeException("IncludeExtraCommand "
+                    + IncludeExtraCommandEnum.excludeCharAtEndOfLineFromLastField.getCommand()
+                    + " not allowed for " + line);
+        }
+    }
+
     private String[] getExcludeFields(String line) {
-        int posExcludeFields = line.indexOf(IncludeExtraCommandEnum.excludeFields.getCommand());
-        if(posExcludeFields > -1) {
-            String extractedFields = line.substring(posExcludeFields + IncludeExtraCommandEnum.excludeFields.getCommand().length(), line.length() -1);
+        int position = line.indexOf(IncludeExtraCommandEnum.excludeFields.getCommand());
+        if(position > -1) {
+            String extractedFields = line.substring(position + IncludeExtraCommandEnum.excludeFields.getCommand().length(), line.length() -1);
             return extractedFields.split(",");
         }
         return new String[]{};
+    }
+
+    private String getExcludeCharAtBeginFromFirstField(String line) {
+        int position = line.indexOf(IncludeExtraCommandEnum.excludeCharAtBeginFromFirstField.getCommand());
+        if(position > -1) {
+            return line.substring(position + IncludeExtraCommandEnum.excludeCharAtBeginFromFirstField.getCommand().length(), line.length() -1);
+        }
+        return "";
+    }
+
+    private String getExcludeCharAtEndOfLineFromLastField(String line) {
+        int position = line.indexOf(IncludeExtraCommandEnum.excludeCharAtEndOfLineFromLastField.getCommand());
+        if(position > -1) {
+            return line.substring(position + IncludeExtraCommandEnum.excludeCharAtEndOfLineFromLastField.getCommand().length(), line.length() -1);
+        }
+        return "";
     }
 
     protected StringBuffer readFile(String filePath) {

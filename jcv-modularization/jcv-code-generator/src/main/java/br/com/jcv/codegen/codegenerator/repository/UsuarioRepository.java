@@ -44,7 +44,7 @@ import java.util.Date;
 * Changelog:
 *
 * @autor Usuario
-* @since Tue Oct 03 14:14:29 BRT 2023
+* @since Tue Oct 03 18:59:46 BRT 2023
 *
 */
 @Repository
@@ -59,18 +59,18 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>
         "AND (:idade = '' OR idade = :idade) " +
         "AND (:status = '' OR status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " +
+        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
 
         , nativeQuery = true)
-Page<Usuario> findUsuarioByFilter(
+Page<Usuario> findUsuarioByFilter(Pageable pageable,
         @Param(UsuarioConstantes.ID) Long id,
         @Param(UsuarioConstantes.NOME) String nome,
         @Param(UsuarioConstantes.IDADE) Long idade,
         @Param(UsuarioConstantes.STATUS) String status,
         @Param(UsuarioConstantes.DATECREATED) Date dateCreated,
-        @Param(UsuarioConstantes.DATEUPDATED) Date dateUpdated,
+        @Param(UsuarioConstantes.DATEUPDATED) Date dateUpdated
 
-        Pageable pageable);
+        );
 
 @Query(value = "SELECT * FROM tb_user WHERE 1=1 " +
         "AND (:id = '' OR id_usuario = :id) " +
@@ -78,7 +78,7 @@ Page<Usuario> findUsuarioByFilter(
         "AND (:idade = '' OR idade = :idade) " +
         "AND (:status = '' OR status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " +
+        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
 
         , nativeQuery = true)
 List<Usuario> findUsuarioByFilter(
@@ -87,7 +87,7 @@ List<Usuario> findUsuarioByFilter(
         @Param(UsuarioConstantes.IDADE) Long idade,
         @Param(UsuarioConstantes.STATUS) String status,
         @Param(UsuarioConstantes.DATECREATED) Date dateCreated,
-        @Param(UsuarioConstantes.DATEUPDATED) Date dateUpdated,
+        @Param(UsuarioConstantes.DATEUPDATED) Date dateUpdated
 
 );
 

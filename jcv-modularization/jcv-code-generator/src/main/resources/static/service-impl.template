@@ -175,9 +175,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
-    Page<${classebase}> pagina${classebase} = ${lclassebase}Repository.find${classebase}ByFilter(
-#include static/inc/service-impl-method-findPageByFilter-page.inc
-        ,paging
+    Page<${classebase}> pagina${classebase} = ${lclassebase}Repository.find${classebase}ByFilter(paging,
+#include static/inc/service-impl-method-findPageByFilter-page.inc && excludeCharAtBeginFromFirstField[,]
     );
 
     lst${classebase} = pagina${classebase}.getContent();
@@ -203,7 +202,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         }
 
         List<${classebase}> lst${classebase} = ${lclassebase}Repository.find${classebase}ByFilter(
-#include static/inc/service-impl-method-findAllByFilter-list.inc
+#include static/inc/service-impl-method-findAllByFilter-list.inc && excludeCharAtBeginFromFirstField[,]
         );
 
         return lst${classebase}.stream().map(m->toDTO(m)).collect(Collectors.toList());

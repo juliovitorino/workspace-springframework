@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 * UsuarioServiceImpl - Implementation for Usuario interface
 *
 * @author Usuario
-* @since Tue Oct 03 14:14:29 BRT 2023
+* @since Tue Oct 03 19:03:05 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
@@ -212,15 +212,14 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
-    Page<Usuario> paginaUsuario = usuarioRepository.findUsuarioByFilter(
-        ,id
+    Page<Usuario> paginaUsuario = usuarioRepository.findUsuarioByFilter(paging,
+        id
         ,nome
         ,idade
         ,status
         ,dateCreated
         ,dateUpdated
 
-        ,paging
     );
 
     lstUsuario = paginaUsuario.getContent();
@@ -258,7 +257,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         }
 
         List<Usuario> lstUsuario = usuarioRepository.findUsuarioByFilter(
-            ,id
+            id
             ,nome
             ,idade
             ,status

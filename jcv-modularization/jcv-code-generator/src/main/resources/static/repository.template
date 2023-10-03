@@ -35,17 +35,17 @@ public interface ${classebase}Repository extends JpaRepository<${classebase}, Lo
     List<${classebase}> findAllByStatus(@Param(${classebase}Constantes.STATUS) String status);
 
 @Query(value = "SELECT * FROM ${schemap}${tabela} WHERE 1=1 " +
-#include static/inc/find-by-filter-select.inc
+#include static/inc/find-by-filter-select.inc && excludeCharAtEndOfLineFromLastField[+,]
         , nativeQuery = true)
-Page<${classebase}> find${classebase}ByFilter(
-#include static/inc/find-by-filter-parameter.inc
-        Pageable pageable);
+Page<${classebase}> find${classebase}ByFilter(Pageable pageable,
+#include static/inc/find-by-filter-parameter.inc && excludeCharAtEndOfLineFromLastField[+,]
+        );
 
 @Query(value = "SELECT * FROM ${schemap}${tabela} WHERE 1=1 " +
-#include static/inc/find-by-filter-select.inc
+#include static/inc/find-by-filter-select.inc && excludeCharAtEndOfLineFromLastField[,+]
         , nativeQuery = true)
 List<${classebase}> find${classebase}ByFilter(
-#include static/inc/find-by-filter-parameter.inc
+#include static/inc/find-by-filter-parameter.inc && excludeCharAtEndOfLineFromLastField[,+]
 );
 
 #include static/inc/load-maxid-by-status.inc && excludeFields[status]
