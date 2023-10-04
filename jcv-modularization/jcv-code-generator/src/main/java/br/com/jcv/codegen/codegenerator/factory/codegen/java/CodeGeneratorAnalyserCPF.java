@@ -17,7 +17,7 @@ public class CodeGeneratorAnalyserCPF extends AbstractCodeGenerator implements I
     @Override
     public <Input> WritableCode generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
-        log.info("generate :: is reading {} attributes", inputClassModel.getClass().hashCode());
+        log.info("generate :: is reading {} attributes", inputClassModel.hashCode());
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
@@ -25,7 +25,6 @@ public class CodeGeneratorAnalyserCPF extends AbstractCodeGenerator implements I
                 TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath()
                 ,TARGET_EXTENSION_JAVA);
 
-        log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");
         return new WritableCode(sbCode, codegen, targetFileCodeInfo);
     }

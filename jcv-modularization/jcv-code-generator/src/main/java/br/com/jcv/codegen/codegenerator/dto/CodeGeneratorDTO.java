@@ -20,7 +20,6 @@ import java.util.List;
 @ToString
 public class CodeGeneratorDTO implements Serializable {
     private String outputDir;
-    private String homeAbsolutePath;
     private String basePackage;
     private String basePackageSlash;
     private String project;

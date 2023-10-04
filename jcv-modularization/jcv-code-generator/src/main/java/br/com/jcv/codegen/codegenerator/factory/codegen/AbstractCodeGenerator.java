@@ -245,12 +245,11 @@ public abstract class AbstractCodeGenerator {
                 log.info("Folder {} is OK!", folder );
             }
         }
-        codegen.setHomeAbsolutePath(absolutePathFromRelative(codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() + "/dto" + PING));
     }
 
     private boolean folderExists(String file) {
         Path parent = Paths.get(file).getParent();
-        System.out.println("Parent => " + parent.toAbsolutePath().toString());
+//        System.out.println("Parent => " + parent.toAbsolutePath().toString());
         return parent != null && Files.isDirectory(parent);
     }
     private String absolutePathFromRelative(String file) {
