@@ -11,7 +11,7 @@
 
 	<groupId>br.com.jcv.codegen</groupId>
 	<artifactId>jcv-code-generator</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
 	<name>jcv-code-generator</name>
 	<description>Code Generator for Spring Boot</description>
 
@@ -46,7 +46,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>jcv-code-generator</finalName>
+		<finalName>jcv-code-generator-${jcv-code-generator.version}</finalName>
 	</build>
 
 </project>
