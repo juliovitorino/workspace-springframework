@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
@@ -249,7 +250,7 @@ public abstract class AbstractCodeGenerator {
 
     private boolean folderExists(String file) {
         Path parent = Paths.get(file).getParent();
-//        System.out.println("Parent => " + parent.toAbsolutePath().toString());
+        System.out.println("Parent => " + parent.toAbsolutePath().toString());
         return parent != null && Files.isDirectory(parent);
     }
     private String absolutePathFromRelative(String file) {

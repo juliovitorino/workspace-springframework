@@ -8,6 +8,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedOutputStream;
@@ -23,32 +24,32 @@ import java.util.List;
 @Component
 public class CodeGeneratorMainStream extends AbstractCodeGenerator implements ICodeGeneratorBatch {
 
-    @Autowired @Qualifier("CodeGeneratorAnalyserCpfInstance") ICodeGeneratorIndividual generatorAnalyserCpf;
-    @Autowired @Qualifier("CodeGeneratorAbstractAnalyserInstance") ICodeGeneratorIndividual generatorAbstractAnalyser;
-    @Autowired @Qualifier("CodeGeneratorMensagemConstantesInstance") ICodeGeneratorIndividual generatorMensagemConstantes;
-    @Autowired @Qualifier("CodeGeneratorMensagemResponseInstance") ICodeGeneratorIndividual generatorMensagemResponse;
-    @Autowired @Qualifier("CodeGeneratorCommoditiesBaseExceptionInstance") ICodeGeneratorIndividual generatorCommoditiesBaseException;
-    @Autowired @Qualifier("CodeGeneratorAnalyserExceptionInstance") ICodeGeneratorIndividual generatorAnalyserException;
-    @Autowired @Qualifier("CodeGeneratorNotFoundExceptionInstance") ICodeGeneratorIndividual generatorNotFoundException;
-    @Autowired @Qualifier("CodeGeneratorInvalidFormatExceptionInstance") ICodeGeneratorIndividual generatorInvalidFormatException;
-    @Autowired @Qualifier("CodeGeneratorIAnalyserInstance") ICodeGeneratorIndividual generatorIAnalyser;
-    @Autowired @Qualifier("CodeGeneratorBusinessServiceInstance") ICodeGeneratorIndividual generatorBusinessService;
-    @Autowired @Qualifier("CodeGeneratorRequestFilterInstance") ICodeGeneratorIndividual generatorRequestFilter;
-    @Autowired @Qualifier("CodeGeneratorLogbackInstance") ICodeGeneratorIndividual generatorLogabck;
-    @Autowired @Qualifier("CodeGeneratorRegexConstantesInstance") ICodeGeneratorIndividual generatorRegexConstantes;
-    @Autowired @Qualifier("CodeGeneratorGenericConstantesInstance") ICodeGeneratorIndividual generatorGenericConstantes;
-    @Autowired @Qualifier("CodeGeneratorApiAdviceInstance") ICodeGeneratorIndividual generatorApiAdvice;
-    @Autowired @Qualifier("CodeGeneratorGenericResponseInstance") ICodeGeneratorIndividual generatorGenericResponse;
-    @Autowired @Qualifier("CodeGeneratorGenericStatusEnumInstance") ICodeGeneratorIndividual generatorGenericStatusEnum;
-    @Autowired @Qualifier("CodeGeneratorSwaggerConfigInstance") ICodeGeneratorIndividual generatorSwaggerConfig;
-    @Autowired @Qualifier("CodeGeneratorConstantesInstance") ICodeGeneratorIndividual generatorConstantes;
-    @Autowired @Qualifier("CodeGeneratorDtoPadraoInstance") ICodeGeneratorIndividual generatorDtoPadrao;
-    @Autowired @Qualifier("CodeGeneratorDtoInstance") ICodeGeneratorIndividual generatorDto;
-    @Autowired @Qualifier("CodeGeneratorRepositoryInstance") ICodeGeneratorIndividual generatorRepository;
-    @Autowired @Qualifier("CodeGeneratorCommoditieServiceInstance") ICodeGeneratorIndividual generatorCommoditieService;
-    @Autowired @Qualifier("CodeGeneratorServiceInstance") ICodeGeneratorIndividual generatorService;
-    @Autowired @Qualifier("CodeGeneratorServiceImplInstance") ICodeGeneratorIndividual generatorServiceImpl;
-    @Autowired @Qualifier("CodeGeneratorControllerInstance") ICodeGeneratorIndividual generatorController;
+    @Autowired private  @Qualifier("CodeGeneratorAnalyserCpfInstance") ICodeGeneratorIndividual generatorAnalyserCpf;
+    @Autowired private  @Qualifier("CodeGeneratorAbstractAnalyserInstance") ICodeGeneratorIndividual generatorAbstractAnalyser;
+    @Autowired private  @Qualifier("CodeGeneratorMensagemConstantesInstance") ICodeGeneratorIndividual generatorMensagemConstantes;
+    @Autowired private  @Qualifier("CodeGeneratorMensagemResponseInstance") ICodeGeneratorIndividual generatorMensagemResponse;
+    @Autowired private  @Qualifier("CodeGeneratorCommoditiesBaseExceptionInstance") ICodeGeneratorIndividual generatorCommoditiesBaseException;
+    @Autowired private  @Qualifier("CodeGeneratorAnalyserExceptionInstance") ICodeGeneratorIndividual generatorAnalyserException;
+    @Autowired private  @Qualifier("CodeGeneratorNotFoundExceptionInstance") ICodeGeneratorIndividual generatorNotFoundException;
+    @Autowired private  @Qualifier("CodeGeneratorInvalidFormatExceptionInstance") ICodeGeneratorIndividual generatorInvalidFormatException;
+    @Autowired private  @Qualifier("CodeGeneratorIAnalyserInstance") ICodeGeneratorIndividual generatorIAnalyser;
+    @Autowired private  @Qualifier("CodeGeneratorBusinessServiceInstance") ICodeGeneratorIndividual generatorBusinessService;
+    @Autowired private  @Qualifier("CodeGeneratorRequestFilterInstance") ICodeGeneratorIndividual generatorRequestFilter;
+    @Autowired private  @Qualifier("CodeGeneratorLogbackInstance") ICodeGeneratorIndividual generatorLogabck;
+    @Autowired private  @Qualifier("CodeGeneratorRegexConstantesInstance") ICodeGeneratorIndividual generatorRegexConstantes;
+    @Autowired private  @Qualifier("CodeGeneratorGenericConstantesInstance") ICodeGeneratorIndividual generatorGenericConstantes;
+    @Autowired private  @Qualifier("CodeGeneratorApiAdviceInstance") ICodeGeneratorIndividual generatorApiAdvice;
+    @Autowired private  @Qualifier("CodeGeneratorGenericResponseInstance") ICodeGeneratorIndividual generatorGenericResponse;
+    @Autowired private  @Qualifier("CodeGeneratorGenericStatusEnumInstance") ICodeGeneratorIndividual generatorGenericStatusEnum;
+    @Autowired private  @Qualifier("CodeGeneratorSwaggerConfigInstance") ICodeGeneratorIndividual generatorSwaggerConfig;
+    @Autowired private  @Qualifier("CodeGeneratorConstantesInstance") ICodeGeneratorIndividual generatorConstantes;
+    @Autowired private  @Qualifier("CodeGeneratorDtoPadraoInstance") ICodeGeneratorIndividual generatorDtoPadrao;
+    @Autowired private  @Qualifier("CodeGeneratorDtoInstance") ICodeGeneratorIndividual generatorDto;
+    @Autowired private  @Qualifier("CodeGeneratorRepositoryInstance") ICodeGeneratorIndividual generatorRepository;
+    @Autowired private  @Qualifier("CodeGeneratorCommoditieServiceInstance") ICodeGeneratorIndividual generatorCommoditieService;
+    @Autowired private  @Qualifier("CodeGeneratorServiceInstance") ICodeGeneratorIndividual generatorService;
+    @Autowired private  @Qualifier("CodeGeneratorServiceImplInstance") ICodeGeneratorIndividual generatorServiceImpl;
+    @Autowired private  @Qualifier("CodeGeneratorControllerInstance") ICodeGeneratorIndividual generatorController;
 
     @Override
     public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
@@ -102,6 +103,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     }
 
     private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
+
         String OutputFilename = codegen.getHomeAbsolutePath() + codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
         FileOutputStream fos = null;
         try {
