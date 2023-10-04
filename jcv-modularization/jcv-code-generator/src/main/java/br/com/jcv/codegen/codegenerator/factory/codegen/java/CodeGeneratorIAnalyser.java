@@ -17,16 +17,14 @@ public class CodeGeneratorIAnalyser extends AbstractCodeGenerator implements ICo
     @Override
     public <Input> WritableCode generate(Class<Input> inputClassModel) {
         StringBuffer sbCode = new StringBuffer();
-        log.info("generate :: is reading {} attributes", inputClassModel.getClass().hashCode());
+        log.info("generate :: is reading {} attributes", inputClassModel.hashCode());
 
         CodeGeneratorDTO codegen = prepareCodeGeneratorFromModel(inputClassModel);
         readTemplate(TEMPLATE, sbCode, codegen);
-//        writeCode(sbCode,codegen, "/analyser/IAnalyser","java");
         TargetFileCodeInfo targetFileCodeInfo = new TargetFileCodeInfo(
                 TargetFileEnum.fromCodeGeneratorClass(fullClassNameToSingle(this.getClass().getName())).getTargetFilePath(),
                 TARGET_EXTENSION_JAVA);
 
-        log.info("generate :: CodeGeneratorDTO has been prepared -> {}", gson.toJson(codegen));
         log.info("generate :: has been executed");
         return new WritableCode(sbCode, codegen, targetFileCodeInfo);
     }

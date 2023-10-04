@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 * UsuarioServiceImpl - Implementation for Usuario interface
 *
 * @author Usuario
-* @since Wed Oct 04 12:38:51 BRT 2023
+* @since Wed Oct 04 13:32:29 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 

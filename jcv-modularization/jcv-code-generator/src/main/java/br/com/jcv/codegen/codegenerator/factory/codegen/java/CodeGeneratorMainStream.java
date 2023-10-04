@@ -104,7 +104,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
 
     private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
 
-        String OutputFilename = codegen.getHomeAbsolutePath() + codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
+        String OutputFilename = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(OutputFilename);
