@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Getter
@@ -18,7 +20,9 @@ import java.util.List;
 @ToString
 public class CodeGeneratorDTO implements Serializable {
     private String outputDir;
+    private String homeAbsolutePath;
     private String basePackage;
+    private String basePackageSlash;
     private String project;
     private String fullDescription;
     private String tableName;
@@ -26,5 +30,9 @@ public class CodeGeneratorDTO implements Serializable {
     private String author;
     private String baseClass;
     List<FieldDescriptor> fieldDescriptorList;
+
+    public String getBasePackageSlash() {
+        return basePackage.replaceAll("\\.","/");
+    }
 
 }

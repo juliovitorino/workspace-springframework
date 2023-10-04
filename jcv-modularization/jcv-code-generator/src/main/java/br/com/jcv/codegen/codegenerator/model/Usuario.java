@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "tb_user")
-@CodeGeneratorDescriptor(outputDir = "/Users/juliovitorino/workspaces/workspace-springframework/jcv-modularization/jcv-code-generator/src/main/java/br/com/jcv/codegen/codegenerator",
+@CodeGeneratorDescriptor(outputDir = "jcv-code-generator/src/main/resources",
         project = "",
 fullDescription = "Manipular todos as informações de usuários")
 public class Usuario {

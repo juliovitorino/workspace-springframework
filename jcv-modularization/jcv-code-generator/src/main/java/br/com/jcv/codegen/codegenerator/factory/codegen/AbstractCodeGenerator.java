@@ -6,17 +6,24 @@ import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
 import br.com.jcv.codegen.codegenerator.enums.IncludeExtraCommandEnum;
+import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -202,13 +209,60 @@ public abstract class AbstractCodeGenerator {
 
         List<FieldDescriptor> fieldDescriptors = processCodeGeneratorFieldDescriptorAnnotation(inputClassModel);
         codegen.setFieldDescriptorList(fieldDescriptors);
+
+        createFolderStructureIfNeed(codegen);
         return codegen;
     }
 
+    private void createFolderStructureIfNeed(CodeGeneratorDTO codegen) {
+        final String PING = "/ping.txt";
+        final String[] folders = new String[] {"config","analyser","constantes","controller","dto","enums"
+                ,"exception","interfaces","repository","service","service/impl"};
+
+        log.info("code generator Output Directory -> {}", codegen.getOutputDir());
+        log.info("code generator base package -> {}", codegen.getBasePackage());
+
+        for(String folder: folders) {
+//            log.info("Path => {}",codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() + "/" + folder + "/ping.txt");
+            if(!folderExists(codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() + "/" + folder + PING)) {
+                System.out.println("*** Folder [" + folder + "] does not exist");
+                System.out.println("*** You must have to create and check the following folder structure");
+                System.out.println(codegen.getOutputDir());
+                System.out.println("+-- /analyser");
+                System.out.println("+-- /config");
+                System.out.println("+-- /constantes");
+                System.out.println("+-- /controller");
+                System.out.println("+-- /dto");
+                System.out.println("+-- /enums");
+                System.out.println("+-- /exception");
+                System.out.println("+-- /interfaces");
+                System.out.println("+-- /repository");
+                System.out.println("+-- /service");
+                System.out.println("+-- /service/impl");
+                throw new CodeGeneratorFolderStructureNotFound("Your project must have identical project folder structure in resource's folder");
+            } else {
+                log.info("Folder {} is OK!", folder );
+            }
+        }
+        codegen.setHomeAbsolutePath(absolutePathFromRelative(codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() + "/dto" + PING));
+    }
+
+    private boolean folderExists(String file) {
+        Path parent = Paths.get(file).getParent();
+//        System.out.println("Parent => " + parent.toAbsolutePath().toString());
+        return parent != null && Files.isDirectory(parent);
+    }
+    private String absolutePathFromRelative(String file) {
+        Path parent = Paths.get(file).getParent();
+        String absolutePath = parent.toAbsolutePath().toString();
+        int pos = absolutePath.indexOf(parent.toString());
+        if(pos > -1) {
+            return absolutePath.substring(0, pos);
+        } else {
+            return "";
+        }
+    }
     private String changeTagsUsing(String content, CodeGeneratorDTO codegen) {
-//        String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass())
-//                .replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage())
-//                .replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
         return changeTagsUsing(content,codegen, null);
     }
 
