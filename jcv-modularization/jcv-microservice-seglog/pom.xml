@@ -4,20 +4,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>br.com.jcv.commons.modularization</groupId>
-		<artifactId>commons-modular</artifactId>
+		<groupId>br.com.jcv</groupId>
+		<artifactId>modular-build</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>br.com.jcv.seglog</groupId>
+	<groupId>br.com.jcv.</groupId>
 	<artifactId>microservice-seglog</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-microservice-seglog.version}</version>
 	<name>microservice-seglog</name>
 	<description>Universal security for user and permissions control</description>
 
 	<build>
-		<finalName>microservice-seglog</finalName>
+		<finalName>microservice-seglog-${jcv-microservice-seglog.version}</finalName>
 	</build>
 
 </project>

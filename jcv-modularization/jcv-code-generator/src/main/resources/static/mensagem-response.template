@@ -1,0 +1,31 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
+import lombok.*;
+
+import java.io.Serializable;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class MensagemResponse implements Serializable {
+  @SerializedName(MensagemConstantes.MSGCODE)
+  @JsonProperty(MensagemConstantes.MSGCODE)
+  private String msgcode;
+
+  @SerializedName(MensagemConstantes.MENSAGEM)
+  @JsonProperty(MensagemConstantes.MENSAGEM)
+  private String mensagem;
+
+}

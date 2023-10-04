@@ -1,0 +1,26 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.exception;
+
+import java.util.HashMap;
+import org.springframework.http.HttpStatus;
+import java.util.Map;
+
+
+public class ${classebase}NotFoundException extends CommoditieBaseException {
+    public ${classebase}NotFoundException(String input, HttpStatus httpStatus, String msgcode, Map<String,String> mapParams) {
+        super(input, httpStatus, msgcode, mapParams);
+    }
+
+    public ${classebase}NotFoundException(String input, HttpStatus httpStatus, String msgcode) {
+        this(input, httpStatus, msgcode, null);
+    }
+
+    public ${classebase}NotFoundException(String input, HttpStatus httpStatus) {
+      this(input, httpStatus, null, new HashMap<>());
+    }
+
+    public ${classebase}NotFoundException(String input, int httpStatus) {
+      this(input, HttpStatus.valueOf(httpStatus), null, new HashMap<>());
+    }
+}

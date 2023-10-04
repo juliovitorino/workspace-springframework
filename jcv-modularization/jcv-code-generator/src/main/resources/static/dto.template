@@ -1,0 +1,35 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.dto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import lombok.*;
+import ${package}.constantes.${classebase}Constantes;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
+import java.util.Date;
+
+/**
+* ${classebase}DTO - Data Transfer Object
+*
+* @author ${autor}
+* @since ${agora}
+* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
+*/
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ${classebase}DTO extends DTOPadrao implements Serializable
+{
+#include static/inc/dto.inc && excludeFields[id,status,dateCreated,dateUpdated]
+
+    @SerializedName("mensagemResponse")
+    @JsonProperty("mensagemResponse")
+    private MensagemResponse mensagemResponse;
+}

@@ -1,0 +1,1 @@
+                    ${lclassebase}.set${Adto}(${lclassebase}DTO.get${Adto}());

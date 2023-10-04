@@ -1,0 +1,1 @@
+    ${classebase}DTO update${Adto}ById(Long id, ${tipodart} ${dto});

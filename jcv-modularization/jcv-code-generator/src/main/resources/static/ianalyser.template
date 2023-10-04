@@ -1,0 +1,7 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.analyser;
+
+public interface IAnalyser<Input>{
+    public void execute(Input input);
+}

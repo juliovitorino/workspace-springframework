@@ -1,0 +1,114 @@
+pipeline {
+    agent any
+    stages {
+        stage ('Construir Microservices JCV Modularization') {
+            steps {
+                dir('jcv-modularization') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        stage ('Executar TODOS Testes Unitários') {
+            steps {
+                dir('jcv-modularization/jcv-commons-library') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-commons-library'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-environment-config') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-environment-config'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-exchange-dto') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-exchange-dto'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-microservice-businessday') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-microservice-businessday'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-microservice-invoice-manager') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-microservice-invoice-manager'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-microservice-mailsender') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-microservice-mailsender'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-microservice-seglog') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-microservice-seglog'
+                    sh 'mvn test'
+                }
+                dir('jcv-modularization/jcv-microservice-template') {
+                    sh 'echo executando testes unitáros do módulo jcv-modularization/jcv-microservice-template'
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage ('Análise da Qualidade Código Fonte') {
+              environment {
+                scannerHome = tool 'SONAR_SCANNER'
+            }
+            steps {
+                dir('jcv-modularization/jcv-commons-library') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-environment-config') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-exchange-dto') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-microservice-businessday') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-microservice-invoice-manager') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-microservice-mailsender') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-microservice-seglog') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+                dir('jcv-modularization/jcv-microservice-template') {
+                    withSonarQubeEnv('SONAR_LOCAL') {
+                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=AnaliseProjetoJCV -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c1bfa57f9938a0b74ee60348353428001e1c3ea -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                    }
+                }
+
+            }
+        }
+        stage ('Resposta Quality Gate Hook') {
+            steps {
+                sleep(10)
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }        
+        stage ('Deploy Backend') {
+            steps {
+                sh 'echo Deploy Backend via docker ... em breve'
+            }
+        }
+        stage ('API Endpoint Testes') {
+            steps {
+                sh 'echo Testes dos endpoints após deploy ... em breve'
+            }
+        }
+    }
+}

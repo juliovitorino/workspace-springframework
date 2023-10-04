@@ -1,0 +1,227 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.service.impl;
+
+import java.text.SimpleDateFormat;
+import ${package}.constantes.GenericConstantes;
+import ${package}.dto.MensagemResponse;
+import ${package}.enums.GenericStatusEnums;
+import ${package}.dto.${classebase}DTO;
+import ${package}.model.${classebase};
+import ${package}.constantes.${classebase}Constantes;
+import ${package}.dto.RequestFilter;
+import ${package}.repository.${classebase}Repository;
+import ${package}.service.${classebase}Service;
+import ${package}.exception.${classebase}NotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
+import java.text.ParseException;
+import java.util.*;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
+
+
+/**
+* ${classebase}ServiceImpl - Implementation for ${classebase} interface
+*
+* @author ${autor}
+* @since ${agora}
+* @copyright(c), Julio Vitorino
+*/
+
+
+@Slf4j
+@Service
+public class ${classebase}ServiceImpl implements ${classebase}Service
+{
+    @Autowired private ${classebase}Repository ${lclassebase}Repository;
+
+    @Override
+    @Transactional(transactionManager="${projeto}transactionManager",
+        propagation = Propagation.REQUIRED,
+        rollbackFor = Throwable.class,
+        noRollbackFor = ${classebase}NotFoundException.class
+    )
+    public void delete(Long id) {
+        log.info("Deletando ${classebase} com id = {}", id);
+        Optional<${classebase}> ${lclassebase}Data =
+            Optional.ofNullable(${lclassebase}Repository.findById(id)
+                .orElseThrow(
+                    () -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + String.valueOf(id),
+                        HttpStatus.NOT_FOUND,
+                        "${classebase} não encontrada com id = " + String.valueOf(id)))
+                    );
+        ${lclassebase}Repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(transactionManager="${projeto}transactionManager",
+        propagation = Propagation.REQUIRED,
+        rollbackFor = Throwable.class,
+        noRollbackFor = ${classebase}NotFoundException.class
+    )
+    public ${classebase}DTO salvar(${classebase}DTO ${lclassebase}DTO) {
+        Date now = new Date();
+        if(Objects.nonNull(${lclassebase}DTO.getId()) && ${lclassebase}DTO.getId() != 0) {
+            ${lclassebase}DTO.setDateUpdated(now);
+        } else {
+            ${lclassebase}DTO.setStatus(GenericStatusEnums.PENDENTE.getShortValue());
+            ${lclassebase}DTO.setDateCreated(now);
+            ${lclassebase}DTO.setDateUpdated(now);
+        }
+        return this.toDTO(${lclassebase}Repository.save(this.toEntity(${lclassebase}DTO)));
+    }
+
+    @Override
+    @Transactional(transactionManager="${projeto}transactionManager",
+        propagation = Propagation.REQUIRED,
+        rollbackFor = Throwable.class,
+        noRollbackFor = ${classebase}NotFoundException.class
+    )
+    public ${classebase}DTO findById(Long id) {
+        Optional<${classebase}> ${lclassebase}Data =
+            Optional.ofNullable(${lclassebase}Repository.findById(id)
+                .orElseThrow(
+                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + String.valueOf(id),
+                    HttpStatus.NOT_FOUND,
+                    "${classebase} com id = " + String.valueOf(id) + " não encontrado."))
+                );
+
+        ${classebase}DTO response = this.toDTO(${lclassebase}Data.get());
+        response.setMensagemResponse(new MensagemResponse("MSG-0001","Comando foi executado com sucesso"));
+
+        return response;
+    }
+
+    @Override
+    @Transactional(transactionManager="${projeto}transactionManager",
+        propagation = Propagation.REQUIRED,
+        rollbackFor = Throwable.class,
+        noRollbackFor = ${classebase}NotFoundException.class
+    )
+    public boolean partialUpdate(Long id, Map<String, Object> updates) {
+
+        Optional<${classebase}> ${lclassebase}Data =
+            Optional.ofNullable(${lclassebase}Repository.findById(id)
+                .orElseThrow(
+                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + String.valueOf(id),
+                        HttpStatus.NOT_FOUND,
+                        "${classebase} com id = " + String.valueOf(id) + " não encontrado."))
+                    );
+        if (${lclassebase}Data.isPresent()) {
+            ${classebase} ${lclassebase} = ${lclassebase}Data.get();
+
+            for (Map.Entry<String,Object> entry : updates.entrySet()) {
+#include static/inc/service-impl-method-partial-update.inc
+            if(updates.get(${classebase}Constantes.DATEUPDATED) == null) ${lclassebase}.setDateUpdated(new Date());
+            ${lclassebase}Repository.save(${lclassebase});
+            return true;
+        }
+        return false;
+    }
+        return false;
+    }
+
+
+
+
+    @Override
+    @Transactional(transactionManager="${projeto}transactionManager",
+        propagation = Propagation.REQUIRED,
+        rollbackFor = Throwable.class,
+        noRollbackFor = ${classebase}NotFoundException.class
+    )
+    public ${classebase}DTO updateStatusById(Long id, String status) {
+        Optional<${classebase}> ${lclassebase}Data =
+            Optional.ofNullable( ${lclassebase}Repository.findById(id)
+                .orElseThrow(() -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + String.valueOf(id),
+                    HttpStatus.NOT_FOUND,
+                    "${classebase} não encontrada com id = " + String.valueOf(id)))
+                );
+        ${classebase} ${lclassebase} = ${lclassebase}Data.isPresent() ? ${lclassebase}Data.get() : new ${classebase}();
+        ${lclassebase}.setStatus(status);
+        ${lclassebase}.setDateUpdated(new Date());
+        return toDTO(${lclassebase}Repository.save(${lclassebase}));
+
+    }
+
+    @Override
+    public List<${classebase}DTO> findAllByStatus(String status) {
+        List<${classebase}DTO> lst${classebase}DTO = new ArrayList<>();
+        return ${lclassebase}Repository.findAllByStatus(status)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+@Override
+@Transactional(transactionManager="${projeto}transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = ${classebase}NotFoundException.class
+)
+public Map<String, Object> findPageByFilter(RequestFilter filtro) {
+    List<${classebase}> lst${classebase} = new ArrayList<>();
+#include static/inc/service-impl-method-findPageByFilter.inc
+
+    for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
+#include static/inc/service-impl-method-findPageByFilter-for.inc
+    }
+
+    Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
+    Page<${classebase}> pagina${classebase} = ${lclassebase}Repository.find${classebase}ByFilter(paging,
+#include static/inc/service-impl-method-findPageByFilter-page.inc && excludeCharAtBeginFromFirstField[,]
+    );
+
+    lst${classebase} = pagina${classebase}.getContent();
+    Map<String,Object> response = new HashMap<>();
+    response.put("currentPage", pagina${classebase}.getNumber());
+    response.put("totalItems", pagina${classebase}.getTotalElements());
+    response.put("totalPages", pagina${classebase}.getTotalPages());
+    response.put("page${classebase}Items", lst${classebase}.stream().map(m->toDTO(m)).collect(Collectors.toList()));
+    return response;
+}
+
+
+    @Override
+@Transactional(transactionManager="${projeto}transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = ${classebase}NotFoundException.class
+)
+    public List<${classebase}DTO> findAllByFilter(RequestFilter filtro) {
+#include static/inc/service-impl-method-findAllByFilter.inc
+        for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
+#include static/inc/service-impl-method-findAllByFilter-for.inc
+        }
+
+        List<${classebase}> lst${classebase} = ${lclassebase}Repository.find${classebase}ByFilter(
+#include static/inc/service-impl-method-findAllByFilter-list.inc && excludeCharAtBeginFromFirstField[,]
+        );
+
+        return lst${classebase}.stream().map(m->toDTO(m)).collect(Collectors.toList());
+    }
+
+#include static/inc/service-impl-method-findAllModelByFieldAndStatus-list.inc && excludeFields[status]
+#include static/inc/service-impl-method-findModelByFieldAndStatus-list.inc && excludeFields[status]
+#include static/inc/service-impl-method-updateFieldById.inc && excludeFields[id,status]
+
+    public ${classebase}DTO toDTO(${classebase} ${lclassebase}) {
+        ${classebase}DTO ${lclassebase}DTO = new ${classebase}DTO();
+#include static/inc/service-impl-method-ToDTO.inc
+        return ${lclassebase}DTO;
+    }
+
+    public ${classebase} toEntity(${classebase}DTO ${lclassebase}DTO) {
+        ${classebase} ${lclassebase} = null;
+        ${lclassebase} = new ${classebase}();
+#include static/inc/service-impl-method-ToEntity.inc
+        return ${lclassebase};
+    }
+}

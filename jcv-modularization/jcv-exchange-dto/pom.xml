@@ -4,20 +4,19 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>br.com.jcv.commons.modularization</groupId>
-		<artifactId>commons-modular</artifactId>
+		<groupId>br.com.jcv</groupId>
+		<artifactId>modular-build</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>br.com.jcv.exchange</groupId>
 	<artifactId>exchange-dto</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>${jcv-exchange-dto.version}</version>
 	<name>exchange-dto</name>
 	<description>Exchange DTO between services</description>
 
 	<build>
-		<finalName>exchange-dto</finalName>
+		<finalName>exchange-dto${jcv-exchange-dto.version}</finalName>
 	</build>
 
 </project>

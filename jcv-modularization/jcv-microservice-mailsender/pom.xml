@@ -4,20 +4,19 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>br.com.jcv.commons.modularization</groupId>
-		<artifactId>commons-modular</artifactId>
+		<groupId>br.com.jcv</groupId>
+		<artifactId>modular-build</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>br.com.jcv.mailsender</groupId>
 	<artifactId>microservice-mailsender</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${jcv-microservice-mailsender.version}</version>
 	<name>microservice-mailsender</name>
 	<description>Microservice for mail sender</description>
 
 	<build>
-		<finalName>microservice-mailsender</finalName>
+		<finalName>microservice-mailsender-${jcv-microservice-mailsender.version}</finalName>
 	</build>
 
 </project>
