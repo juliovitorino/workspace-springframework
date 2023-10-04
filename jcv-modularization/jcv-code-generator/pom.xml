@@ -1,52 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
-		<groupId>br.com.jcv</groupId>
-		<artifactId>modular-build</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>br.com.jcv.codegen</groupId>
 	<artifactId>jcv-code-generator</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.1-RELEASE</version>
 	<name>jcv-code-generator</name>
 	<description>Code Generator for Spring Boot</description>
 
+	<properties>
+		<!-- outras versoes de dependencias comuns a todos os modulos do projeto ms -->
+		<java.version>11</java.version>
+		<spring-cloud.version>2021.0.8</spring-cloud.version>
+		<com.google.code.gson.version>2.10.1</com.google.code.gson.version>
+		<springdoc-openapi-ui.version>1.6.8</springdoc-openapi-ui.version>
+		<lombok.version>1.18.22</lombok.version>
+	</properties>
+
 	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${com.google.code.gson.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- Database (H2) -->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.185</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-
-        <!-- DataSource (HikariCP)
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>2.2.5</version>
-        </dependency>
--->
-
-
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<version>3.2.1</version>
+		</dependency>
 
 	</dependencies>
+
+
+	<!-- If you want only to download dependencies from Sonatype Nexus, put this in the pom.xml: -->
+	<repositories>
+		<repository>
+			<id>maven-group</id>
+			<url>http://localhost:8081/repository/ms-maven-proxy/</url>
+		</repository>
+		<!--
+        <repository>
+            <id>local-repository</id>
+            <url>file://Users/juliovitorino/.m2/repository</url>
+        </repository>
+        -->
+	</repositories>
+
+
+	<!-- And if you want also to publish (deploy) your project, it happens when mvn deploy command  -->
+	<!-- the id tags are referenced at settings.xml to get user and password -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>jcv-nexus-snapshots</id>
+			<url>http://localhost:8081/repository/jcv-maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>jcv-nexus-releases</id>
+			<url>http://localhost:8081/repository/jcv-maven-releases/</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
-		<finalName>jcv-code-generator-${jcv-code-generator.version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
