@@ -20,6 +20,7 @@
 
     <modules>
         <module>jcv-commons-library</module>
+        <module>jcv-code-generator</module>
         <module>jcv-exchange-dto</module>
         <module>jcv-environment-config</module>
         <module>jcv-code-generator</module>
@@ -33,6 +34,7 @@
     <properties>
         <!-- controle das versoes dos microservicos do projeto -->
         <jcv-microservice-template.version>1.0.0-SNAPSHOT</jcv-microservice-template.version>
+        <jcv-code-generator.version>1.0.0</jcv-code-generator.version>
         <jcv-microservice-seglog.version>1.0.0-SNAPSHOT</jcv-microservice-seglog.version>
         <jcv-microservice-mailsender.version>1.0.0-SNAPSHOT</jcv-microservice-mailsender.version>
         <jcv-microservice-invoice-manager.version>1.0.0-SNAPSHOT</jcv-microservice-invoice-manager.version>
