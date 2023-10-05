@@ -14,14 +14,19 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -45,9 +50,20 @@ public abstract class AbstractCodeGenerator {
     @Autowired protected ResourceLoader resourceLoader;
 
     protected void readTemplate(String template, StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO){
-        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + template);
+//        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + template);
         try {
-            Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
+            ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
+//            Resource[] allResources = resourcePatResolver.getResources("classpath*:static/*.template");
+            Resource[] allResources = resourcePatResolver.getResources("classpath*:" + template);
+            if(allResources.length == 0) {
+                throw new FileNotFoundException("The file named as " + template + " not found in JAR file. Check it out!");
+            }
+            if(allResources.length > 1) {
+                throw new RuntimeException("There are " + String.valueOf(allResources.length) + " of " + template + ". Only must be one!");
+            }
+
+            InputStream isTemplate = allResources[0].getInputStream();
+            Scanner scannerFileTemplate = new Scanner(isTemplate);
             while( scannerFileTemplate.hasNextLine()) {
                 final String line = scannerFileTemplate.nextLine();
                 boolean isIncludeTag = line.indexOf(INCLUDE) == 0 ;
@@ -163,9 +179,20 @@ public abstract class AbstractCodeGenerator {
 
     protected StringBuffer readFile(String filePath) {
         StringBuffer sb = new StringBuffer();
-        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + filePath);
+//        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + filePath);
+
         try {
-            Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
+            ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
+            Resource[] allResources = resourcePatResolver.getResources("classpath*:" + filePath);
+            if(allResources.length == 0) {
+                throw new FileNotFoundException("The file named as " + filePath + " not found in JAR file. Check it out!");
+            }
+            if(allResources.length > 1) {
+                throw new RuntimeException("There are " + String.valueOf(allResources.length) + " of " + filePath + ". Only must be one!");
+            }
+
+            InputStream isTemplate = allResources[0].getInputStream();
+            Scanner scannerFileTemplate = new Scanner(isTemplate);
             while( scannerFileTemplate.hasNextLine()) {
                 sb.append(scannerFileTemplate.nextLine());
                 sb.append(System.getProperty("line.separator"));
