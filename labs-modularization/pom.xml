@@ -20,6 +20,7 @@
 
   <modules>
     <module>labs-microservice-a</module>
+    <module>death-agreement</module>
 
   </modules>
 
@@ -59,19 +60,19 @@
       <version>${com.google.code.gson.version}</version>
     </dependency>
 
-    <!-- DEPENDENCIA DO ACTUATOR PARA MMONITORAR MICROSERVICO DE DENTRO DO EURIKA -->
+    <!-- DEPENDENCIA DO ACTUATOR PARA MMONITORAR MICROSERVICO DE DENTRO DO EURIKA
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-
-    <!-- DEPENDENCIA DO OPEN API, SWAGGER -->
+-->
+    <!-- DEPENDENCIA DO OPEN API, SWAGGER
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
       <version>${springdoc-openapi-ui.version}</version>
     </dependency>
-
+-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>

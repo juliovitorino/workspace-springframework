@@ -1,4 +1,4 @@
-package br.com.jcv.commons.library.constantes;
+package br.com.jcv.commons.library.commodities.constantes;
 
 public class MensagemConstantes {
     public static final String MSGCODE = "msgcode";

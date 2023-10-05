@@ -35,7 +35,7 @@ import java.util.Map;
 * All classes should be implement this class for commodities method
 *
 * @author Bet
-* @since Thu Oct 05 10:13:31 BRT 2023
+* @since Thu Oct 05 10:14:13 BRT 2023
 */
 public interface CommoditieBaseService<DTO extends DTOPadrao, Model> {
   void delete(Long id);

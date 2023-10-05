@@ -1,4 +1,4 @@
-package br.com.jcv.commons.library.constantes;
+package br.com.jcv.commons.library.commodities.constantes;
 
 public class GenericConstantes {
   public static final String DATE_FMT_TMZ = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";

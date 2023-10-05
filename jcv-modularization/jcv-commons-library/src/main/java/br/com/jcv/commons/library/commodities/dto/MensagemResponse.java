@@ -19,17 +19,32 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.constantes;
+package br.com.jcv.commons.library.commodities.dto;
 
-public class RegexConstantes {
-    public static String REGEX_EMAIL = "([A-Za-z0-9_.\\-])+@([A-Za-z0-9_])+\\.([A-Za-z])+\\.?([A-Za-z]){2}";
-    public static String REGEX_CPF = "[0-9]{3}(\\.[0-9]{3}){2}-[0-9]{2}";
-    public static String REGEX_ANYTHING = ".*";
-    public static String REGEX_ANYTHING_NOT_EMPTY = ".+";
-    public static String REGEX_INTEGER_POSITIVE = "[0-9]+";
-    public static String REGEX_INTEGER_NEGATIVE = "[-][0-9]+";
-    public static String REGEX_REAL_ONLY_POSITIVE = "[+\\s]?[0-9]+\\[.,]?[0-9]*";
-    public static String REGEX_REAL_ONLY_NEGATIVE = "[-][0-9]+\\[.,]?[0-9]*";
-    public static String REGEX_REAL_POSITIVE_OR_NEGATIVE = "[-+\\s]?[0-9]+\\[.,]?[0-9]*";
-    public static String REGEX_URL = "(http[s]?|s3|ftp|www\\.)?(://)?[a-z_/0-9\\-#=&.]+:?[0-9]{0,5}/?.*";
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
+import lombok.*;
+
+import java.io.Serializable;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class MensagemResponse implements Serializable {
+  @SerializedName(MensagemConstantes.MSGCODE)
+  @JsonProperty(MensagemConstantes.MSGCODE)
+  private String msgcode;
+
+  @SerializedName(MensagemConstantes.MENSAGEM)
+  @JsonProperty(MensagemConstantes.MENSAGEM)
+  private String mensagem;
+
 }

@@ -53,7 +53,7 @@ import javax.validation.Valid;
 * BetController - Controller for Bet API
 *
 * @author Bet
-* @since Thu Oct 05 10:13:31 BRT 2023
+* @since Thu Oct 05 10:14:13 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 

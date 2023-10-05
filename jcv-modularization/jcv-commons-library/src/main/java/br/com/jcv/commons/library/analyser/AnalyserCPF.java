@@ -1,12 +1,11 @@
 package br.com.jcv.commons.library.analyser;
 
-import br.com.jcv.commons.library.constantes.GenericConstantes;
-import br.com.jcv.commons.library.constantes.RegexConstantes;
+import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
+import br.com.jcv.commons.library.commodities.constantes.RegexConstantes;
 import br.com.jcv.commons.library.exception.AnalyserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.Inherited;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

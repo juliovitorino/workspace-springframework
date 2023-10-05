@@ -1,4 +1,4 @@
-package br.com.jcv.commons.library.constantes;
+package br.com.jcv.commons.library.commodities.constantes;
 
 public class RegexConstantes {
     public static String REGEX_EMAIL = "([A-Za-z0-9_.\\-])+@([A-Za-z0-9_])+\\.([A-Za-z])+\\.?([A-Za-z]){2}";

@@ -13,7 +13,7 @@
 
 	<groupId>br.com.jcv.codegen</groupId>
 	<artifactId>jcv-code-generator</artifactId>
-	<version>1.0.1-RELEASE</version>
+	<version>1.0.2-RELEASE</version>
 	<name>jcv-code-generator</name>
 	<description>Code Generator for Spring Boot</description>
 
@@ -67,12 +67,6 @@
 			<id>maven-group</id>
 			<url>http://localhost:8081/repository/ms-maven-proxy/</url>
 		</repository>
-		<!--
-        <repository>
-            <id>local-repository</id>
-            <url>file://Users/juliovitorino/.m2/repository</url>
-        </repository>
-        -->
 	</repositories>
 
 

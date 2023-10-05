@@ -19,7 +19,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.dto;
+package br.com.jcv.commons.library.commodities.dto;
 
 import java.io.Serializable;
 import java.util.Collections;

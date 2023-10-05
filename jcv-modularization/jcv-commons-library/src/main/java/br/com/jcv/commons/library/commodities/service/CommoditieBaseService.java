@@ -1,7 +1,7 @@
 package br.com.jcv.commons.library.commodities.service;
 
-import br.com.jcv.commons.library.commodities.RequestFilter;
 import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 
 import java.util.List;
 import java.util.Map;
@@ -35,57 +35,3 @@ public interface CommoditieBaseService<DTO extends DTOPadrao, Model> {
   public DTO toDTO(Model model);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
