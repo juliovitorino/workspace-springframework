@@ -2,6 +2,8 @@
 
 package ${package}.exception;
 
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import java.util.Map;

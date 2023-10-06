@@ -1,4 +1,4 @@
-package br.com.jcv.commons.library.analyser;
+package br.com.jcv.commons.library.commodities.analyser;
 
 public interface IAnalyser<Input>{
     public void execute(Input input);

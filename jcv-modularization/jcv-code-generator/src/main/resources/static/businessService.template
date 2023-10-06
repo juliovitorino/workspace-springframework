@@ -1,6 +1,6 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
-package ${package}.interfaces;
+package br.com.jcv.commons.library.commodities.service;
 
 import java.util.UUID;
 public interface BusinessService<Input, Output> {

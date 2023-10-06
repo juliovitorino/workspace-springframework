@@ -25,15 +25,17 @@ package com.jwick.continental.deathagreement.constantes;
 * BetConstantes - Constantes para geral das Entity e DTO
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
-* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
+* @since Fri Oct 06 10:33:15 BRT 2023
 */
 
 public class BetConstantes
 {
 
     public static final String ID = "id";
-    public static final String BOUNTY = "bounty";
+    public static final String IDPUNTER = "idPunter";
+    public static final String IDBETOBJECT = "idBetObject";
+    public static final String BET = "bet";
+    public static final String BITCOINADDRESS = "bitcoinAddress";
     public static final String STATUS = "status";
     public static final String DATECREATED = "dateCreated";
     public static final String DATEUPDATED = "dateUpdated";

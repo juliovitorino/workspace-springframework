@@ -19,7 +19,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.interfaces;
+package br.com.jcv.commons.library.commodities.service;
 
 import java.util.UUID;
 public interface BusinessService<Input, Output> {

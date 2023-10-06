@@ -2,22 +2,26 @@
 
 package ${package}.service.impl;
 
-import java.text.SimpleDateFormat;
-import ${package}.constantes.GenericConstantes;
-import ${package}.dto.MensagemResponse;
-import ${package}.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+
 import ${package}.dto.${classebase}DTO;
 import ${package}.model.${classebase};
 import ${package}.constantes.${classebase}Constantes;
-import ${package}.dto.RequestFilter;
 import ${package}.repository.${classebase}Repository;
 import ${package}.service.${classebase}Service;
 import ${package}.exception.${classebase}NotFoundException;
+
+import java.text.SimpleDateFormat;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino
 */
 
 

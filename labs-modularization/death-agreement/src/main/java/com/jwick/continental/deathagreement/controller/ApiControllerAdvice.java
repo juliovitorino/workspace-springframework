@@ -21,8 +21,8 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.controller;
 
-import com.jwick.continental.deathagreement.dto.GenericErrorResponse;
-import com.jwick.continental.deathagreement.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.commodities.dto.GenericErrorResponse;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
-public class ApiBetControllerAdvice {
+public class ApiControllerAdvice {
     @ResponseBody
     @ExceptionHandler({CommoditieBaseException.class})
     public ResponseEntity<GenericErrorResponse<Map<String, ? extends Serializable>>> handle(CommoditieBaseException e) {

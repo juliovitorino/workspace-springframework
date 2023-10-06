@@ -2,13 +2,15 @@
 
 package ${package}.controller;
 
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+
 import ${package}.dto.${classebase}DTO;
 import ${package}.service.${classebase}Service;
-import ${package}.dto.RequestFilter;
 import ${package}.exception.${classebase}NotFoundException;
-import ${package}.exception.CommoditieBaseException;
-import ${package}.enums.GenericStatusEnums;
 import ${package}.constantes.${classebase}Constantes;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +37,6 @@ import javax.validation.Valid;
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino
 */
 
 @Slf4j

@@ -21,13 +21,15 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.controller;
 
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.service.BetService;
-import com.jwick.continental.deathagreement.dto.RequestFilter;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
-import com.jwick.continental.deathagreement.exception.CommoditieBaseException;
-import com.jwick.continental.deathagreement.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,8 +55,7 @@ import javax.validation.Valid;
 * BetController - Controller for Bet API
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
-* @copyright(c), Julio Vitorino
+* @since Fri Oct 06 10:33:15 BRT 2023
 */
 
 @Slf4j
@@ -288,10 +289,70 @@ public class BetController
             @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
-    @GetMapping(params = "bounty")
-    public ResponseEntity<BetDTO> findBetByBounty(@RequestParam(BetConstantes.BOUNTY) Double bounty) {
+    @GetMapping(params = "idPunter")
+    public ResponseEntity<BetDTO> findBetByIdPunter(@RequestParam(BetConstantes.IDPUNTER) Long idPunter) {
         try{
-            BetDTO betDTO = betService.findBetByBountyAndStatus(bounty, GenericStatusEnums.ATIVO.getShortValue());
+            BetDTO betDTO = betService.findBetByIdPunterAndStatus(idPunter, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(betDTO)
+                ? new ResponseEntity<>(betDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BetNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(CommoditieBaseException e) {
+            return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
+        } catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
+    })
+    @GetMapping(params = "idBetObject")
+    public ResponseEntity<BetDTO> findBetByIdBetObject(@RequestParam(BetConstantes.IDBETOBJECT) Long idBetObject) {
+        try{
+            BetDTO betDTO = betService.findBetByIdBetObjectAndStatus(idBetObject, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(betDTO)
+                ? new ResponseEntity<>(betDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BetNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(CommoditieBaseException e) {
+            return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
+        } catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
+    })
+    @GetMapping(params = "bet")
+    public ResponseEntity<BetDTO> findBetByBet(@RequestParam(BetConstantes.BET) Double bet) {
+        try{
+            BetDTO betDTO = betService.findBetByBetAndStatus(bet, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(betDTO)
+                ? new ResponseEntity<>(betDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BetNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(CommoditieBaseException e) {
+            return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
+        } catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
+    })
+    @GetMapping(params = "bitcoinAddress")
+    public ResponseEntity<BetDTO> findBetByBitcoinAddress(@RequestParam(BetConstantes.BITCOINADDRESS) String bitcoinAddress) {
+        try{
+            BetDTO betDTO = betService.findBetByBitcoinAddressAndStatus(bitcoinAddress, GenericStatusEnums.ATIVO.getShortValue());
             return Objects.nonNull(betDTO)
                 ? new ResponseEntity<>(betDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

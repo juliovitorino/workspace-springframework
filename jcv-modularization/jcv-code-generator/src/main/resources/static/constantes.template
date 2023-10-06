@@ -7,7 +7,6 @@ package ${package}.constantes;
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 
 public class ${classebase}Constantes

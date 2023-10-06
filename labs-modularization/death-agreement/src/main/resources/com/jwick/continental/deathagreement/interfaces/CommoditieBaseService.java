@@ -19,10 +19,10 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.interfaces;
+package br.com.jcv.commons.library.commodities.service;
 
-import com.jwick.continental.deathagreement.dto.RequestFilter;
-import com.jwick.continental.deathagreement.dto.DTOPadrao;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,7 @@ import java.util.Map;
 * All classes should be implement this class for commodities method
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
+* @since Fri Oct 06 10:33:15 BRT 2023
 */
 public interface CommoditieBaseService<DTO extends DTOPadrao, Model> {
   void delete(Long id);

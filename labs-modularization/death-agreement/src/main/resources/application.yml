@@ -2,4 +2,7 @@ spring:
   application:
     name: death-bet-agreement
 
-
+# resolver problema no swagger 'documentationPluginsBootstrapper'
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

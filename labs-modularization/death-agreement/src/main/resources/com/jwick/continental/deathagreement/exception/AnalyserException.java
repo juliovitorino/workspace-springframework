@@ -19,7 +19,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.exception;
+package br.com.jcv.commons.library.commodities.exception;
 
 import org.springframework.http.HttpStatus;
 
