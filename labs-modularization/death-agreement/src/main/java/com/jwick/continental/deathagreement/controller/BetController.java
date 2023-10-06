@@ -53,7 +53,7 @@ import javax.validation.Valid;
 * BetController - Controller for Bet API
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
+* @since Fri Oct 06 08:29:02 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
@@ -288,10 +288,10 @@ public class BetController
             @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
-    @GetMapping(params = "bounty")
-    public ResponseEntity<BetDTO> findBetByBounty(@RequestParam(BetConstantes.BOUNTY) Double bounty) {
+    @GetMapping(params = "bet")
+    public ResponseEntity<BetDTO> findBetByBet(@RequestParam(BetConstantes.BET) Double bet) {
         try{
-            BetDTO betDTO = betService.findBetByBountyAndStatus(bounty, GenericStatusEnums.ATIVO.getShortValue());
+            BetDTO betDTO = betService.findBetByBetAndStatus(bet, GenericStatusEnums.ATIVO.getShortValue());
             return Objects.nonNull(betDTO)
                 ? new ResponseEntity<>(betDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

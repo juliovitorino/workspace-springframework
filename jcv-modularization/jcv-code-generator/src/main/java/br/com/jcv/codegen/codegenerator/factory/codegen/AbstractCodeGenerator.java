@@ -300,6 +300,11 @@ public abstract class AbstractCodeGenerator {
         final String schemap = codegen.getSchema() != null && !codegen.getSchema().isEmpty()
                 ? codegen.getSchema().concat(".")
                 : ""  ;
+        final FieldDescriptor fieldStatus = codegen.getFieldDescriptorList()
+                .stream()
+                .filter(fieldItem -> fieldItem.getFieldName().equals("status"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("changeTagsUsing :: There is no field [status] definded in Model " + codegen.getBaseClass()));
         final FieldDescriptor fieldPK = codegen.getFieldDescriptorList()
                 .stream()
                 .filter(FieldDescriptor::isPrimaryKey)
@@ -308,6 +313,7 @@ public abstract class AbstractCodeGenerator {
         log.debug("changeTagsUsing :: PK => {}", gson.toJson(fieldPK));
 
         String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+        newContent = newContent.replaceAll(CodeGeneratorTags.STATUS_CAMPO.getTag(), fieldStatus.getFieldTableName());
         newContent = newContent.replaceAll(CodeGeneratorTags.PROJETO.getTag(), codegen.getProject());
         newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
         newContent = newContent.replaceAll(CodeGeneratorTags.AUTOR.getTag(), codegen.getBaseClass());
@@ -323,6 +329,7 @@ public abstract class AbstractCodeGenerator {
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
         if(field != null) {
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+            newContent = newContent.replaceAll(CodeGeneratorTags.STATUS_CAMPO.getTag(), fieldStatus.getFieldTableName());
             newContent = newContent.replaceAll(CodeGeneratorTags.PROJETO.getTag(), codegen.getProject());
             newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
             newContent = newContent.replaceAll(CodeGeneratorTags.AUTOR.getTag(), codegen.getBaseClass());

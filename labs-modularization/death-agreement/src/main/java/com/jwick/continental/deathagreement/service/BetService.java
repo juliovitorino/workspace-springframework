@@ -35,7 +35,7 @@ import java.util.Date;
 * BetService - Interface for Bet
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
+* @since Fri Oct 06 08:29:02 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
@@ -43,19 +43,19 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
 {
     BetDTO findBetByIdAndStatus(Long id);
     BetDTO findBetByIdAndStatus(Long id, String status);
-    BetDTO findBetByBountyAndStatus(Double bounty);
-    BetDTO findBetByBountyAndStatus(Double bounty, String status);
+    BetDTO findBetByBetAndStatus(Double bet);
+    BetDTO findBetByBetAndStatus(Double bet, String status);
     BetDTO findBetByDateCreatedAndStatus(Date dateCreated);
     BetDTO findBetByDateCreatedAndStatus(Date dateCreated, String status);
     BetDTO findBetByDateUpdatedAndStatus(Date dateUpdated);
     BetDTO findBetByDateUpdatedAndStatus(Date dateUpdated, String status);
 
     List<BetDTO> findAllBetByIdAndStatus(Long id, String status);
-    List<BetDTO> findAllBetByBountyAndStatus(Double bounty, String status);
+    List<BetDTO> findAllBetByBetAndStatus(Double bet, String status);
     List<BetDTO> findAllBetByDateCreatedAndStatus(Date dateCreated, String status);
     List<BetDTO> findAllBetByDateUpdatedAndStatus(Date dateUpdated, String status);
 
-    BetDTO updateBountyById(Long id, Double bounty);
+    BetDTO updateBetById(Long id, Double bet);
     BetDTO updateStatusById(Long id, String status);
     BetDTO updateDateCreatedById(Long id, Date dateCreated);
     BetDTO updateDateUpdatedById(Long id, Date dateUpdated);

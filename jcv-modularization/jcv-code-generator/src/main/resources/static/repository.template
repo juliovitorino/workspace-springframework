@@ -31,7 +31,7 @@ import java.util.Date;
 @Repository
 public interface ${classebase}Repository extends JpaRepository<${classebase}, Long>
 {
-    @Query(value = "SELECT * FROM ${schemap}${tabela} WHERE  IN_STATUS = :status", nativeQuery = true)
+    @Query(value = "SELECT * FROM ${schemap}${tabela} WHERE  ${campostatus} = :status", nativeQuery = true)
     List<${classebase}> findAllByStatus(@Param(${classebase}Constantes.STATUS) String status);
 
 @Query(value = "SELECT * FROM ${schemap}${tabela} WHERE 1=1 " +

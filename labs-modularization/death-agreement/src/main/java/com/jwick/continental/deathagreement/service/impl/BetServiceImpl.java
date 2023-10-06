@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 * BetServiceImpl - Implementation for Bet interface
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
+* @since Fri Oct 06 08:29:02 BRT 2023
 * @copyright(c), Julio Vitorino
 */
 
@@ -138,7 +138,7 @@ public class BetServiceImpl implements BetService
 
             for (Map.Entry<String,Object> entry : updates.entrySet()) {
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) bet.setId((Long)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetConstantes.BOUNTY)) bet.setBounty((Double)entry.getValue());
+                if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet.setBet((Double)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) bet.setStatus((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) bet.setDateCreated((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) bet.setDateUpdated((Date)entry.getValue());
@@ -193,7 +193,7 @@ public class BetServiceImpl implements BetService
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     List<Bet> lstBet = new ArrayList<>();
     Long id = null;
-    Double bounty = null;
+    Double bet = null;
     String status = null;
     Date dateCreated = null;
     Date dateUpdated = null;
@@ -201,7 +201,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
     for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
         if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.BOUNTY)) bounty = (Double) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = (Double) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = (String) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
@@ -211,7 +211,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
     Page<Bet> paginaBet = betRepository.findBetByFilter(paging,
         id
-        ,bounty
+        ,bet
         ,status
         ,dateCreated
         ,dateUpdated
@@ -236,14 +236,14 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 )
     public List<BetDTO> findAllByFilter(RequestFilter filtro) {
     Long id = null;
-    Double bounty = null;
+    Double bet = null;
     String status = null;
     Date dateCreated = null;
     Date dateUpdated = null;
 
         for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
         if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.BOUNTY)) bounty = (Double) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = (Double) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = (String) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
@@ -252,7 +252,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
         List<Bet> lstBet = betRepository.findBetByFilter(
             id
-            ,bounty
+            ,bet
             ,status
             ,dateCreated
             ,dateUpdated
@@ -277,8 +277,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
-    public List<BetDTO> findAllBetByBountyAndStatus(Double bounty, String status) {
-        return betRepository.findAllByBountyAndStatus(bounty, status).stream().map(this::toDTO).collect(Collectors.toList());
+    public List<BetDTO> findAllBetByBetAndStatus(Double bet, String status) {
+        return betRepository.findAllByBetAndStatus(bet, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override
     @Transactional(transactionManager="transactionManager",
@@ -336,16 +336,16 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
-    public BetDTO findBetByBountyAndStatus(Double bounty, String status) {
-        Long maxId = betRepository.loadMaxIdByBountyAndStatus(bounty, status);
+    public BetDTO findBetByBetAndStatus(Double bet, String status) {
+        Long maxId = betRepository.loadMaxIdByBetAndStatus(bet, status);
         if(maxId == null) maxId = 0L;
         Optional<Bet> betData =
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + bounty,
+                    () -> new BetNotFoundException("Bet não encontrada com id = " + bet,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com bounty = " + bounty))
+                        "Bet não encontrada com bet = " + bet))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -356,8 +356,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
-    public BetDTO findBetByBountyAndStatus(Double bounty) {
-        return this.findBetByBountyAndStatus(bounty, GenericStatusEnums.ATIVO.getShortValue());
+    public BetDTO findBetByBetAndStatus(Double bet) {
+        return this.findBetByBetAndStatus(bet, GenericStatusEnums.ATIVO.getShortValue());
     }
 
     @Override
@@ -425,9 +425,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     transactionManager = "transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class)
-    public BetDTO updateBountyById(Long id, Double bounty) {
+    public BetDTO updateBetById(Long id, Double bet) {
         findById(id);
-        betRepository.updateBountyById(id, bounty);
+        betRepository.updateBetById(id, bet);
         return findById(id);
     }
     @Override
@@ -455,7 +455,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public BetDTO toDTO(Bet bet) {
         BetDTO betDTO = new BetDTO();
                 betDTO.setId(bet.getId());
-                betDTO.setBounty(bet.getBounty());
+                betDTO.setBet(bet.getBet());
                 betDTO.setStatus(bet.getStatus());
                 betDTO.setDateCreated(bet.getDateCreated());
                 betDTO.setDateUpdated(bet.getDateUpdated());
@@ -467,7 +467,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         Bet bet = null;
         bet = new Bet();
                     bet.setId(betDTO.getId());
-                    bet.setBounty(betDTO.getBounty());
+                    bet.setBet(betDTO.getBet());
                     bet.setStatus(betDTO.getStatus());
                     bet.setDateCreated(betDTO.getDateCreated());
                     bet.setDateUpdated(betDTO.getDateUpdated());

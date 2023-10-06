@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum CodeGeneratorTags {
-
+    STATUS_CAMPO("\\$\\{campostatus\\}"),
     PROJECT("\\$\\{project\\}"),
     PROJETO("\\$\\{projeto\\}"),
     FIELD("\\$\\{field\\}"),

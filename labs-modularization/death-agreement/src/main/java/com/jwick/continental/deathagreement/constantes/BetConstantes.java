@@ -19,40 +19,23 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.dto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
-import lombok.*;
-import com.jwick.continental.deathagreement.constantes.BetConstantes;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
-import java.util.Date;
+package com.jwick.continental.deathagreement.constantes;
 
 /**
-* BetDTO - Data Transfer Object
+* BetConstantes - Constantes para geral das Entity e DTO
 *
 * @author Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
+* @since Fri Oct 06 08:29:02 BRT 2023
 * @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@Builder
-@EqualsAndHashCode
-@ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class BetDTO extends DTOPadrao implements Serializable
+public class BetConstantes
 {
 
-    @SerializedName(BetConstantes.BOUNTY)
-    @JsonProperty(BetConstantes.BOUNTY)
-    private Double bounty;
+    public static final String ID = "id";
+    public static final String BET = "bet";
+    public static final String STATUS = "status";
+    public static final String DATECREATED = "dateCreated";
+    public static final String DATEUPDATED = "dateUpdated";
 
-
-    @SerializedName("mensagemResponse")
-    @JsonProperty("mensagemResponse")
-    private MensagemResponse mensagemResponse;
 }

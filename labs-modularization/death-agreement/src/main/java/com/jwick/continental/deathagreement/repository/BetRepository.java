@@ -44,26 +44,26 @@ import java.util.Date;
 * Changelog:
 *
 * @autor Bet
-* @since Thu Oct 05 10:14:13 BRT 2023
+* @since Fri Oct 06 08:29:02 BRT 2023
 *
 */
 @Repository
 public interface BetRepository extends JpaRepository<Bet, Long>
 {
-    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE  IN_STATUS = :status", nativeQuery = true)
+    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE  status = :status", nativeQuery = true)
     List<Bet> findAllByStatus(@Param(BetConstantes.STATUS) String status);
 
 @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE 1=1 " +
         "AND (:id = '' OR id = :id) " +
-        "AND (:bounty = '' OR bounty = :bounty) " +
-        "AND (:status = '' OR in_status = :status) " +
+        "AND (:bet = '' OR bet = :bet) " +
+        "AND (:status = '' OR status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
         "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
 
         , nativeQuery = true)
 Page<Bet> findBetByFilter(Pageable pageable,
         @Param(BetConstantes.ID) Long id,
-        @Param(BetConstantes.BOUNTY) Double bounty,
+        @Param(BetConstantes.BET) Double bet,
         @Param(BetConstantes.STATUS) String status,
         @Param(BetConstantes.DATECREATED) Date dateCreated,
         @Param(BetConstantes.DATEUPDATED) Date dateUpdated
@@ -72,36 +72,36 @@ Page<Bet> findBetByFilter(Pageable pageable,
 
 @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE 1=1 " +
         "AND (:id = '' OR id = :id) " +
-        "AND (:bounty = '' OR bounty = :bounty) " +
-        "AND (:status = '' OR in_status = :status) " +
+        "AND (:bet = '' OR bet = :bet) " +
+        "AND (:status = '' OR status = :status) " +
         "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
         "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
 
         , nativeQuery = true)
 List<Bet> findBetByFilter(
         @Param(BetConstantes.ID) Long id,
-        @Param(BetConstantes.BOUNTY) Double bounty,
+        @Param(BetConstantes.BET) Double bet,
         @Param(BetConstantes.STATUS) String status,
         @Param(BetConstantes.DATECREATED) Date dateCreated,
         @Param(BetConstantes.DATEUPDATED) Date dateUpdated
 
 );
 
-     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id AND IN_STATUS = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE bounty = :bounty AND IN_STATUS = :status ", nativeQuery = true)
-     Long loadMaxIdByBountyAndStatus(Double bounty, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated AND IN_STATUS = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE bet = :bet AND status = :status ", nativeQuery = true)
+     Long loadMaxIdByBetAndStatus(Double bet, String status);
+     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateUpdated = :dateUpdated AND IN_STATUS = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateUpdated = :dateUpdated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
      @Modifying
-     @Query(value = "UPDATE com.jwick.continental.deathagreement.model.Bet SET bounty = :bounty, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
-     void updateBountyById(@Param("id") Long id, @Param(BetConstantes.BOUNTY) Double bounty);
+     @Query(value = "UPDATE com.jwick.continental.deathagreement.model.Bet SET bet = :bet, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     void updateBetById(@Param("id") Long id, @Param(BetConstantes.BET) Double bet);
      @Modifying
-     @Query(value = "UPDATE com.jwick.continental.deathagreement.model.Bet SET in_status = :status, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE com.jwick.continental.deathagreement.model.Bet SET status = :status, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(BetConstantes.STATUS) String status);
      @Modifying
      @Query(value = "UPDATE com.jwick.continental.deathagreement.model.Bet SET dateCreated = :dateCreated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
@@ -112,28 +112,28 @@ List<Bet> findBetByFilter(
 
 
      long countByIdAndStatus(Long id, String status);
-     long countByBountyAndStatus(Double bounty, String status);
+     long countByBetAndStatus(Double bet, String status);
      long countByDateCreatedAndStatus(Date dateCreated, String status);
      long countByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
-    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id AND  IN_STATUS = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByIdAndStatus(Long id, String status);
-    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE bounty = :bounty AND  IN_STATUS = :status) ", nativeQuery = true)
-    Optional<Bet> findByBountyAndStatus(Double bounty, String status);
-    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated AND  IN_STATUS = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE bet = :bet AND  status = :status) ", nativeQuery = true)
+    Optional<Bet> findByBetAndStatus(Double bet, String status);
+    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByDateCreatedAndStatus(Date dateCreated, String status);
-    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateUpdated = :dateUpdated AND  IN_STATUS = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = (SELECT MAX(id) AS maxid FROM com.jwick.continental.deathagreement.model.Bet WHERE dateUpdated = :dateUpdated AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
-     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id AND  IN_STATUS = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE bounty = :bounty AND  IN_STATUS = :status ", nativeQuery = true)
-     List<Bet> findAllByBountyAndStatus(Double bounty, String status);
-     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated AND  IN_STATUS = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE bet = :bet AND  status = :status ", nativeQuery = true)
+     List<Bet> findAllByBetAndStatus(Double bet, String status);
+     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE dateUpdated = :dateUpdated AND  IN_STATUS = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM com.jwick.continental.deathagreement.model.Bet WHERE dateUpdated = :dateUpdated AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
@@ -141,10 +141,10 @@ List<Bet> findBetByFilter(
     @Query(value = "DELETE FROM com.jwick.continental.deathagreement.model.Bet WHERE id = :id", nativeQuery = true)
     void deleteById(@Param(BetConstantes.ID) Long id);
     @Modifying
-    @Query(value = "DELETE FROM com.jwick.continental.deathagreement.model.Bet WHERE bounty = :bounty", nativeQuery = true)
-    void deleteByBounty(@Param(BetConstantes.BOUNTY) Double bounty);
+    @Query(value = "DELETE FROM com.jwick.continental.deathagreement.model.Bet WHERE bet = :bet", nativeQuery = true)
+    void deleteByBet(@Param(BetConstantes.BET) Double bet);
     @Modifying
-    @Query(value = "DELETE FROM com.jwick.continental.deathagreement.model.Bet WHERE in_status = :status", nativeQuery = true)
+    @Query(value = "DELETE FROM com.jwick.continental.deathagreement.model.Bet WHERE status = :status", nativeQuery = true)
     void deleteByStatus(@Param(BetConstantes.STATUS) String status);
     @Modifying
     @Query(value = "DELETE FROM com.jwick.continental.deathagreement.model.Bet WHERE dateCreated = :dateCreated", nativeQuery = true)

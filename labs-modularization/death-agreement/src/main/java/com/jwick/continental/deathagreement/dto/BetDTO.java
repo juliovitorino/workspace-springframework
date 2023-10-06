@@ -19,9 +19,40 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.interfaces;
+package com.jwick.continental.deathagreement.dto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import lombok.*;
+import com.jwick.continental.deathagreement.constantes.BetConstantes;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
+import java.util.Date;
 
-import java.util.UUID;
-public interface BusinessService<Input, Output> {
-    Output execute(UUID processId, Input input);
+/**
+* BetDTO - Data Transfer Object
+*
+* @author Bet
+* @since Fri Oct 06 08:29:02 BRT 2023
+* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
+*/
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class BetDTO extends DTOPadrao implements Serializable
+{
+
+    @SerializedName(BetConstantes.BET)
+    @JsonProperty(BetConstantes.BET)
+    private Double bet;
+
+
+    @SerializedName("mensagemResponse")
+    @JsonProperty("mensagemResponse")
+    private MensagemResponse mensagemResponse;
 }
