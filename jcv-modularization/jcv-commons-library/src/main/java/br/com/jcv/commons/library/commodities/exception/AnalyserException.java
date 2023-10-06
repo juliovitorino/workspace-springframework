@@ -1,4 +1,4 @@
-package br.com.jcv.commons.library.exception;
+package br.com.jcv.commons.library.commodities.exception;
 
 import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import org.springframework.http.HttpStatus;

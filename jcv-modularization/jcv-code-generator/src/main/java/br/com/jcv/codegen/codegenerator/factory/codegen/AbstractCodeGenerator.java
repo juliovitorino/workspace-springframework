@@ -233,7 +233,7 @@ public abstract class AbstractCodeGenerator {
             codegen.setTableName(tableAnnotation.name());
             codegen.setSchema(tableAnnotation.schema());
         } else {
-            codegen.setTableName(inputClassModel.getName());
+            codegen.setTableName(codegen.getBaseClass());
             codegen.setSchema(null);
         }
 

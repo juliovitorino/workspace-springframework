@@ -20,9 +20,13 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 package com.jwick.continental.deathagreement.dto;
+
+import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import lombok.*;
+
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
@@ -32,8 +36,7 @@ import java.util.Date;
 * BetDTO - Data Transfer Object
 *
 * @author Bet
-* @since Fri Oct 06 08:29:02 BRT 2023
-* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
+* @since Fri Oct 06 09:57:04 BRT 2023
 */
 
 @NoArgsConstructor
@@ -47,9 +50,21 @@ import java.util.Date;
 public class BetDTO extends DTOPadrao implements Serializable
 {
 
+    @SerializedName(BetConstantes.IDPUNTER)
+    @JsonProperty(BetConstantes.IDPUNTER)
+    private Long idPunter;
+
+    @SerializedName(BetConstantes.IDBETOBJECT)
+    @JsonProperty(BetConstantes.IDBETOBJECT)
+    private Long idBetObject;
+
     @SerializedName(BetConstantes.BET)
     @JsonProperty(BetConstantes.BET)
     private Double bet;
+
+    @SerializedName(BetConstantes.BITCOINADDRESS)
+    @JsonProperty(BetConstantes.BITCOINADDRESS)
+    private String bitcoinAddress;
 
 
     @SerializedName("mensagemResponse")

@@ -2,8 +2,8 @@
 
 package ${package}.controller;
 
-import ${package}.dto.GenericErrorResponse;
-import ${package}.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.commodities.dto.GenericErrorResponse;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
-public class Api${classebase}ControllerAdvice {
+public class ApiControllerAdvice {
     @ResponseBody
     @ExceptionHandler({CommoditieBaseException.class})
     public ResponseEntity<GenericErrorResponse<Map<String, ? extends Serializable>>> handle(CommoditieBaseException e) {

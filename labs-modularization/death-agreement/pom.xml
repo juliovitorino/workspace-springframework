@@ -15,31 +15,37 @@
 	<name>death-agreement</name>
 	<description>Bet Marketplace Death</description>
 
+	<properties>
+		<jcv-code-generator.version>1.0.4-SNAPSHOT</jcv-code-generator.version>
+		<commons-library.version>1.0.4-SNAPSHOT</commons-library.version>
+		<h2.version>1.4.185</h2.version>
+		<jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
+	</properties>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>br.com.jcv.codegen</groupId>
 			<artifactId>jcv-code-generator</artifactId>
-			<version>1.0.2-RELEASE</version>
+			<version>${jcv-code-generator.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.jcv.commons</groupId>
 			<artifactId>commons-library</artifactId>
-			<version>1.0.1-RELEASE</version>
+			<version>${commons-library.version}</version>
 		</dependency>
 
 		<!-- Database (H2) -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.185</version>
+			<version>${h2.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
-			<version>2.0.2</version>
+			<version>${jakarta.validation-api.version}</version>
 		</dependency>
 	</dependencies>
 

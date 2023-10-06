@@ -28,11 +28,23 @@ public class Bet {
     private Long id;
 
     @Column
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet's bounty")
-    private Double bounty;
+    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "idPunter",fieldDescription = "Punter's ID")
+    private Long idPunter;
+
+    @Column
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet Obejct's ID")
+    private Long idBetObject;
+
+    @Column
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet's value")
+    private Double bet;
+
+    @Column
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin address")
+    private String bitcoinAddress;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status field")
-    @Column(length = 1, name = "in_status")
+    @Column(length = 1)
     private String status;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "record created at")

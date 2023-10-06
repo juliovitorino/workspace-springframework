@@ -13,7 +13,7 @@
 
 	<groupId>br.com.jcv.codegen</groupId>
 	<artifactId>jcv-code-generator</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<name>jcv-code-generator</name>
 	<description>Code Generator for Spring Boot</description>
 
