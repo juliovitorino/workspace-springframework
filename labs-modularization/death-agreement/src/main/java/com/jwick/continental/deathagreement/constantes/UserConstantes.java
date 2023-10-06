@@ -22,22 +22,18 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 package com.jwick.continental.deathagreement.constantes;
 
 /**
-* BetConstantes - Constantes para geral das Entity e DTO
+* UserConstantes - Constantes para geral das Entity e DTO
 *
-* @author Bet
-* @since Fri Oct 06 16:12:54 BRT 2023
+* @author User
+* @since Fri Oct 06 15:06:15 BRT 2023
 */
 
-public class BetConstantes
+public class UserConstantes
 {
 
     public static final String ID = "id";
-    public static final String IDPUNTER = "idPunter";
-    public static final String IDBETOBJECT = "idBetObject";
-    public static final String BET = "bet";
-    public static final String BITCOINADDRESS = "bitcoinAddress";
-    public static final String TICKET = "ticket";
-    public static final String DEATHDATE = "deathDate";
+    public static final String NICKNAME = "nickname";
+    public static final String BTCADDRESS = "btcAddress";
     public static final String STATUS = "status";
     public static final String DATECREATED = "dateCreated";
     public static final String DATEUPDATED = "dateUpdated";

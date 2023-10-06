@@ -2,7 +2,26 @@ spring:
   application:
     name: death-bet-agreement
 
-# resolver problema no swagger 'documentationPluginsBootstrapper'
+# solve problem in swagger 'documentationPluginsBootstrapper'
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+# Configuration for H2
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console.enabled: true
+    console:
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
+
+continental:
+  unit: satoshi
+  btc-address: 3NcrStGE847jffhdfHDYWPLvyk64X7pEYq

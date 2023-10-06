@@ -19,27 +19,47 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.constantes;
+package com.jwick.continental.deathagreement.dto;
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
+import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import lombok.*;
+
+import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
+import java.util.Date;
 
 /**
-* BetConstantes - Constantes para geral das Entity e DTO
+* UserDTO - Data Transfer Object
 *
-* @author Bet
-* @since Fri Oct 06 16:12:54 BRT 2023
+* @author User
+* @since Fri Oct 06 15:06:15 BRT 2023
 */
 
-public class BetConstantes
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserDTO extends DTOPadrao implements Serializable
 {
 
-    public static final String ID = "id";
-    public static final String IDPUNTER = "idPunter";
-    public static final String IDBETOBJECT = "idBetObject";
-    public static final String BET = "bet";
-    public static final String BITCOINADDRESS = "bitcoinAddress";
-    public static final String TICKET = "ticket";
-    public static final String DEATHDATE = "deathDate";
-    public static final String STATUS = "status";
-    public static final String DATECREATED = "dateCreated";
-    public static final String DATEUPDATED = "dateUpdated";
+    @SerializedName(UserConstantes.NICKNAME)
+    @JsonProperty(UserConstantes.NICKNAME)
+    private String nickname;
 
+    @SerializedName(UserConstantes.BTCADDRESS)
+    @JsonProperty(UserConstantes.BTCADDRESS)
+    private String btcAddress;
+
+
+    @SerializedName("mensagemResponse")
+    @JsonProperty("mensagemResponse")
+    private MensagemResponse mensagemResponse;
 }

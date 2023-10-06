@@ -11,46 +11,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @CodeGeneratorDescriptor(outputDir = "/Users/juliovitorino/workspaces/workspace-springframework/labs-modularization/death-agreement/src/main/resources",
         project = "",
-        fullDescription = "Control all Bet")
+        fullDescription = "Control all Bet Object")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Bet {
+@Table(name = "BET_OBJECT")
+public class BetObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Bet primary key")
+    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Bet Object primary key")
     private Long id;
 
-    @Column(name = "id_punter")
-    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "idPunter",fieldDescription = "Punter's ID")
-    private Long idPunter;
-
-    @Column(name = "id_bet_object")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet Obejct's ID")
-    private Long idBetObject;
-
     @Column
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet's value")
-    private Double bet;
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Who is the Bet Object")
+    private String who;
 
-    @Column(name = "btc_address")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin address")
-    private String bitcoinAddress;
-
-    @Column
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Ticket for bet")
-    private UUID ticket;
-
-    @Column(name = "death_date")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Suggest death date for Object")
-    private Date deathDate;
+    @CodeGeneratorFieldDescriptor(fieldDescription = "External ID for punter can bet")
+    private UUID externalUUID;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status field")
     @Column(length = 1)
@@ -63,6 +48,7 @@ public class Bet {
     @CodeGeneratorFieldDescriptor(fieldDescription = "record updated at")
     @Column(name = "date_updated")
     private Date dateUpdated;
+
 
 
 }

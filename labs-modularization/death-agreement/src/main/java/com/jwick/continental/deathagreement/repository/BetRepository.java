@@ -33,6 +33,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.Date;
+import java.util.UUID;
 
 
 /**
@@ -44,7 +45,7 @@ import java.util.Date;
 * Changelog:
 *
 * @autor Bet
-* @since Fri Oct 06 10:33:15 BRT 2023
+* @since Fri Oct 06 17:19:07 BRT 2023
 *
 */
 @Repository
@@ -55,13 +56,15 @@ public interface BetRepository extends JpaRepository<Bet, Long>
 
 @Query(value = "SELECT * FROM Bet WHERE 1=1 " +
         "AND (:id = '' OR id = :id) " +
-        "AND (:idPunter = '' OR idPunter = :idPunter) " +
-        "AND (:idBetObject = '' OR idBetObject = :idBetObject) " +
+        "AND (:idPunter = '' OR id_punter = :idPunter) " +
+        "AND (:idBetObject = '' OR id_bet_object = :idBetObject) " +
         "AND (:bet = '' OR bet = :bet) " +
-        "AND (:bitcoinAddress = '' OR bitcoinAddress = :bitcoinAddress) " +
+        "AND (:bitcoinAddress = '' OR btc_address = :bitcoinAddress) " +
+        "AND (:ticket = '' OR ticket = :ticket) " +
+        "AND (:deathDate = '' OR death_date = :deathDate) " +
         "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
+        "AND (:dateCreated = '' OR date_created = :dateCreated) " +
+        "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
         , nativeQuery = true)
 Page<Bet> findBetByFilter(Pageable pageable,
@@ -70,6 +73,8 @@ Page<Bet> findBetByFilter(Pageable pageable,
         @Param(BetConstantes.IDBETOBJECT) Long idBetObject,
         @Param(BetConstantes.BET) Double bet,
         @Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress,
+        @Param(BetConstantes.TICKET) UUID ticket,
+        @Param(BetConstantes.DEATHDATE) Date deathDate,
         @Param(BetConstantes.STATUS) String status,
         @Param(BetConstantes.DATECREATED) Date dateCreated,
         @Param(BetConstantes.DATEUPDATED) Date dateUpdated
@@ -78,13 +83,15 @@ Page<Bet> findBetByFilter(Pageable pageable,
 
 @Query(value = "SELECT * FROM Bet WHERE 1=1 " +
         "AND (:id = '' OR id = :id) " +
-        "AND (:idPunter = '' OR idPunter = :idPunter) " +
-        "AND (:idBetObject = '' OR idBetObject = :idBetObject) " +
+        "AND (:idPunter = '' OR id_punter = :idPunter) " +
+        "AND (:idBetObject = '' OR id_bet_object = :idBetObject) " +
         "AND (:bet = '' OR bet = :bet) " +
-        "AND (:bitcoinAddress = '' OR bitcoinAddress = :bitcoinAddress) " +
+        "AND (:bitcoinAddress = '' OR btc_address = :bitcoinAddress) " +
+        "AND (:ticket = '' OR ticket = :ticket) " +
+        "AND (:deathDate = '' OR death_date = :deathDate) " +
         "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
+        "AND (:dateCreated = '' OR date_created = :dateCreated) " +
+        "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
         , nativeQuery = true)
 List<Bet> findBetByFilter(
@@ -93,6 +100,8 @@ List<Bet> findBetByFilter(
         @Param(BetConstantes.IDBETOBJECT) Long idBetObject,
         @Param(BetConstantes.BET) Double bet,
         @Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress,
+        @Param(BetConstantes.TICKET) UUID ticket,
+        @Param(BetConstantes.DEATHDATE) Date deathDate,
         @Param(BetConstantes.STATUS) String status,
         @Param(BetConstantes.DATECREATED) Date dateCreated,
         @Param(BetConstantes.DATEUPDATED) Date dateUpdated
@@ -101,40 +110,52 @@ List<Bet> findBetByFilter(
 
      @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE id = :id AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE idPunter = :idPunter AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE id_punter = :idPunter AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdPunterAndStatus(Long idPunter, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE idBetObject = :idBetObject AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE id_punter = :idPunter AND id_bet_object = :idBetObject AND status = :status ", nativeQuery = true)
+     Long loadMaxIdByIdPunterAndIdBetObjectAndStatus(Long idPunter, Long idBetObject, String status);
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE id_bet_object = :idBetObject AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdBetObjectAndStatus(Long idBetObject, String status);
      @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE bet = :bet AND status = :status ", nativeQuery = true)
      Long loadMaxIdByBetAndStatus(Double bet, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE bitcoinAddress = :bitcoinAddress AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE btc_address = :bitcoinAddress AND status = :status ", nativeQuery = true)
      Long loadMaxIdByBitcoinAddressAndStatus(String bitcoinAddress, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE dateCreated = :dateCreated AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE ticket = :ticket AND status = :status ", nativeQuery = true)
+     Long loadMaxIdByTicketAndStatus(UUID ticket, String status);
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE death_date = :deathDate AND status = :status ", nativeQuery = true)
+     Long loadMaxIdByDeathDateAndStatus(Date deathDate, String status);
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE date_created = :dateCreated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE dateUpdated = :dateUpdated AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id) AS maxid FROM Bet WHERE date_updated = :dateUpdated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
      @Modifying
-     @Query(value = "UPDATE Bet SET idPunter = :idPunter, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE Bet SET id_punter = :idPunter, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateIdPunterById(@Param("id") Long id, @Param(BetConstantes.IDPUNTER) Long idPunter);
      @Modifying
-     @Query(value = "UPDATE Bet SET idBetObject = :idBetObject, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE Bet SET id_bet_object = :idBetObject, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateIdBetObjectById(@Param("id") Long id, @Param(BetConstantes.IDBETOBJECT) Long idBetObject);
      @Modifying
      @Query(value = "UPDATE Bet SET bet = :bet, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateBetById(@Param("id") Long id, @Param(BetConstantes.BET) Double bet);
      @Modifying
-     @Query(value = "UPDATE Bet SET bitcoinAddress = :bitcoinAddress, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE Bet SET btc_address = :bitcoinAddress, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateBitcoinAddressById(@Param("id") Long id, @Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress);
+     @Modifying
+     @Query(value = "UPDATE Bet SET ticket = :ticket, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     void updateTicketById(@Param("id") Long id, @Param(BetConstantes.TICKET) UUID ticket);
+     @Modifying
+     @Query(value = "UPDATE Bet SET death_date = :deathDate, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     void updateDeathDateById(@Param("id") Long id, @Param(BetConstantes.DEATHDATE) Date deathDate);
      @Modifying
      @Query(value = "UPDATE Bet SET status = :status, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(BetConstantes.STATUS) String status);
      @Modifying
-     @Query(value = "UPDATE Bet SET dateCreated = :dateCreated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE Bet SET date_created = :dateCreated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateDateCreatedById(@Param("id") Long id, @Param(BetConstantes.DATECREATED) Date dateCreated);
      @Modifying
-     @Query(value = "UPDATE Bet SET dateUpdated = :dateUpdated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE Bet SET date_updated = :dateUpdated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
      void updateDateUpdatedById(@Param("id") Long id, @Param(BetConstantes.DATEUPDATED) Date dateUpdated);
 
 
@@ -143,39 +164,49 @@ List<Bet> findBetByFilter(
      long countByIdBetObjectAndStatus(Long idBetObject, String status);
      long countByBetAndStatus(Double bet, String status);
      long countByBitcoinAddressAndStatus(String bitcoinAddress, String status);
+     long countByTicketAndStatus(UUID ticket, String status);
+     long countByDeathDateAndStatus(Date deathDate, String status);
      long countByDateCreatedAndStatus(Date dateCreated, String status);
      long countByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
     @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE id = :id AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByIdAndStatus(Long id, String status);
-    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE idPunter = :idPunter AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE id_punter = :idPunter AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByIdPunterAndStatus(Long idPunter, String status);
-    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE idBetObject = :idBetObject AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE id_bet_object = :idBetObject AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByIdBetObjectAndStatus(Long idBetObject, String status);
     @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE bet = :bet AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByBetAndStatus(Double bet, String status);
-    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE bitcoinAddress = :bitcoinAddress AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE btc_address = :bitcoinAddress AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByBitcoinAddressAndStatus(String bitcoinAddress, String status);
-    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE dateCreated = :dateCreated AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE ticket = :ticket AND  status = :status) ", nativeQuery = true)
+    Optional<Bet> findByTicketAndStatus(UUID ticket, String status);
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE death_date = :deathDate AND  status = :status) ", nativeQuery = true)
+    Optional<Bet> findByDeathDateAndStatus(Date deathDate, String status);
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE date_created = :dateCreated AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByDateCreatedAndStatus(Date dateCreated, String status);
-    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE dateUpdated = :dateUpdated AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM Bet WHERE id = (SELECT MAX(id) AS maxid FROM Bet WHERE date_updated = :dateUpdated AND  status = :status) ", nativeQuery = true)
     Optional<Bet> findByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
      @Query(value = "SELECT * FROM Bet WHERE id = :id AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT * FROM Bet WHERE idPunter = :idPunter AND  status = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM Bet WHERE id_punter = :idPunter AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByIdPunterAndStatus(Long idPunter, String status);
-     @Query(value = "SELECT * FROM Bet WHERE idBetObject = :idBetObject AND  status = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM Bet WHERE id_bet_object = :idBetObject AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByIdBetObjectAndStatus(Long idBetObject, String status);
      @Query(value = "SELECT * FROM Bet WHERE bet = :bet AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByBetAndStatus(Double bet, String status);
-     @Query(value = "SELECT * FROM Bet WHERE bitcoinAddress = :bitcoinAddress AND  status = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM Bet WHERE btc_address = :bitcoinAddress AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByBitcoinAddressAndStatus(String bitcoinAddress, String status);
-     @Query(value = "SELECT * FROM Bet WHERE dateCreated = :dateCreated AND  status = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM Bet WHERE ticket = :ticket AND  status = :status ", nativeQuery = true)
+     List<Bet> findAllByTicketAndStatus(UUID ticket, String status);
+     @Query(value = "SELECT * FROM Bet WHERE death_date = :deathDate AND  status = :status ", nativeQuery = true)
+     List<Bet> findAllByDeathDateAndStatus(Date deathDate, String status);
+     @Query(value = "SELECT * FROM Bet WHERE date_created = :dateCreated AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT * FROM Bet WHERE dateUpdated = :dateUpdated AND  status = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM Bet WHERE date_updated = :dateUpdated AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
@@ -183,25 +214,31 @@ List<Bet> findBetByFilter(
     @Query(value = "DELETE FROM Bet WHERE id = :id", nativeQuery = true)
     void deleteById(@Param(BetConstantes.ID) Long id);
     @Modifying
-    @Query(value = "DELETE FROM Bet WHERE idPunter = :idPunter", nativeQuery = true)
+    @Query(value = "DELETE FROM Bet WHERE id_punter = :idPunter", nativeQuery = true)
     void deleteByIdPunter(@Param(BetConstantes.IDPUNTER) Long idPunter);
     @Modifying
-    @Query(value = "DELETE FROM Bet WHERE idBetObject = :idBetObject", nativeQuery = true)
+    @Query(value = "DELETE FROM Bet WHERE id_bet_object = :idBetObject", nativeQuery = true)
     void deleteByIdBetObject(@Param(BetConstantes.IDBETOBJECT) Long idBetObject);
     @Modifying
     @Query(value = "DELETE FROM Bet WHERE bet = :bet", nativeQuery = true)
     void deleteByBet(@Param(BetConstantes.BET) Double bet);
     @Modifying
-    @Query(value = "DELETE FROM Bet WHERE bitcoinAddress = :bitcoinAddress", nativeQuery = true)
+    @Query(value = "DELETE FROM Bet WHERE btc_address = :bitcoinAddress", nativeQuery = true)
     void deleteByBitcoinAddress(@Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress);
+    @Modifying
+    @Query(value = "DELETE FROM Bet WHERE ticket = :ticket", nativeQuery = true)
+    void deleteByTicket(@Param(BetConstantes.TICKET) UUID ticket);
+    @Modifying
+    @Query(value = "DELETE FROM Bet WHERE death_date = :deathDate", nativeQuery = true)
+    void deleteByDeathDate(@Param(BetConstantes.DEATHDATE) Date deathDate);
     @Modifying
     @Query(value = "DELETE FROM Bet WHERE status = :status", nativeQuery = true)
     void deleteByStatus(@Param(BetConstantes.STATUS) String status);
     @Modifying
-    @Query(value = "DELETE FROM Bet WHERE dateCreated = :dateCreated", nativeQuery = true)
+    @Query(value = "DELETE FROM Bet WHERE date_created = :dateCreated", nativeQuery = true)
     void deleteByDateCreated(@Param(BetConstantes.DATECREATED) Date dateCreated);
     @Modifying
-    @Query(value = "DELETE FROM Bet WHERE dateUpdated = :dateUpdated", nativeQuery = true)
+    @Query(value = "DELETE FROM Bet WHERE date_updated = :dateUpdated", nativeQuery = true)
     void deleteByDateUpdated(@Param(BetConstantes.DATEUPDATED) Date dateUpdated);
 
 }

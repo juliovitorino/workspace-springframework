@@ -45,6 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -55,7 +56,7 @@ import javax.validation.Valid;
 * BetController - Controller for Bet API
 *
 * @author Bet
-* @since Fri Oct 06 09:57:04 BRT 2023
+* @since Fri Oct 06 16:12:54 BRT 2023
 */
 
 @Slf4j
@@ -353,6 +354,46 @@ public class BetController
     public ResponseEntity<BetDTO> findBetByBitcoinAddress(@RequestParam(BetConstantes.BITCOINADDRESS) String bitcoinAddress) {
         try{
             BetDTO betDTO = betService.findBetByBitcoinAddressAndStatus(bitcoinAddress, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(betDTO)
+                ? new ResponseEntity<>(betDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BetNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(CommoditieBaseException e) {
+            return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
+        } catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
+    })
+    @GetMapping(params = "ticket")
+    public ResponseEntity<BetDTO> findBetByTicket(@RequestParam(BetConstantes.TICKET) UUID ticket) {
+        try{
+            BetDTO betDTO = betService.findBetByTicketAndStatus(ticket, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(betDTO)
+                ? new ResponseEntity<>(betDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BetNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch(CommoditieBaseException e) {
+            return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
+        } catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
+    })
+    @GetMapping(params = "deathDate")
+    public ResponseEntity<BetDTO> findBetByDeathDate(@RequestParam(BetConstantes.DEATHDATE) Date deathDate) {
+        try{
+            BetDTO betDTO = betService.findBetByDeathDateAndStatus(deathDate, GenericStatusEnums.ATIVO.getShortValue());
             return Objects.nonNull(betDTO)
                 ? new ResponseEntity<>(betDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

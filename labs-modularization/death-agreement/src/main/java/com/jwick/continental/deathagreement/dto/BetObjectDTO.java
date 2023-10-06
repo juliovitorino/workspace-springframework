@@ -27,17 +27,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import lombok.*;
 
-import com.jwick.continental.deathagreement.constantes.BetConstantes;
+import com.jwick.continental.deathagreement.constantes.BetObjectConstantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.UUID;
 
 /**
-* BetDTO - Data Transfer Object
+* BetObjectDTO - Data Transfer Object
 *
-* @author Bet
-* @since Fri Oct 06 16:12:54 BRT 2023
+* @author BetObject
+* @since Fri Oct 06 12:17:44 BRT 2023
 */
 
 @NoArgsConstructor
@@ -48,33 +48,16 @@ import java.util.UUID;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BetDTO extends DTOPadrao implements Serializable
+public class BetObjectDTO extends DTOPadrao implements Serializable
 {
 
-    @SerializedName(BetConstantes.IDPUNTER)
-    @JsonProperty(BetConstantes.IDPUNTER)
-    private Long idPunter;
+    @SerializedName(BetObjectConstantes.WHO)
+    @JsonProperty(BetObjectConstantes.WHO)
+    private String who;
 
-    @SerializedName(BetConstantes.IDBETOBJECT)
-    @JsonProperty(BetConstantes.IDBETOBJECT)
-    private Long idBetObject;
-
-    @SerializedName(BetConstantes.BET)
-    @JsonProperty(BetConstantes.BET)
-    private Double bet;
-
-    @SerializedName(BetConstantes.BITCOINADDRESS)
-    @JsonProperty(BetConstantes.BITCOINADDRESS)
-    private String bitcoinAddress;
-
-    @SerializedName(BetConstantes.TICKET)
-    @JsonProperty(BetConstantes.TICKET)
-    private UUID ticket;
-
-    @SerializedName(BetConstantes.DEATHDATE)
-    @JsonProperty(BetConstantes.DEATHDATE)
-    private Date deathDate;
-
+    @SerializedName(BetObjectConstantes.EXTERNALUUID)
+    @JsonProperty(BetObjectConstantes.EXTERNALUUID)
+    private UUID externalUUID;
 
     @SerializedName("mensagemResponse")
     @JsonProperty("mensagemResponse")

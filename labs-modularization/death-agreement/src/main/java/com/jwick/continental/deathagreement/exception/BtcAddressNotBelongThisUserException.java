@@ -19,27 +19,29 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.constantes;
+package com.jwick.continental.deathagreement.exception;
 
-/**
-* BetConstantes - Constantes para geral das Entity e DTO
-*
-* @author Bet
-* @since Fri Oct 06 16:12:54 BRT 2023
-*/
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import org.springframework.http.HttpStatus;
 
-public class BetConstantes
-{
+import java.util.HashMap;
+import java.util.Map;
 
-    public static final String ID = "id";
-    public static final String IDPUNTER = "idPunter";
-    public static final String IDBETOBJECT = "idBetObject";
-    public static final String BET = "bet";
-    public static final String BITCOINADDRESS = "bitcoinAddress";
-    public static final String TICKET = "ticket";
-    public static final String DEATHDATE = "deathDate";
-    public static final String STATUS = "status";
-    public static final String DATECREATED = "dateCreated";
-    public static final String DATEUPDATED = "dateUpdated";
 
+public class BtcAddressNotBelongThisUserException extends CommoditieBaseException {
+    public BtcAddressNotBelongThisUserException(String input, HttpStatus httpStatus, String msgcode, Map<String,String> mapParams) {
+        super(input, httpStatus, msgcode, mapParams);
+    }
+
+    public BtcAddressNotBelongThisUserException(String input, HttpStatus httpStatus, String msgcode) {
+        this(input, httpStatus, msgcode, null);
+    }
+
+    public BtcAddressNotBelongThisUserException(String input, HttpStatus httpStatus) {
+      this(input, httpStatus, null, new HashMap<>());
+    }
+
+    public BtcAddressNotBelongThisUserException(String input, int httpStatus) {
+      this(input, HttpStatus.valueOf(httpStatus), null, new HashMap<>());
+    }
 }

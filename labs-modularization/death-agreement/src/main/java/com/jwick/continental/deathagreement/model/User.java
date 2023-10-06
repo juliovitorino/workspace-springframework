@@ -11,46 +11,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @CodeGeneratorDescriptor(outputDir = "/Users/juliovitorino/workspaces/workspace-springframework/labs-modularization/death-agreement/src/main/resources",
         project = "",
-        fullDescription = "Control all Bet")
+        fullDescription = "Control all Users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Bet {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Bet primary key")
+    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "User primary key")
     private Long id;
 
-    @Column(name = "id_punter")
-    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "idPunter",fieldDescription = "Punter's ID")
-    private Long idPunter;
+    @Column(nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "User nickname")
+    private String nickname;
 
-    @Column(name = "id_bet_object")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet Obejct's ID")
-    private Long idBetObject;
-
-    @Column
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet's value")
-    private Double bet;
-
-    @Column(name = "btc_address")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin address")
-    private String bitcoinAddress;
-
-    @Column
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Ticket for bet")
-    private UUID ticket;
-
-    @Column(name = "death_date")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Suggest death date for Object")
-    private Date deathDate;
+    @Column(name = "btc_address", nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin wallet address")
+    private String btcAddress;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status field")
     @Column(length = 1)

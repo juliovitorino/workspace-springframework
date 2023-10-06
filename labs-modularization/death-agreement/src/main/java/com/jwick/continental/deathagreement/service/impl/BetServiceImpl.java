@@ -21,6 +21,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.service.impl;
 
+import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
@@ -32,12 +33,15 @@ import com.jwick.continental.deathagreement.repository.BetRepository;
 import com.jwick.continental.deathagreement.service.BetService;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -50,7 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 * BetServiceImpl - Implementation for Bet interface
 *
 * @author Bet
-* @since Fri Oct 06 09:57:04 BRT 2023
+* @since Fri Oct 06 16:12:54 BRT 2023
 */
 
 
@@ -141,6 +145,8 @@ public class BetServiceImpl implements BetService
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) bet.setIdBetObject((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet.setBet((Double)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bet.setBitcoinAddress((String)entry.getValue());
+                if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) bet.setTicket((UUID)entry.getValue());
+                if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) bet.setDeathDate((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) bet.setStatus((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) bet.setDateCreated((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) bet.setDateUpdated((Date)entry.getValue());
@@ -199,6 +205,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Long idBetObject = null;
     Double bet = null;
     String bitcoinAddress = null;
+    UUID ticket = null;
+    Date deathDate = null;
     String status = null;
     Date dateCreated = null;
     Date dateUpdated = null;
@@ -210,6 +218,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) idBetObject = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = (Double) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bitcoinAddress = (String) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) ticket = (UUID) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) deathDate = (Date) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = (String) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
@@ -223,6 +233,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         ,idBetObject
         ,bet
         ,bitcoinAddress
+        ,ticket
+        ,deathDate
         ,status
         ,dateCreated
         ,dateUpdated
@@ -251,6 +263,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Long idBetObject = null;
     Double bet = null;
     String bitcoinAddress = null;
+    UUID ticket = null;
+    Date deathDate = null;
     String status = null;
     Date dateCreated = null;
     Date dateUpdated = null;
@@ -261,6 +275,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) idBetObject = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = (Double) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bitcoinAddress = (String) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) ticket = (UUID) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) deathDate = (Date) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = (String) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
@@ -273,6 +289,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             ,idBetObject
             ,bet
             ,bitcoinAddress
+            ,ticket
+            ,deathDate
             ,status
             ,dateCreated
             ,dateUpdated
@@ -333,6 +351,24 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
+    public List<BetDTO> findAllBetByTicketAndStatus(UUID ticket, String status) {
+        return betRepository.findAllByTicketAndStatus(ticket, status).stream().map(this::toDTO).collect(Collectors.toList());
+    }
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
+    public List<BetDTO> findAllBetByDeathDateAndStatus(Date deathDate, String status) {
+        return betRepository.findAllByDeathDateAndStatus(deathDate, status).stream().map(this::toDTO).collect(Collectors.toList());
+    }
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
     public List<BetDTO> findAllBetByDateCreatedAndStatus(Date dateCreated, String status) {
         return betRepository.findAllByDateCreatedAndStatus(dateCreated, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
@@ -385,6 +421,26 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     )
     public BetDTO findBetByIdPunterAndStatus(Long idPunter, String status) {
         Long maxId = betRepository.loadMaxIdByIdPunterAndStatus(idPunter, status);
+        if(maxId == null) maxId = 0L;
+        Optional<Bet> betData =
+            Optional.ofNullable( betRepository
+                .findById(maxId)
+                .orElseThrow(
+                    () -> new BetNotFoundException("Bet não encontrada com id = " + idPunter,
+                        HttpStatus.NOT_FOUND,
+                        "Bet não encontrada com idPunter = " + idPunter))
+                );
+        return betData.isPresent() ? this.toDTO(betData.get()) : null ;
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
+    public BetDTO findBetByIdPunterAndIdBetObjectAndStatus(Long idPunter, Long idBetObject, String status){
+        Long maxId = betRepository.loadMaxIdByIdPunterAndIdBetObjectAndStatus(idPunter, idBetObject, status);
         if(maxId == null) maxId = 0L;
         Optional<Bet> betData =
             Optional.ofNullable( betRepository
@@ -503,6 +559,66 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
+    public BetDTO findBetByTicketAndStatus(UUID ticket, String status) {
+        Long maxId = betRepository.loadMaxIdByTicketAndStatus(ticket, status);
+        if(maxId == null) maxId = 0L;
+        Optional<Bet> betData =
+            Optional.ofNullable( betRepository
+                .findById(maxId)
+                .orElseThrow(
+                    () -> new BetNotFoundException("Bet não encontrada com id = " + ticket,
+                        HttpStatus.NOT_FOUND,
+                        "Bet não encontrada com ticket = " + ticket))
+                );
+        return betData.isPresent() ? this.toDTO(betData.get()) : null ;
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
+    public BetDTO findBetByTicketAndStatus(UUID ticket) {
+        return this.findBetByTicketAndStatus(ticket, GenericStatusEnums.ATIVO.getShortValue());
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
+    public BetDTO findBetByDeathDateAndStatus(Date deathDate, String status) {
+        Long maxId = betRepository.loadMaxIdByDeathDateAndStatus(deathDate, status);
+        if(maxId == null) maxId = 0L;
+        Optional<Bet> betData =
+            Optional.ofNullable( betRepository
+                .findById(maxId)
+                .orElseThrow(
+                    () -> new BetNotFoundException("Bet não encontrada com id = " + deathDate,
+                        HttpStatus.NOT_FOUND,
+                        "Bet não encontrada com deathDate = " + deathDate))
+                );
+        return betData.isPresent() ? this.toDTO(betData.get()) : null ;
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
+    public BetDTO findBetByDeathDateAndStatus(Date deathDate) {
+        return this.findBetByDeathDateAndStatus(deathDate, GenericStatusEnums.ATIVO.getShortValue());
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
     public BetDTO findBetByDateCreatedAndStatus(Date dateCreated, String status) {
         Long maxId = betRepository.loadMaxIdByDateCreatedAndStatus(dateCreated, status);
         if(maxId == null) maxId = 0L;
@@ -602,6 +718,26 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     transactionManager = "transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class)
+    public BetDTO updateTicketById(Long id, UUID ticket) {
+        findById(id);
+        betRepository.updateTicketById(id, ticket);
+        return findById(id);
+    }
+    @Override
+    @Transactional(
+    transactionManager = "transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class)
+    public BetDTO updateDeathDateById(Long id, Date deathDate) {
+        findById(id);
+        betRepository.updateDeathDateById(id, deathDate);
+        return findById(id);
+    }
+    @Override
+    @Transactional(
+    transactionManager = "transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class)
     public BetDTO updateDateCreatedById(Long id, Date dateCreated) {
         findById(id);
         betRepository.updateDateCreatedById(id, dateCreated);
@@ -626,6 +762,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
                 betDTO.setIdBetObject(bet.getIdBetObject());
                 betDTO.setBet(bet.getBet());
                 betDTO.setBitcoinAddress(bet.getBitcoinAddress());
+                betDTO.setTicket(bet.getTicket());
+                betDTO.setDeathDate(bet.getDeathDate());
                 betDTO.setStatus(bet.getStatus());
                 betDTO.setDateCreated(bet.getDateCreated());
                 betDTO.setDateUpdated(bet.getDateUpdated());
@@ -641,6 +779,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
                     bet.setIdBetObject(betDTO.getIdBetObject());
                     bet.setBet(betDTO.getBet());
                     bet.setBitcoinAddress(betDTO.getBitcoinAddress());
+                    bet.setTicket(betDTO.getTicket());
+                    bet.setDeathDate(betDTO.getDeathDate());
                     bet.setStatus(betDTO.getStatus());
                     bet.setDateCreated(betDTO.getDateCreated());
                     bet.setDateUpdated(betDTO.getDateUpdated());
