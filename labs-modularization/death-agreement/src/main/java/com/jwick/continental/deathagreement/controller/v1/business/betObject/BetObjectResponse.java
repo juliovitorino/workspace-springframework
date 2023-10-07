@@ -1,6 +1,5 @@
-package com.jwick.continental.deathagreement.controller.v1.bet;
+package com.jwick.continental.deathagreement.controller.v1.business.betObject;
 
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +20,6 @@ import java.util.UUID;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BetResponse implements Serializable {
-    private UUID ticket;
-    private String status;
-    private MensagemResponse messageResponse;
+public class BetObjectResponse implements Serializable {
+    private UUID whoUUID;
 }
