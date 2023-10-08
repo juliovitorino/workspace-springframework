@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.controller.v1.bet;
+package com.jwick.continental.deathagreement.controller.v1.business.bet;
 
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
@@ -11,14 +11,9 @@ import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
 import com.jwick.continental.deathagreement.exception.NicknameAlreadyInUseException;
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
-import com.jwick.continental.deathagreement.exception.PendingUserStatusException;
 import com.jwick.continental.deathagreement.exception.UserNotFoundException;
 import com.jwick.continental.deathagreement.service.AbstractContinentalServices;
-import com.jwick.continental.deathagreement.service.BetObjectService;
-import com.jwick.continental.deathagreement.service.BetService;
-import com.jwick.continental.deathagreement.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -45,20 +40,16 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
             userService.updateStatusById(userDTO.getId(), GenericStatusEnums.ATIVO.getShortValue());
         }
 
-        log.info("execute :: is checking Bet Object for => {}", request.getWho());
+        log.info("execute :: is checking Bet Object for => {}", request.getWhoUUID());
         BetObjectDTO betObjectDTO = isBetObjectExists(request);
 
         if(Objects.isNull(betObjectDTO)) {
-            betObjectDTO = new BetObjectDTO();
-            betObjectDTO.setWho(request.getWho());
-            betObjectDTO.setExternalUUID(UUID.randomUUID());
-            betObjectDTO = betObjectService.salvar(betObjectDTO);
-            betObjectService.updateStatusById(betObjectDTO.getId(),GenericStatusEnums.ATIVO.getShortValue());
+            throw new BetObjectNotFoundException("Bet Object does not exist", HttpStatus.BAD_REQUEST);
         }
 
         checkDuplicatedPendingBet(userDTO, betObjectDTO);
 
-        log.info("execute :: is creating bet for => {} against {}", request.getNickname(), request.getWho());
+        log.info("execute :: is creating bet for => {} against {}", request.getNickname(), betObjectDTO.getWho());
         BetDTO betDTO = new BetDTO();
         betDTO.setIdPunter(userDTO.getId());
         betDTO.setIdBetObject(betObjectDTO.getId());
@@ -72,8 +63,8 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         betResponse.setTicket(betSaved.getTicket());
         betResponse.setStatus(BetStatusEnum.fromValue(betSaved.getStatus()).getStatus());
         betResponse.setMessageResponse(MensagemResponse.builder()
-                        .mensagem(" Your Bet has been created, but it is Pending beacuse we're waiting you transfer fund to Continental BTC Account => " + config.getContinentalBtcAddress()
-                        + ". Your Ticket is " + betSaved.getTicket()
+                        .mensagem(" Your Bet has been created, but it is Pending beacuse we're waiting you transfer fund to Continental BTC Account => xxxx"
+                        + ". Your Ticket is " + betSaved.getTicket().toString()
                         )
                 .build());
         return betResponse;
@@ -84,7 +75,7 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         try {
             BetDTO doubleBet = betService.findBetByIdPunterAndIdBetObjectAndStatus(userDTO.getId(), betObjectDTO.getId(),GenericStatusEnums.PENDENTE.getShortValue());
             throw new PendingBetWaitingTransferFundsException("Bet is pending and waiting confirmation", HttpStatus.BAD_REQUEST);
-        } catch (BetNotFoundException e) {
+        } catch (BetNotFoundException ignored) {
             log.info("execute :: No pending Bet found!");
         }
     }
@@ -108,9 +99,9 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
     private BetObjectDTO isBetObjectExists(BetRequest request) {
         BetObjectDTO betObjectDTO = null;
         try {
-            betObjectDTO = betObjectService.findBetObjectByWhoAndStatus(request.getWho());
+            betObjectDTO = betObjectService.findBetObjectByExternalUUIDAndStatus(request.getWhoUUID());
         } catch(BetObjectNotFoundException e) {
-            log.info("execute :: New bet object required for => {}", request.getWho() );
+            log.info("execute :: New bet object required for => {}", request.getWhoUUID() );
         }
         return betObjectDTO;
     }

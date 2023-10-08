@@ -17,10 +17,22 @@
 
 	<properties>
 		<jcv-code-generator.version>1.0.4-SNAPSHOT</jcv-code-generator.version>
-		<commons-library.version>1.0.4-SNAPSHOT</commons-library.version>
+		<commons-library.version>1.0.5-SNAPSHOT</commons-library.version>
 		<h2.version>1.4.185</h2.version>
 		<jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.10.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
@@ -51,6 +63,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-inline -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-inline</artifactId>
+			<version>3.4.4</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
