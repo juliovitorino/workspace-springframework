@@ -75,7 +75,7 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         try {
             BetDTO doubleBet = betService.findBetByIdPunterAndIdBetObjectAndStatus(userDTO.getId(), betObjectDTO.getId(),GenericStatusEnums.PENDENTE.getShortValue());
             throw new PendingBetWaitingTransferFundsException("Bet is pending and waiting confirmation", HttpStatus.BAD_REQUEST);
-        } catch (BetNotFoundException e) {
+        } catch (BetNotFoundException ignored) {
             log.info("execute :: No pending Bet found!");
         }
     }

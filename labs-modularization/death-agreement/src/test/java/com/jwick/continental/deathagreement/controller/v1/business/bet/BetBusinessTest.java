@@ -15,6 +15,7 @@ import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
+import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
 import com.jwick.continental.deathagreement.service.UserService;
@@ -91,8 +92,49 @@ public class BetBusinessTest {
         Assertions.assertEquals("Bet Object does not exist", exception.getMessage());
     }
     @Test
+    public void PendingBetWaitingTransferFundsException() {
+        // scenario
+        UUID processId = UUID.fromString(PROCESS_ID);
+        UserDTO punterMock = UserDTOBuilder.newUserTestBuilder()
+                .id(1L)
+                .now();
+        BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .externalUUID(UUID.fromString("6fa33a6f-6f7a-4edf-90b8-c0d226ade640"))
+                .now();
+        BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
+                .nickname(punterMock.getNickname())
+                .btcAddress(punterMock.getBtcAddress())
+                .bet(180.0)
+                .whoUUID(targetMock.getExternalUUID())
+                .deathDateBet(DateUtility.getDate(13,9,2040))
+                .now();
+        BetDTO pendingBetMock = BetDTOBuilder.newBetDTOTestBuilder()
+                .idPunter(punterMock.getId())
+                .idBetObject(targetMock.getId())
+                .bet(betRequestMock.getBet())
+                .status("P")
+                .now();
+
+        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punterMock);
+        Mockito.when(userServiceMock.findUserByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punterMock);
+        Mockito.when(userServiceMock.findById(punterMock.getId())).thenReturn(punterMock);
+
+        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(targetMock);
+
+        Mockito.when(betServiceMock
+                .findBetByIdPunterAndIdBetObjectAndStatus(punterMock.getId(), targetMock.getId(), "P")).thenReturn(pendingBetMock);
+
+        // action
+        PendingBetWaitingTransferFundsException exception =
+                Assertions.assertThrows(PendingBetWaitingTransferFundsException.class,
+                () -> createBetService.execute(processId, betRequestMock));
+
+        // validate
+        Assertions.assertEquals("Bet is pending and waiting confirmation", exception.getMessage());
+    }
+    @Test
     public void shouldCaptureExceptionForSameBtcAddressForDifferentNickname() {
-        // cenario
+        // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
         UserDTO user1 = UserDTOBuilder.newUserTestBuilder()
                 .nickname("Jane Doe")
@@ -114,16 +156,16 @@ public class BetBusinessTest {
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
 
 
-        // ação
+        // action
         BtcAddressNotBelongThisUserException exception = Assertions.assertThrows(BtcAddressNotBelongThisUserException.class,
                 () -> createBetService.execute(processId, betRequestMock));
 
-        // Validação
+        // validate
         Assertions.assertEquals("Other user is using this btc address", exception.getMessage());
     }
     @Test
     public void shouldCreateBetWithSuccess() {
-        // cenario
+        // scenario
         uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
 
         UserDTO userMock = UserDTOBuilder.newUserTestBuilder().now();
@@ -176,10 +218,10 @@ public class BetBusinessTest {
                 .findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID()))
                     .thenReturn(betObjectDTOMock);
 
-        //ação
+        //action
         BetResponse executed = createBetService.execute(uuidMock, betRequestMock);
 
-        // valiadção
+        // validate
         Assertions.assertEquals("3dc936e6-478e-4d21-b167-67dee8b730af", executed.getTicket().toString());
     }
 
