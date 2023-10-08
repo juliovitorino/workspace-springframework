@@ -40,8 +40,8 @@ public class BetBusinessTest {
 
     private static final String PROCESS_ID = "a98de2c9-ea34-448c-9110-eafd93cc8d48";
     public static final String BTC_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+    private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
-    private final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     @Mock
     private BetService betServiceMock;
     @Mock
