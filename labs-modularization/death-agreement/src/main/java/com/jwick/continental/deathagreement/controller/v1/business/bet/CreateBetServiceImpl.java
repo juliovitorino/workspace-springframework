@@ -59,6 +59,15 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         betDTO.setDeathDate(request.getDeathDateBet());
         BetDTO betSaved = betService.salvar(betDTO);
 
+        log.info("execute :: Adding bet to Jackpot Pending");
+        synchronized (betObjectDTO) {
+            BetObjectDTO target = betObjectService.findById(betObjectDTO.getId());
+            target.setJackpotPending(Objects.isNull(target.getJackpotPending())
+                    ?  betSaved.getBet()
+                    : target.getJackpotPending() + betSaved.getBet());
+            betObjectService.salvar(target);
+        }
+
         BetResponse betResponse = new BetResponse();
         betResponse.setTicket(betSaved.getTicket());
         betResponse.setStatus(BetStatusEnum.fromValue(betSaved.getStatus()).getStatus());

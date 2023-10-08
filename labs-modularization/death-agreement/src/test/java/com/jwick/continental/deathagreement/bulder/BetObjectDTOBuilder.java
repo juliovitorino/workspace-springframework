@@ -13,11 +13,22 @@ public class BetObjectDTOBuilder {
         BetObjectDTOBuilder builder = new BetObjectDTOBuilder();
         builder.dto = new BetObjectDTO();
         builder.dto.setWho("Jane Doe");
+        builder.dto.setJackpotPending(0.0);
+        builder.dto.setJackpot(0.0);
         return builder;
     }
 
     public BetObjectDTOBuilder status(String status) {
         this.dto.setStatus(status);
+        return this;
+    }
+
+    public BetObjectDTOBuilder jackpotPending(Double jackpotPending) {
+        this.dto.setJackpotPending(jackpotPending);
+        return this;
+    }
+    public BetObjectDTOBuilder jackpot(Double jackpot) {
+        this.dto.setJackpot(jackpot);
         return this;
     }
 

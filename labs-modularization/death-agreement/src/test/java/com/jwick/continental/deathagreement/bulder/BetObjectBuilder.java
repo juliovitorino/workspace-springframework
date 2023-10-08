@@ -17,6 +17,8 @@ public class BetObjectBuilder {
         betObjectBuilder.betObject.setId(1L);
         betObjectBuilder.betObject.setExternalUUID(EXTERNAL_UUID);
         betObjectBuilder.betObject.setWho("Target 1");
+        betObjectBuilder.betObject.setJackpotPending(0.0);
+        betObjectBuilder.betObject.setJackpot(0.0);
         return betObjectBuilder;
     }
 
@@ -26,6 +28,14 @@ public class BetObjectBuilder {
     }
     public BetObjectBuilder externalUUID(UUID externalUUID) {
         this.betObject.setExternalUUID(externalUUID);
+        return this;
+    }
+    public BetObjectBuilder jackpotPending(Double jackpotPending) {
+        this.betObject.setJackpotPending(jackpotPending);
+        return this;
+    }
+    public BetObjectBuilder jackpot(Double jackpot) {
+        this.betObject.setJackpot(jackpot);
         return this;
     }
     public BetObjectBuilder who(String who) {

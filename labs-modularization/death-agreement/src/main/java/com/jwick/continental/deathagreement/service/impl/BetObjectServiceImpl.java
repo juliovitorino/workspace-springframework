@@ -203,7 +203,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Date dateCreated = null;
     Date dateUpdated = null;
 
-
     for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
         if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.ID)) id = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.WHO)) who = (String) entry.getValue() ;
@@ -515,6 +514,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
                 betobjectDTO.setId(betobject.getId());
                 betobjectDTO.setWho(betobject.getWho());
                 betobjectDTO.setExternalUUID(betobject.getExternalUUID());
+                betobjectDTO.setJackpot(betobject.getJackpot());
+                betobjectDTO.setJackpotPending(betobject.getJackpotPending());
                 betobjectDTO.setStatus(betobject.getStatus());
                 betobjectDTO.setDateCreated(betobject.getDateCreated());
                 betobjectDTO.setDateUpdated(betobject.getDateUpdated());
@@ -528,6 +529,8 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
                     betobject.setId(betobjectDTO.getId());
                     betobject.setWho(betobjectDTO.getWho());
                     betobject.setExternalUUID(betobjectDTO.getExternalUUID());
+                    betobject.setJackpot(betobjectDTO.getJackpot());
+                    betobject.setJackpotPending(betobjectDTO.getJackpotPending());
                     betobject.setStatus(betobjectDTO.getStatus());
                     betobject.setDateCreated(betobjectDTO.getDateCreated());
                     betobject.setDateUpdated(betobjectDTO.getDateUpdated());

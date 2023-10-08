@@ -34,8 +34,18 @@ public class BetObject {
     @CodeGeneratorFieldDescriptor(fieldDescription = "Who is the Bet Object")
     private String who;
 
+    @Column
     @CodeGeneratorFieldDescriptor(fieldDescription = "External ID for punter can bet")
     private UUID externalUUID;
+
+    @Column(precision=20, scale=8)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Jackpot for Object")
+    private Double jackpot;
+
+
+    @Column(name="jackpot_pending", precision=20, scale=8)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Jackpot for Object")
+    private Double jackpotPending;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status field")
     @Column(length = 1)
