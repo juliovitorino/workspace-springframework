@@ -11,6 +11,7 @@ import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
+import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
 import com.jwick.continental.deathagreement.service.UserService;
@@ -41,7 +42,6 @@ public class BetBusinessTest {
     private BetObjectService betObjectServiceMock;
     @Mock
     private UserService userServiceMock;
-
     @InjectMocks private CreateBetService createBetService;
 
     @BeforeAll
@@ -58,11 +58,44 @@ public class BetBusinessTest {
     }
 
     @Test
+    public void shouldCaptureExcpetionForSameBtcAddressForDifferentNickname() {
+        // cenario
+        UUID processId = UUID.fromString("a98de2c9-ea34-448c-9110-eafd93cc8d48");
+        UserDTO user1 = UserDTOBuilder.newUserTestBuilder()
+                .nickname("Jane Doe")
+                .btcAddress("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
+                .now();
+        UserDTO user2 = UserDTOBuilder.newUserTestBuilder()
+                .nickname("Nicolas gauger")
+                .btcAddress("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
+                .now();
+        BetObjectDTO betObjectDTOMock = BetObjectBuilder.newBetObjectTestBuilder().now();
+        BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
+                .nickname(user1.getNickname())
+                .btcAddress(user1.getBtcAddress())
+                .bet(250.0)
+                .whoUUID(betObjectDTOMock.getExternalUUID())
+                .deathDateBet(DateUtility.getDate(15,12,2030))
+                .now();
+
+        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
+
+        BtcAddressNotBelongThisUserException exception = Assertions.assertThrows(BtcAddressNotBelongThisUserException.class,
+                () -> {
+                    createBetService.execute(processId, betRequestMock);
+                });
+
+        // ação
+//        BetResponse executed = createBetService.execute(processId, betRequestMock);
+
+        // Validação
+        Assertions.assertEquals("Other user is using this btc address", exception.getMessage());
+    }
+    @Test
     public void shouldCreateBetWithSuccess() {
         // cenario
         uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
 
-//        UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
         UserDTO userMock = UserDTOBuilder.newUserTestBuilder().now();
         BetObjectDTO betObjectDTOMock = BetObjectBuilder.newBetObjectTestBuilder().now();
         BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
@@ -78,7 +111,6 @@ public class BetBusinessTest {
                 .nickname(betRequestMock.getNickname())
                 .status(null)
                 .now();
-        BetResponse betResponseMock = BetResponseBuilder.newBetResponseTestBuilder().now();
         BetDTO betMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .idPunter(userMock.getId())
                 .idBetObject(betObjectDTOMock.getId())
@@ -97,10 +129,6 @@ public class BetBusinessTest {
                 .deathDate(betMock.getDeathDate())
                 .status("P")
                 .now();
-//
-//        MockedStatic<UUID> uuidStatic = Mockito.mockStatic(UUID.class);
-//        uuidStatic.when(UUID::randomUUID).thenReturn(uuidMock);
-
 
         Mockito.when(userServiceMock.findById(Mockito.anyLong())).thenReturn(userMock);
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(userMock);
@@ -124,4 +152,6 @@ public class BetBusinessTest {
         // valiadção
         Assertions.assertEquals("3dc936e6-478e-4d21-b167-67dee8b730af", executed.getTicket().toString());
     }
+
+
 }
