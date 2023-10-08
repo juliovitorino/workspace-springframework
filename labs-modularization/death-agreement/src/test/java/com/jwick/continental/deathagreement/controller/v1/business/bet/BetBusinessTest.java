@@ -92,7 +92,7 @@ public class BetBusinessTest {
         Assertions.assertEquals("Bet Object does not exist", exception.getMessage());
     }
     @Test
-    public void PendingBetWaitingTransferFundsException() {
+    public void shouldReturnPendingBetWaitingTransferFundsException() {
         // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
         UserDTO punterMock = UserDTOBuilder.newUserTestBuilder()
