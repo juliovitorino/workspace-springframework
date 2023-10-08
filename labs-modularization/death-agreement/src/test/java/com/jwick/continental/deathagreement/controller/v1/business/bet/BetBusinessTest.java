@@ -63,6 +63,9 @@ public class BetBusinessTest {
         uuidMockedStatic.close();
     }
 
+    public void whenBetHasBeenMadeJackpotPendingMustHaveIncreasing() {
+        Assertions.fail("Not implemented yet!");
+    }
     @Test
     public void shouldReturnBetObjectNotFoundException() {
         // scenario
@@ -169,12 +172,12 @@ public class BetBusinessTest {
         uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
 
         UserDTO userMock = UserDTOBuilder.newUserTestBuilder().now();
-        BetObjectDTO betObjectDTOMock = BetObjectBuilder.newBetObjectTestBuilder().now();
+        BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder().now();
         BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
                 .nickname(userMock.getNickname())
                 .btcAddress(userMock.getBtcAddress())
                 .bet(250.0)
-                .whoUUID(betObjectDTOMock.getExternalUUID())
+                .whoUUID(targetMock.getExternalUUID())
                 .deathDateBet(DateUtility.getDate(15,12,2030))
                 .now();
         UserDTO userToSaveMock = UserDTOBuilder.newUserTestBuilder()
@@ -185,7 +188,7 @@ public class BetBusinessTest {
                 .now();
         BetDTO betMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .idPunter(userMock.getId())
-                .idBetObject(betObjectDTOMock.getId())
+                .idBetObject(targetMock.getId())
                 .bet(betRequestMock.getBet())
                 .ticket(uuidMock)
                 .bitcoinAddress(userMock.getBtcAddress())
@@ -211,12 +214,13 @@ public class BetBusinessTest {
         Mockito.when(betServiceMock.salvar(betMock)).thenReturn(betSavedMock);
         Mockito.when(betServiceMock
                 .findBetByIdPunterAndIdBetObjectAndStatus(userMock.getId(),
-                        betObjectDTOMock.getId(),
+                        targetMock.getId(),
                         GenericStatusEnums.PENDENTE.getShortValue())).thenThrow(new BetNotFoundException("Not Found", HttpStatus.NOT_FOUND));
 
+        Mockito.when(betObjectServiceMock.findById(targetMock.getId())).thenReturn(targetMock);
         Mockito.when(betObjectServiceMock
                 .findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID()))
-                    .thenReturn(betObjectDTOMock);
+                    .thenReturn(targetMock);
 
         //action
         BetResponse executed = createBetService.execute(uuidMock, betRequestMock);

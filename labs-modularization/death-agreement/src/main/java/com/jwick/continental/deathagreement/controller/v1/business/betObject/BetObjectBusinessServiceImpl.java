@@ -17,6 +17,8 @@ public class BetObjectBusinessServiceImpl extends AbstractContinentalServices im
         BetObjectDTO betObjectDTO = new BetObjectDTO();
         betObjectDTO.setWho(request.getWho());
         betObjectDTO.setExternalUUID(UUID.randomUUID());
+        betObjectDTO.setJackpotPending(0.0);
+        betObjectDTO.setJackpot(0.0);
 
         BetObjectDTO saved = betObjectService.salvar(betObjectDTO);
         betObjectService.updateStatusById(saved.getId(), GenericStatusEnums.ATIVO.getShortValue());

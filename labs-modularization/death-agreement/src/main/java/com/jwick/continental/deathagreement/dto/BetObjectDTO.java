@@ -20,6 +20,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 package com.jwick.continental.deathagreement.dto;
+import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
 
@@ -30,6 +31,8 @@ import lombok.*;
 import com.jwick.continental.deathagreement.constantes.BetObjectConstantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.UUID;
 
@@ -58,6 +61,14 @@ public class BetObjectDTO extends DTOPadrao implements Serializable
     @SerializedName(BetObjectConstantes.EXTERNALUUID)
     @JsonProperty(BetObjectConstantes.EXTERNALUUID)
     private UUID externalUUID;
+
+    @SerializedName("jackpot")
+    @JsonProperty("jackpot")
+    private Double jackpot;
+
+    @SerializedName("jackpotPending")
+    @JsonProperty("jackpotPending")
+    private Double jackpotPending;
 
     @SerializedName("mensagemResponse")
     @JsonProperty("mensagemResponse")
