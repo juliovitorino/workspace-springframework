@@ -9,13 +9,21 @@ public class BetObjectDTOBuilder {
 
     private BetObjectDTOBuilder() {}
 
-    public static BetObjectDTOBuilder newBetObjectDTO() {
+    public static BetObjectDTOBuilder newBetObjectDTOTestBuilder() {
         BetObjectDTOBuilder builder = new BetObjectDTOBuilder();
         builder.dto = new BetObjectDTO();
         builder.dto.setWho("Jane Doe");
-        builder.dto.setExternalUUID(UUID.fromString("c744d321-d44a-443b-a1ee-fe17af267677"));
-        builder.dto.setStatus("A");
         return builder;
+    }
+
+    public BetObjectDTOBuilder status(String status) {
+        this.dto.setStatus(status);
+        return this;
+    }
+
+    public BetObjectDTOBuilder who(String who) {
+        this.dto.setWho(who);
+        return this;
     }
 
     public BetObjectDTOBuilder externalUUID(UUID externalUUID) {

@@ -8,7 +8,7 @@ public class BetObjectRequestBuilder {
 
     private BetObjectRequestBuilder() {}
 
-    public static BetObjectRequestBuilder newBetObjectRequest() {
+    public static BetObjectRequestBuilder newBetObjectRequestTestBuilder() {
 
         BetObjectRequestBuilder betObjectRequestBuilder = new BetObjectRequestBuilder();
         betObjectRequestBuilder.betObjectRequest = new BetObjectRequest();

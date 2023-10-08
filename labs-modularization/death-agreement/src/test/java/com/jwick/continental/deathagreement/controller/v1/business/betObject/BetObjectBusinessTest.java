@@ -5,9 +5,12 @@ import com.jwick.continental.deathagreement.bulder.BetObjectRequestBuilder;
 import com.jwick.continental.deathagreement.bulder.BetObjectResponseBuilder;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.service.BetObjectService;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -16,38 +19,48 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.UUID;
 
-public class BetObjectBusinessTest {
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
+@TestInstance(PER_CLASS)
+public class BetObjectBusinessTest {
+    private static MockedStatic<UUID> uuidMockedStatic;
+    private final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     @Mock
     private BetObjectService betObjectServiceMock;
     @InjectMocks
-    private BetObjectBusinessService betObjectBusinessService = new BetObjectBusinessServiceImpl();
+    private BetObjectBusinessService betObjectBusinessService;
 
-    @BeforeEach
+    @BeforeAll
     public void setup() {
+        uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
+        betObjectBusinessService = new BetObjectBusinessServiceImpl();
         MockitoAnnotations.initMocks(this);
     }
 
+    @AfterAll
+    public void tearDown() {
+        uuidMockedStatic.close();
+    }
     @Test
     public void shouldSaveBetObjectWithSuccess() {
         // cenario
-        UUID uuidmock = UUID.fromString("c744d321-d44a-443b-a1ee-fe17af267677");
+        uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
 
-        BetObjectRequest betObjectRequest = BetObjectRequestBuilder.newBetObjectRequest().now();
-        BetObjectResponse betObjectResponse = BetObjectResponseBuilder.newBetObjectResponse().now();
-        BetObjectDTO betObjectDTO = BetObjectDTOBuilder.newBetObjectDTO().now();
-        BetObjectDTO betObjectDTOResponse = BetObjectDTOBuilder.newBetObjectDTO()
-                .externalUUID(uuidmock)
+        BetObjectRequest betObjectRequestMock = BetObjectRequestBuilder.newBetObjectRequestTestBuilder().now();
+        BetObjectDTO betObjectToSave = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .externalUUID(uuidMock)
+                .now();
+        BetObjectDTO betObjectSaved = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .status("P")
+                .externalUUID(uuidMock)
                 .now();
 
-        MockedStatic<UUID> uuid = Mockito.mockStatic(UUID.class);
-        uuid.when(UUID::randomUUID).thenReturn(uuidmock);
-        Mockito.when(betObjectServiceMock.salvar(betObjectDTO)).thenReturn(betObjectDTOResponse);
+        Mockito.when(betObjectServiceMock.salvar(betObjectToSave)).thenReturn(betObjectSaved);
 
         // acao
-        BetObjectResponse executed = betObjectBusinessService.execute(uuidmock, betObjectRequest);
+        BetObjectResponse executed = betObjectBusinessService.execute(uuidMock, betObjectRequestMock);
 
         // validação
-        Assertions.assertEquals(betObjectResponse.getWhoUUID().toString(),"c744d321-d44a-443b-a1ee-fe17af267677");
+        Assertions.assertEquals("3dc936e6-478e-4d21-b167-67dee8b730af",executed.getWhoUUID().toString());
     }
 }

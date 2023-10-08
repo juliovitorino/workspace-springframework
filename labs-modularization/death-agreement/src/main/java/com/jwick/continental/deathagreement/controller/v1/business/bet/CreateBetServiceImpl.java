@@ -63,8 +63,8 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         betResponse.setTicket(betSaved.getTicket());
         betResponse.setStatus(BetStatusEnum.fromValue(betSaved.getStatus()).getStatus());
         betResponse.setMessageResponse(MensagemResponse.builder()
-                        .mensagem(" Your Bet has been created, but it is Pending beacuse we're waiting you transfer fund to Continental BTC Account => " + config.getContinentalBtcAddress()
-                        + ". Your Ticket is " + betSaved.getTicket()
+                        .mensagem(" Your Bet has been created, but it is Pending beacuse we're waiting you transfer fund to Continental BTC Account => xxxx"
+                        + ". Your Ticket is " + betSaved.getTicket().toString()
                         )
                 .build());
         return betResponse;

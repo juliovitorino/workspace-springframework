@@ -10,7 +10,7 @@ public class BetObjectResponseBuilder {
 
     private BetObjectResponseBuilder() {}
 
-    public static BetObjectResponseBuilder newBetObjectResponse() {
+    public static BetObjectResponseBuilder newBetObjectResponseTestBuilder() {
         BetObjectResponseBuilder builder = new BetObjectResponseBuilder();
         builder.betObjectResponse = new BetObjectResponse();
         builder.betObjectResponse.setWhoUUID(UUID.fromString("c744d321-d44a-443b-a1ee-fe17af267677"));
