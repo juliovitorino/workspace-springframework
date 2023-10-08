@@ -4,6 +4,8 @@ import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.bulder.BetDTOBuilder;
 import com.jwick.continental.deathagreement.bulder.BetObjectBuilder;
+import com.jwick.continental.deathagreement.bulder.BetObjectDTOBuilder;
+import com.jwick.continental.deathagreement.bulder.BetObjectRequestBuilder;
 import com.jwick.continental.deathagreement.bulder.BetRequestBuilder;
 import com.jwick.continental.deathagreement.bulder.BetResponseBuilder;
 import com.jwick.continental.deathagreement.bulder.UserDTOBuilder;
@@ -11,6 +13,7 @@ import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
+import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
@@ -34,6 +37,8 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 @TestInstance(PER_CLASS)
 public class BetBusinessTest {
 
+    private static final String PROCESS_ID = "a98de2c9-ea34-448c-9110-eafd93cc8d48";
+    public static final String BTC_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
     private static MockedStatic<UUID> uuidMockedStatic;
     private final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     @Mock
@@ -58,16 +63,44 @@ public class BetBusinessTest {
     }
 
     @Test
-    public void shouldCaptureExcpetionForSameBtcAddressForDifferentNickname() {
+    public void shouldReturnBetObjectNotFoundException() {
+        // scenario
+        UUID processId = UUID.fromString(PROCESS_ID);
+        UserDTO punter = UserDTOBuilder.newUserTestBuilder()
+                .id(1L)
+                .now();
+        BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
+                .nickname(punter.getNickname())
+                .btcAddress(punter.getBtcAddress())
+                .bet(180.0)
+                .whoUUID(UUID.fromString("7bed3f75-ff6a-4f87-901a-2c300469165a"))
+                .deathDateBet(DateUtility.getDate(13,9,2040))
+                .now();
+
+        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punter);
+        Mockito.when(userServiceMock.findUserByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punter);
+        Mockito.when(userServiceMock.findById(punter.getId())).thenReturn(punter);
+
+        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(null);
+
+        // action
+        BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
+                () -> createBetService.execute(processId, betRequestMock));
+
+        // validate
+        Assertions.assertEquals("Bet Object does not exist", exception.getMessage());
+    }
+    @Test
+    public void shouldCaptureExceptionForSameBtcAddressForDifferentNickname() {
         // cenario
-        UUID processId = UUID.fromString("a98de2c9-ea34-448c-9110-eafd93cc8d48");
+        UUID processId = UUID.fromString(PROCESS_ID);
         UserDTO user1 = UserDTOBuilder.newUserTestBuilder()
                 .nickname("Jane Doe")
-                .btcAddress("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
+                .btcAddress(BTC_ADDRESS)
                 .now();
         UserDTO user2 = UserDTOBuilder.newUserTestBuilder()
                 .nickname("Nicolas gauger")
-                .btcAddress("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
+                .btcAddress(BTC_ADDRESS)
                 .now();
         BetObjectDTO betObjectDTOMock = BetObjectBuilder.newBetObjectTestBuilder().now();
         BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
@@ -80,13 +113,10 @@ public class BetBusinessTest {
 
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
 
-        BtcAddressNotBelongThisUserException exception = Assertions.assertThrows(BtcAddressNotBelongThisUserException.class,
-                () -> {
-                    createBetService.execute(processId, betRequestMock);
-                });
 
         // ação
-//        BetResponse executed = createBetService.execute(processId, betRequestMock);
+        BtcAddressNotBelongThisUserException exception = Assertions.assertThrows(BtcAddressNotBelongThisUserException.class,
+                () -> createBetService.execute(processId, betRequestMock));
 
         // Validação
         Assertions.assertEquals("Other user is using this btc address", exception.getMessage());
