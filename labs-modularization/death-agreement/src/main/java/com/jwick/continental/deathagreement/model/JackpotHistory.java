@@ -11,46 +11,44 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @CodeGeneratorDescriptor(outputDir = "/Users/juliovitorino/workspaces/workspace-springframework/labs-modularization/death-agreement/src/main/resources",
         project = "",
-        fullDescription = "Control all Bet")
+        fullDescription = "Control all Users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Bet {
+@Table(name = "jackpot_history")
+public class JackpotHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Bet primary key")
+    @Column(name = "id_jackpot")
+    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "User primary key")
     private Long id;
 
-    @Column(name = "id_punter")
-    @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "idPunter",fieldDescription = "Punter's ID")
-    private Long idPunter;
+    @Column(nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "User nickname")
+    private String description;
 
-    @Column(name = "id_bet_object")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet Obejct's ID")
-    private Long idBetObject;
+    @Column(nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Type: B = Balance, C = Credit")
+    private String type;
 
-    @Column(precision=20, scale=8)
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet's value")
-    private Double bet;
+    @Column(name = "bet_value", precision=20, scale=8, nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet value input for jackpot")
+    private String betValue;
 
-    @Column(name = "btc_address")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin address")
-    private String bitcoinAddress;
-
-    @Column
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Ticket for bet")
+    @Column(nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Ticket for punter")
     private UUID ticket;
 
-    @Column(name = "death_date")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Suggest death date for Object")
-    private Date deathDate;
+    @Column(name = "id_punter", nullable = false)
+    @CodeGeneratorFieldDescriptor(fieldDescription = "ID punter")
+    private Long idPunter;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status field")
     @Column(length = 1)
