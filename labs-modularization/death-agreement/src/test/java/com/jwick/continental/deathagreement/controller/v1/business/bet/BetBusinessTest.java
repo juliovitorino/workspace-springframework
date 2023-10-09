@@ -9,6 +9,7 @@ import com.jwick.continental.deathagreement.bulder.BetObjectRequestBuilder;
 import com.jwick.continental.deathagreement.bulder.BetRequestBuilder;
 import com.jwick.continental.deathagreement.bulder.BetResponseBuilder;
 import com.jwick.continental.deathagreement.bulder.UserDTOBuilder;
+import com.jwick.continental.deathagreement.config.ContinentalConfig;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
@@ -40,6 +41,7 @@ public class BetBusinessTest {
 
     private static final String PROCESS_ID = "a98de2c9-ea34-448c-9110-eafd93cc8d48";
     public static final String BTC_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+    public static final String CONTINENTAL_BTC_ADDRESS = "bc1qupua5993486zf5g5g00e6nax4w5pd4p0ulx4v0";
     private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
     @Mock
@@ -48,6 +50,8 @@ public class BetBusinessTest {
     private BetObjectService betObjectServiceMock;
     @Mock
     private UserService userServiceMock;
+    @Mock
+    private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
 
     @BeforeAll
@@ -221,6 +225,8 @@ public class BetBusinessTest {
         Mockito.when(betObjectServiceMock
                 .findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID()))
                     .thenReturn(targetMock);
+
+        Mockito.when(configMock.getContinentalBtcAddress()).thenReturn(CONTINENTAL_BTC_ADDRESS);
 
         //action
         BetResponse executed = createBetService.execute(uuidMock, betRequestMock);
