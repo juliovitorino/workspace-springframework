@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class ContinentalConfig {
 
-    @Value("continental.btc-address")
+    @Value("${continental.btc-address}")
     private String continentalBtcAddress;
 
-    @Value("continental.unit")
+    @Value("${continental.unit}")
     private String continentalUnit;
 }
