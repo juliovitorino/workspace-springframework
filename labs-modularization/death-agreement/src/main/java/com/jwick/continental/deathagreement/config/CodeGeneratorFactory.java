@@ -162,7 +162,7 @@ public class CodeGeneratorFactory {
         return new CodeGeneratorRequestFilter();
     }
     @Bean("CodeGeneratorMainStreamInstance")
-    public ICodeGeneratorBatch CodeGeneratorMainStreamInstance() {
+    public ICodeGeneratorBatch codeGeneratorMainStreamInstance() {
         log.info("CodeGeneratorMainStreamInstance :: has started successfully");
         return new CodeGeneratorMainStream();
     }
