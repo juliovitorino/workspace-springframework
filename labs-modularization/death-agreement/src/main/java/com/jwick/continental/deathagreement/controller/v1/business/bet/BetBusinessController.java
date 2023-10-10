@@ -18,6 +18,7 @@ public class BetBusinessController {
 
     @Autowired private CreateBetService createBetService;
     @Autowired private ConfirmBetBusinessService confirmBetBusinessService;
+    @Autowired private ViewJackpotBusinessService viewJackpotBusinessService;
 
     @PostMapping
     public ResponseEntity makeBet(@RequestBody @Valid BetRequest betRequest) {
@@ -29,5 +30,10 @@ public class BetBusinessController {
     public ResponseEntity confirmBet(@PathVariable @Valid UUID ticket) {
         final UUID pid = UUID.randomUUID();
         return ResponseEntity.ok().body(confirmBetBusinessService.execute(pid, ticket));
+    }
+    @GetMapping("/view/{target}")
+    public ResponseEntity viewJackpot(@PathVariable(name = "target") @Valid UUID target) {
+        final UUID pid = UUID.randomUUID();
+        return ResponseEntity.ok().body(viewJackpotBusinessService.execute(pid, target));
     }
 }
