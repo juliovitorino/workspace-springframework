@@ -2,8 +2,10 @@ pipeline {
     agent any
     stages {
         stage("Build Commons Library") {
-            step {
-                sh 'mvn clean package -DskipTests'
+            steps {
+                dir("jcv-modularization/jcv-commons-library") {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
     }
