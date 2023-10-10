@@ -1,10 +1,17 @@
 pipeline {
     agent any
     stages {
-        stage("Build Continental") {
+        stage("Build Backend") {
             steps {
                 dir("labs-modularization/death-agreement") {
                     sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        stage("Run Unit Tests") {
+            steps {
+                dir("labs-modularization/death-agreement") {
+                    sh 'mvn test'
                 }
             }
         }
