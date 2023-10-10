@@ -11,7 +11,6 @@ import java.util.UUID;
 public class ViewJackpotBusinessServiceImpl extends AbstractContinentalServices implements ViewJackpotBusinessService {
     @Override
     public BetObjectDTO execute(UUID processId, UUID uuidTarget) {
-        betObjectService.findBetObjectByExternalUUIDAndStatus(uuidTarget);
         return betObjectService.findBetObjectByExternalUUIDAndStatus(uuidTarget);
     }
 }
