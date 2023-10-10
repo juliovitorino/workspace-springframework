@@ -1,0 +1,12 @@
+pipeline {
+    agent any
+    stages {
+        stage("Build Continental") {
+            steps {
+                dir("labs-modularization/death-agreement") {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+    }
+}
