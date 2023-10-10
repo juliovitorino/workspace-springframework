@@ -143,7 +143,7 @@ public class JackpotHistoryServiceImpl implements JackpotHistoryService
                 if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.ID)) jackpothistory.setId((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.DESCRIPTION)) jackpothistory.setDescription((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.TYPE)) jackpothistory.setType((String)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.BETVALUE)) jackpothistory.setBetValue((String)entry.getValue());
+                if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.BETVALUE)) jackpothistory.setBetValue((Double)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.TICKET)) jackpothistory.setTicket((UUID)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.IDPUNTER)) jackpothistory.setIdPunter((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.STATUS)) jackpothistory.setStatus((String)entry.getValue());
@@ -202,7 +202,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Long id = null;
     String description = null;
     String type = null;
-    String betValue = null;
+    Double betValue = null;
     UUID ticket = null;
     Long idPunter = null;
     String status = null;
@@ -214,7 +214,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.ID)) id = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.DESCRIPTION)) description = (String) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.TYPE)) type = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.BETVALUE)) betValue = (String) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.BETVALUE)) betValue = (Double) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.TICKET)) ticket = (UUID) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.IDPUNTER)) idPunter = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.STATUS)) status = (String) entry.getValue() ;
@@ -257,7 +257,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Long id = null;
     String description = null;
     String type = null;
-    String betValue = null;
+    Double betValue = null;
     UUID ticket = null;
     Long idPunter = null;
     String status = null;
@@ -268,7 +268,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.ID)) id = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.DESCRIPTION)) description = (String) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.TYPE)) type = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.BETVALUE)) betValue = (String) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.BETVALUE)) betValue = (Double) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.TICKET)) ticket = (UUID) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.IDPUNTER)) idPunter = (Long) entry.getValue() ;
         if(entry.getKey().equalsIgnoreCase(JackpotHistoryConstantes.STATUS)) status = (String) entry.getValue() ;
@@ -326,7 +326,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = JackpotHistoryNotFoundException.class
     )
-    public List<JackpotHistoryDTO> findAllJackpotHistoryByBetValueAndStatus(String betValue, String status) {
+    public List<JackpotHistoryDTO> findAllJackpotHistoryByBetValueAndStatus(Double betValue, String status) {
         return jackpothistoryRepository.findAllByBetValueAndStatus(betValue, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override
@@ -463,7 +463,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = JackpotHistoryNotFoundException.class
     )
-    public JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(String betValue, String status) {
+    public JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(Double betValue, String status) {
         Long maxId = jackpothistoryRepository.loadMaxIdByBetValueAndStatus(betValue, status);
         if(maxId == null) maxId = 0L;
         Optional<JackpotHistory> jackpothistoryData =
@@ -483,7 +483,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = JackpotHistoryNotFoundException.class
     )
-    public JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(String betValue) {
+    public JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(Double betValue) {
         return this.findJackpotHistoryByBetValueAndStatus(betValue, GenericStatusEnums.ATIVO.getShortValue());
     }
 
@@ -632,7 +632,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     transactionManager = "transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class)
-    public JackpotHistoryDTO updateBetValueById(Long id, String betValue) {
+    public JackpotHistoryDTO updateBetValueById(Long id, Double betValue) {
         findById(id);
         jackpothistoryRepository.updateBetValueById(id, betValue);
         return findById(id);

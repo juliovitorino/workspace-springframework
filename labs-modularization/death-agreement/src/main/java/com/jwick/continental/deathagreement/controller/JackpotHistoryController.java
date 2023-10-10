@@ -331,7 +331,7 @@ public class JackpotHistoryController
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "betValue")
-    public ResponseEntity<JackpotHistoryDTO> findJackpotHistoryByBetValue(@RequestParam(JackpotHistoryConstantes.BETVALUE) String betValue) {
+    public ResponseEntity<JackpotHistoryDTO> findJackpotHistoryByBetValue(@RequestParam(JackpotHistoryConstantes.BETVALUE) Double betValue) {
         try{
             JackpotHistoryDTO jackpothistoryDTO = jackpothistoryService.findJackpotHistoryByBetValueAndStatus(betValue, GenericStatusEnums.ATIVO.getShortValue());
             return Objects.nonNull(jackpothistoryDTO)

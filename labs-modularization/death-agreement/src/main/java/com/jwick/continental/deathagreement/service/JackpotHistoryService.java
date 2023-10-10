@@ -48,8 +48,8 @@ public interface JackpotHistoryService extends CommoditieBaseService<JackpotHist
     JackpotHistoryDTO findJackpotHistoryByDescriptionAndStatus(String description, String status);
     JackpotHistoryDTO findJackpotHistoryByTypeAndStatus(String type);
     JackpotHistoryDTO findJackpotHistoryByTypeAndStatus(String type, String status);
-    JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(String betValue);
-    JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(String betValue, String status);
+    JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(Double betValue);
+    JackpotHistoryDTO findJackpotHistoryByBetValueAndStatus(Double betValue, String status);
     JackpotHistoryDTO findJackpotHistoryByTicketAndStatus(UUID ticket);
     JackpotHistoryDTO findJackpotHistoryByTicketAndStatus(UUID ticket, String status);
     JackpotHistoryDTO findJackpotHistoryByIdPunterAndStatus(Long idPunter);
@@ -62,7 +62,7 @@ public interface JackpotHistoryService extends CommoditieBaseService<JackpotHist
     List<JackpotHistoryDTO> findAllJackpotHistoryByIdAndStatus(Long id, String status);
     List<JackpotHistoryDTO> findAllJackpotHistoryByDescriptionAndStatus(String description, String status);
     List<JackpotHistoryDTO> findAllJackpotHistoryByTypeAndStatus(String type, String status);
-    List<JackpotHistoryDTO> findAllJackpotHistoryByBetValueAndStatus(String betValue, String status);
+    List<JackpotHistoryDTO> findAllJackpotHistoryByBetValueAndStatus(Double betValue, String status);
     List<JackpotHistoryDTO> findAllJackpotHistoryByTicketAndStatus(UUID ticket, String status);
     List<JackpotHistoryDTO> findAllJackpotHistoryByIdPunterAndStatus(Long idPunter, String status);
     List<JackpotHistoryDTO> findAllJackpotHistoryByDateCreatedAndStatus(Date dateCreated, String status);
@@ -70,7 +70,7 @@ public interface JackpotHistoryService extends CommoditieBaseService<JackpotHist
 
     JackpotHistoryDTO updateDescriptionById(Long id, String description);
     JackpotHistoryDTO updateTypeById(Long id, String type);
-    JackpotHistoryDTO updateBetValueById(Long id, String betValue);
+    JackpotHistoryDTO updateBetValueById(Long id, Double betValue);
     JackpotHistoryDTO updateTicketById(Long id, UUID ticket);
     JackpotHistoryDTO updateIdPunterById(Long id, Long idPunter);
     JackpotHistoryDTO updateStatusById(Long id, String status);

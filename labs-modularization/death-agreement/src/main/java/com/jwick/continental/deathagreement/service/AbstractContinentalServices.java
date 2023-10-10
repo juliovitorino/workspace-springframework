@@ -14,6 +14,7 @@ public class AbstractContinentalServices {
     @Autowired protected BetService betService;
     @Autowired protected BetObjectService betObjectService;
     @Autowired protected UserService userService;
+    @Autowired protected JackpotHistoryService jackpotHistoryService;
 
     protected boolean checkUserStatus(Long id, GenericStatusEnums status) {
         try {

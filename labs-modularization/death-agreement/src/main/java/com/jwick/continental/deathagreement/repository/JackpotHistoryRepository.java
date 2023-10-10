@@ -71,7 +71,7 @@ Page<JackpotHistory> findJackpotHistoryByFilter(Pageable pageable,
         @Param(JackpotHistoryConstantes.ID) Long id,
         @Param(JackpotHistoryConstantes.DESCRIPTION) String description,
         @Param(JackpotHistoryConstantes.TYPE) String type,
-        @Param(JackpotHistoryConstantes.BETVALUE) String betValue,
+        @Param(JackpotHistoryConstantes.BETVALUE) Double betValue,
         @Param(JackpotHistoryConstantes.TICKET) UUID ticket,
         @Param(JackpotHistoryConstantes.IDPUNTER) Long idPunter,
         @Param(JackpotHistoryConstantes.STATUS) String status,
@@ -96,7 +96,7 @@ List<JackpotHistory> findJackpotHistoryByFilter(
         @Param(JackpotHistoryConstantes.ID) Long id,
         @Param(JackpotHistoryConstantes.DESCRIPTION) String description,
         @Param(JackpotHistoryConstantes.TYPE) String type,
-        @Param(JackpotHistoryConstantes.BETVALUE) String betValue,
+        @Param(JackpotHistoryConstantes.BETVALUE) Double betValue,
         @Param(JackpotHistoryConstantes.TICKET) UUID ticket,
         @Param(JackpotHistoryConstantes.IDPUNTER) Long idPunter,
         @Param(JackpotHistoryConstantes.STATUS) String status,
@@ -112,7 +112,7 @@ List<JackpotHistory> findJackpotHistoryByFilter(
      @Query(value = "SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE type = :type AND status = :status ", nativeQuery = true)
      Long loadMaxIdByTypeAndStatus(String type, String status);
      @Query(value = "SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE bet_value = :betValue AND status = :status ", nativeQuery = true)
-     Long loadMaxIdByBetValueAndStatus(String betValue, String status);
+     Long loadMaxIdByBetValueAndStatus(Double betValue, String status);
      @Query(value = "SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE ticket = :ticket AND status = :status ", nativeQuery = true)
      Long loadMaxIdByTicketAndStatus(UUID ticket, String status);
      @Query(value = "SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE id_punter = :idPunter AND status = :status ", nativeQuery = true)
@@ -131,7 +131,7 @@ List<JackpotHistory> findJackpotHistoryByFilter(
      void updateTypeById(@Param("id") Long id, @Param(JackpotHistoryConstantes.TYPE) String type);
      @Modifying
      @Query(value = "UPDATE jackpot_history SET bet_value = :betValue, dt_updated = current_timestamp  WHERE id_jackpot = :id", nativeQuery = true)
-     void updateBetValueById(@Param("id") Long id, @Param(JackpotHistoryConstantes.BETVALUE) String betValue);
+     void updateBetValueById(@Param("id") Long id, @Param(JackpotHistoryConstantes.BETVALUE) Double betValue);
      @Modifying
      @Query(value = "UPDATE jackpot_history SET ticket = :ticket, dt_updated = current_timestamp  WHERE id_jackpot = :id", nativeQuery = true)
      void updateTicketById(@Param("id") Long id, @Param(JackpotHistoryConstantes.TICKET) UUID ticket);
@@ -148,17 +148,6 @@ List<JackpotHistory> findJackpotHistoryByFilter(
      @Query(value = "UPDATE jackpot_history SET date_updated = :dateUpdated, dt_updated = current_timestamp  WHERE id_jackpot = :id", nativeQuery = true)
      void updateDateUpdatedById(@Param("id") Long id, @Param(JackpotHistoryConstantes.DATEUPDATED) Date dateUpdated);
 
-
-     long countByIdAndStatus(Long id, String status);
-     long countByDescriptionAndStatus(String description, String status);
-     long countByTypeAndStatus(String type, String status);
-     long countByBetValueAndStatus(String betValue, String status);
-     long countByTicketAndStatus(UUID ticket, String status);
-     long countByIdPunterAndStatus(Long idPunter, String status);
-     long countByDateCreatedAndStatus(Date dateCreated, String status);
-     long countByDateUpdatedAndStatus(Date dateUpdated, String status);
-
-
     @Query(value = "SELECT * FROM jackpot_history WHERE id_jackpot = (SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE id_jackpot = :id AND  status = :status) ", nativeQuery = true)
     Optional<JackpotHistory> findByIdAndStatus(Long id, String status);
     @Query(value = "SELECT * FROM jackpot_history WHERE id_jackpot = (SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE description = :description AND  status = :status) ", nativeQuery = true)
@@ -166,7 +155,7 @@ List<JackpotHistory> findJackpotHistoryByFilter(
     @Query(value = "SELECT * FROM jackpot_history WHERE id_jackpot = (SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE type = :type AND  status = :status) ", nativeQuery = true)
     Optional<JackpotHistory> findByTypeAndStatus(String type, String status);
     @Query(value = "SELECT * FROM jackpot_history WHERE id_jackpot = (SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE bet_value = :betValue AND  status = :status) ", nativeQuery = true)
-    Optional<JackpotHistory> findByBetValueAndStatus(String betValue, String status);
+    Optional<JackpotHistory> findByBetValueAndStatus(Double betValue, String status);
     @Query(value = "SELECT * FROM jackpot_history WHERE id_jackpot = (SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE ticket = :ticket AND  status = :status) ", nativeQuery = true)
     Optional<JackpotHistory> findByTicketAndStatus(UUID ticket, String status);
     @Query(value = "SELECT * FROM jackpot_history WHERE id_jackpot = (SELECT MAX(id_jackpot) AS maxid FROM jackpot_history WHERE id_punter = :idPunter AND  status = :status) ", nativeQuery = true)
@@ -184,7 +173,7 @@ List<JackpotHistory> findJackpotHistoryByFilter(
      @Query(value = "SELECT * FROM jackpot_history WHERE type = :type AND  status = :status ", nativeQuery = true)
      List<JackpotHistory> findAllByTypeAndStatus(String type, String status);
      @Query(value = "SELECT * FROM jackpot_history WHERE bet_value = :betValue AND  status = :status ", nativeQuery = true)
-     List<JackpotHistory> findAllByBetValueAndStatus(String betValue, String status);
+     List<JackpotHistory> findAllByBetValueAndStatus(Double betValue, String status);
      @Query(value = "SELECT * FROM jackpot_history WHERE ticket = :ticket AND  status = :status ", nativeQuery = true)
      List<JackpotHistory> findAllByTicketAndStatus(UUID ticket, String status);
      @Query(value = "SELECT * FROM jackpot_history WHERE id_punter = :idPunter AND  status = :status ", nativeQuery = true)
@@ -206,7 +195,7 @@ List<JackpotHistory> findJackpotHistoryByFilter(
     void deleteByType(@Param(JackpotHistoryConstantes.TYPE) String type);
     @Modifying
     @Query(value = "DELETE FROM jackpot_history WHERE bet_value = :betValue", nativeQuery = true)
-    void deleteByBetValue(@Param(JackpotHistoryConstantes.BETVALUE) String betValue);
+    void deleteByBetValue(@Param(JackpotHistoryConstantes.BETVALUE) Double betValue);
     @Modifying
     @Query(value = "DELETE FROM jackpot_history WHERE ticket = :ticket", nativeQuery = true)
     void deleteByTicket(@Param(JackpotHistoryConstantes.TICKET) UUID ticket);

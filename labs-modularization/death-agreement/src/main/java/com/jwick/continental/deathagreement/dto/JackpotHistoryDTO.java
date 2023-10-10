@@ -61,7 +61,7 @@ public class JackpotHistoryDTO extends DTOPadrao implements Serializable
 
     @SerializedName(JackpotHistoryConstantes.BETVALUE)
     @JsonProperty(JackpotHistoryConstantes.BETVALUE)
-    private String betValue;
+    private Double betValue;
 
     @SerializedName(JackpotHistoryConstantes.TICKET)
     @JsonProperty(JackpotHistoryConstantes.TICKET)

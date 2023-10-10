@@ -31,7 +31,7 @@ public class JackpotHistory {
     private Long id;
 
     @Column(nullable = false)
-    @CodeGeneratorFieldDescriptor(fieldDescription = "User nickname")
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Free description for bet")
     private String description;
 
     @Column(nullable = false)
@@ -40,7 +40,7 @@ public class JackpotHistory {
 
     @Column(name = "bet_value", precision=20, scale=8, nullable = false)
     @CodeGeneratorFieldDescriptor(fieldDescription = "Bet value input for jackpot")
-    private String betValue;
+    private Double betValue;
 
     @Column(nullable = false)
     @CodeGeneratorFieldDescriptor(fieldDescription = "Ticket for punter")
