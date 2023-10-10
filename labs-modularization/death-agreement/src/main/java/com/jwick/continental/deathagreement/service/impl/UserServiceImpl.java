@@ -21,19 +21,16 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.service.impl;
 
-import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 
 import com.jwick.continental.deathagreement.dto.UserDTO;
-import com.jwick.continental.deathagreement.model.User;
+import com.jwick.continental.deathagreement.model.UserPunter;
 import com.jwick.continental.deathagreement.constantes.UserConstantes;
 import com.jwick.continental.deathagreement.repository.UserRepository;
 import com.jwick.continental.deathagreement.service.UserService;
 import com.jwick.continental.deathagreement.exception.UserNotFoundException;
-
-import java.text.SimpleDateFormat;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 
-import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -72,7 +68,7 @@ public class UserServiceImpl implements UserService
     )
     public void delete(Long id) {
         log.info("Deletando User com id = {}", id);
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
                     () -> new UserNotFoundException("User não encontrada com id = " + String.valueOf(id),
@@ -107,7 +103,7 @@ public class UserServiceImpl implements UserService
         noRollbackFor = UserNotFoundException.class
     )
     public UserDTO findById(Long id) {
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
                     () -> new UserNotFoundException("User não encontrada " + String.valueOf(id),
@@ -129,7 +125,7 @@ public class UserServiceImpl implements UserService
     )
     public boolean partialUpdate(Long id, Map<String, Object> updates) {
 
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
                     () -> new UserNotFoundException("User não encontrada " + String.valueOf(id),
@@ -137,7 +133,7 @@ public class UserServiceImpl implements UserService
                         "User com id = " + String.valueOf(id) + " não encontrado."))
                     );
         if (userData.isPresent()) {
-            User user = userData.get();
+            UserPunter user = userData.get();
 
             for (Map.Entry<String,Object> entry : updates.entrySet()) {
                 if(entry.getKey().equalsIgnoreCase(UserConstantes.ID)) user.setId((Long)entry.getValue());
@@ -166,13 +162,13 @@ public class UserServiceImpl implements UserService
         noRollbackFor = UserNotFoundException.class
     )
     public UserDTO updateStatusById(Long id, String status) {
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable( userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User não encontrada com id = " + String.valueOf(id),
                     HttpStatus.NOT_FOUND,
                     "User não encontrada com id = " + String.valueOf(id)))
                 );
-        User user = userData.isPresent() ? userData.get() : new User();
+        UserPunter user = userData.isPresent() ? userData.get() : new UserPunter();
         user.setStatus(status);
         user.setDateUpdated(new Date());
         return toDTO(userRepository.save(user));
@@ -195,7 +191,7 @@ public class UserServiceImpl implements UserService
     noRollbackFor = UserNotFoundException.class
 )
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<User> lstUser = new ArrayList<>();
+    List<UserPunter> lstUser = new ArrayList<>();
     Long id = null;
     String nickname = null;
     String btcAddress = null;
@@ -215,7 +211,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
     Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
-    Page<User> paginaUser = userRepository.findUserByFilter(paging,
+    Page<UserPunter> paginaUser = userRepository.findUserByFilter(paging,
         id
         ,nickname
         ,btcAddress
@@ -259,7 +255,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
         }
 
-        List<User> lstUser = userRepository.findUserByFilter(
+        List<UserPunter> lstUser = userRepository.findUserByFilter(
             id
             ,nickname
             ,btcAddress
@@ -328,7 +324,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public UserDTO findUserByIdAndStatus(Long id, String status) {
         Long maxId = userRepository.loadMaxIdByIdAndStatus(id, status);
         if(maxId == null) maxId = 0L;
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
@@ -358,7 +354,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public UserDTO findUserByNicknameAndStatus(String nickname, String status) {
         Long maxId = userRepository.loadMaxIdByNicknameAndStatus(nickname, status);
         if(maxId == null) maxId = 0L;
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
@@ -388,7 +384,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public UserDTO findUserByBtcAddressAndStatus(String btcAddress, String status) {
         Long maxId = userRepository.loadMaxIdByBtcAddressAndStatus(btcAddress, status);
         if(maxId == null) maxId = 0L;
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
@@ -418,7 +414,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public UserDTO findUserByDateCreatedAndStatus(Date dateCreated, String status) {
         Long maxId = userRepository.loadMaxIdByDateCreatedAndStatus(dateCreated, status);
         if(maxId == null) maxId = 0L;
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
@@ -448,7 +444,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public UserDTO findUserByDateUpdatedAndStatus(Date dateUpdated, String status) {
         Long maxId = userRepository.loadMaxIdByDateUpdatedAndStatus(dateUpdated, status);
         if(maxId == null) maxId = 0L;
-        Optional<User> userData =
+        Optional<UserPunter> userData =
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
@@ -511,7 +507,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     }
 
 
-    public UserDTO toDTO(User user) {
+    public UserDTO toDTO(UserPunter user) {
         UserDTO userDTO = new UserDTO();
                 userDTO.setId(user.getId());
                 userDTO.setNickname(user.getNickname());
@@ -523,9 +519,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return userDTO;
     }
 
-    public User toEntity(UserDTO userDTO) {
-        User user = null;
-        user = new User();
+    public UserPunter toEntity(UserDTO userDTO) {
+        UserPunter user = null;
+        user = new UserPunter();
                     user.setId(userDTO.getId());
                     user.setNickname(userDTO.getNickname());
                     user.setBtcAddress(userDTO.getBtcAddress());

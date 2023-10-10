@@ -22,7 +22,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 package com.jwick.continental.deathagreement.repository;
 
 import java.util.List;
-import com.jwick.continental.deathagreement.model.User;
+import com.jwick.continental.deathagreement.model.UserPunter;
 import com.jwick.continental.deathagreement.constantes.UserConstantes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,13 +48,13 @@ import java.util.Date;
 *
 */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>
+public interface UserRepository extends JpaRepository<UserPunter, Long>
 {
-    @Query(value = "SELECT * FROM User WHERE  status = :status", nativeQuery = true)
-    List<User> findAllByStatus(@Param(UserConstantes.STATUS) String status);
+    @Query(value = "SELECT * FROM user_punter WHERE  status = :status", nativeQuery = true)
+    List<UserPunter> findAllByStatus(@Param(UserConstantes.STATUS) String status);
 
-@Query(value = "SELECT * FROM User WHERE 1=1 " +
-        "AND (:id = '' OR id = :id) " +
+@Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
+        "AND (:id = '' OR id_user_punter = :id) " +
         "AND (:nickname = '' OR nickname = :nickname) " +
         "AND (:btcAddress = '' OR btc_address = :btcAddress) " +
         "AND (:status = '' OR status = :status) " +
@@ -62,18 +62,18 @@ public interface UserRepository extends JpaRepository<User, Long>
         "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
         , nativeQuery = true)
-Page<User> findUserByFilter(Pageable pageable,
-        @Param(UserConstantes.ID) Long id,
-        @Param(UserConstantes.NICKNAME) String nickname,
-        @Param(UserConstantes.BTCADDRESS) String btcAddress,
-        @Param(UserConstantes.STATUS) String status,
-        @Param(UserConstantes.DATECREATED) Date dateCreated,
-        @Param(UserConstantes.DATEUPDATED) Date dateUpdated
+Page<UserPunter> findUserByFilter(Pageable pageable,
+                                  @Param(UserConstantes.ID) Long id,
+                                  @Param(UserConstantes.NICKNAME) String nickname,
+                                  @Param(UserConstantes.BTCADDRESS) String btcAddress,
+                                  @Param(UserConstantes.STATUS) String status,
+                                  @Param(UserConstantes.DATECREATED) Date dateCreated,
+                                  @Param(UserConstantes.DATEUPDATED) Date dateUpdated
 
         );
 
-@Query(value = "SELECT * FROM User WHERE 1=1 " +
-        "AND (:id = '' OR id = :id) " +
+@Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
+        "AND (:id = '' OR id_user_punter = :id) " +
         "AND (:nickname = '' OR nickname = :nickname) " +
         "AND (:btcAddress = '' OR btc_address = :btcAddress) " +
         "AND (:status = '' OR status = :status) " +
@@ -81,7 +81,7 @@ Page<User> findUserByFilter(Pageable pageable,
         "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
         , nativeQuery = true)
-List<User> findUserByFilter(
+List<UserPunter> findUserByFilter(
         @Param(UserConstantes.ID) Long id,
         @Param(UserConstantes.NICKNAME) String nickname,
         @Param(UserConstantes.BTCADDRESS) String btcAddress,
@@ -91,83 +91,74 @@ List<User> findUserByFilter(
 
 );
 
-     @Query(value = "SELECT MAX(id) AS maxid FROM User WHERE id = :id AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE id_user_punter = :id AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM User WHERE nickname = :nickname AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE nickname = :nickname AND status = :status ", nativeQuery = true)
      Long loadMaxIdByNicknameAndStatus(String nickname, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM User WHERE btc_address = :btcAddress AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE btc_address = :btcAddress AND status = :status ", nativeQuery = true)
      Long loadMaxIdByBtcAddressAndStatus(String btcAddress, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM User WHERE date_created = :dateCreated AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE date_created = :dateCreated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM User WHERE date_updated = :dateUpdated AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE date_updated = :dateUpdated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateUpdatedAndStatus(Date dateUpdated, String status);
 
-
      @Modifying
-     @Query(value = "UPDATE User SET nickname = :nickname, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE user_punter SET nickname = :nickname, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
      void updateNicknameById(@Param("id") Long id, @Param(UserConstantes.NICKNAME) String nickname);
      @Modifying
-     @Query(value = "UPDATE User SET btc_address = :btcAddress, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE user_punter SET btc_address = :btcAddress, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
      void updateBtcAddressById(@Param("id") Long id, @Param(UserConstantes.BTCADDRESS) String btcAddress);
      @Modifying
-     @Query(value = "UPDATE User SET status = :status, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE user_punter SET status = :status, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(UserConstantes.STATUS) String status);
      @Modifying
-     @Query(value = "UPDATE User SET date_created = :dateCreated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE user_punter SET date_created = :dateCreated, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
      void updateDateCreatedById(@Param("id") Long id, @Param(UserConstantes.DATECREATED) Date dateCreated);
      @Modifying
-     @Query(value = "UPDATE User SET date_updated = :dateUpdated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE user_punter SET date_updated = :dateUpdated, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
      void updateDateUpdatedById(@Param("id") Long id, @Param(UserConstantes.DATEUPDATED) Date dateUpdated);
 
-
-     long countByIdAndStatus(Long id, String status);
-     long countByNicknameAndStatus(String nickname, String status);
-     long countByBtcAddressAndStatus(String btcAddress, String status);
-     long countByDateCreatedAndStatus(Date dateCreated, String status);
-     long countByDateUpdatedAndStatus(Date dateUpdated, String status);
-
-
-    @Query(value = "SELECT * FROM User WHERE id = (SELECT MAX(id) AS maxid FROM User WHERE id = :id AND  status = :status) ", nativeQuery = true)
-    Optional<User> findByIdAndStatus(Long id, String status);
-    @Query(value = "SELECT * FROM User WHERE id = (SELECT MAX(id) AS maxid FROM User WHERE nickname = :nickname AND  status = :status) ", nativeQuery = true)
-    Optional<User> findByNicknameAndStatus(String nickname, String status);
-    @Query(value = "SELECT * FROM User WHERE id = (SELECT MAX(id) AS maxid FROM User WHERE btc_address = :btcAddress AND  status = :status) ", nativeQuery = true)
-    Optional<User> findByBtcAddressAndStatus(String btcAddress, String status);
-    @Query(value = "SELECT * FROM User WHERE id = (SELECT MAX(id) AS maxid FROM User WHERE date_created = :dateCreated AND  status = :status) ", nativeQuery = true)
-    Optional<User> findByDateCreatedAndStatus(Date dateCreated, String status);
-    @Query(value = "SELECT * FROM User WHERE id = (SELECT MAX(id) AS maxid FROM User WHERE date_updated = :dateUpdated AND  status = :status) ", nativeQuery = true)
-    Optional<User> findByDateUpdatedAndStatus(Date dateUpdated, String status);
+    @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE id_user_punter = :id AND  status = :status) ", nativeQuery = true)
+    Optional<UserPunter> findByIdAndStatus(Long id, String status);
+    @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE nickname = :nickname AND  status = :status) ", nativeQuery = true)
+    Optional<UserPunter> findByNicknameAndStatus(String nickname, String status);
+    @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE btc_address = :btcAddress AND  status = :status) ", nativeQuery = true)
+    Optional<UserPunter> findByBtcAddressAndStatus(String btcAddress, String status);
+    @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE date_created = :dateCreated AND  status = :status) ", nativeQuery = true)
+    Optional<UserPunter> findByDateCreatedAndStatus(Date dateCreated, String status);
+    @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE date_updated = :dateUpdated AND  status = :status) ", nativeQuery = true)
+    Optional<UserPunter> findByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
-     @Query(value = "SELECT * FROM User WHERE id = :id AND  status = :status ", nativeQuery = true)
-     List<User> findAllByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT * FROM User WHERE nickname = :nickname AND  status = :status ", nativeQuery = true)
-     List<User> findAllByNicknameAndStatus(String nickname, String status);
-     @Query(value = "SELECT * FROM User WHERE btc_address = :btcAddress AND  status = :status ", nativeQuery = true)
-     List<User> findAllByBtcAddressAndStatus(String btcAddress, String status);
-     @Query(value = "SELECT * FROM User WHERE date_created = :dateCreated AND  status = :status ", nativeQuery = true)
-     List<User> findAllByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT * FROM User WHERE date_updated = :dateUpdated AND  status = :status ", nativeQuery = true)
-     List<User> findAllByDateUpdatedAndStatus(Date dateUpdated, String status);
+     @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = :id AND  status = :status ", nativeQuery = true)
+     List<UserPunter> findAllByIdAndStatus(Long id, String status);
+     @Query(value = "SELECT * FROM user_punter WHERE nickname = :nickname AND  status = :status ", nativeQuery = true)
+     List<UserPunter> findAllByNicknameAndStatus(String nickname, String status);
+     @Query(value = "SELECT * FROM user_punter WHERE btc_address = :btcAddress AND  status = :status ", nativeQuery = true)
+     List<UserPunter> findAllByBtcAddressAndStatus(String btcAddress, String status);
+     @Query(value = "SELECT * FROM user_punter WHERE date_created = :dateCreated AND  status = :status ", nativeQuery = true)
+     List<UserPunter> findAllByDateCreatedAndStatus(Date dateCreated, String status);
+     @Query(value = "SELECT * FROM user_punter WHERE date_updated = :dateUpdated AND  status = :status ", nativeQuery = true)
+     List<UserPunter> findAllByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
     @Modifying
-    @Query(value = "DELETE FROM User WHERE id = :id", nativeQuery = true)
+    @Query(value = "DELETE FROM user_punter WHERE id_user_punter = :id", nativeQuery = true)
     void deleteById(@Param(UserConstantes.ID) Long id);
     @Modifying
-    @Query(value = "DELETE FROM User WHERE nickname = :nickname", nativeQuery = true)
+    @Query(value = "DELETE FROM user_punter WHERE nickname = :nickname", nativeQuery = true)
     void deleteByNickname(@Param(UserConstantes.NICKNAME) String nickname);
     @Modifying
-    @Query(value = "DELETE FROM User WHERE btc_address = :btcAddress", nativeQuery = true)
+    @Query(value = "DELETE FROM user_punter WHERE btc_address = :btcAddress", nativeQuery = true)
     void deleteByBtcAddress(@Param(UserConstantes.BTCADDRESS) String btcAddress);
     @Modifying
-    @Query(value = "DELETE FROM User WHERE status = :status", nativeQuery = true)
+    @Query(value = "DELETE FROM user_punter WHERE status = :status", nativeQuery = true)
     void deleteByStatus(@Param(UserConstantes.STATUS) String status);
     @Modifying
-    @Query(value = "DELETE FROM User WHERE date_created = :dateCreated", nativeQuery = true)
+    @Query(value = "DELETE FROM user_punter WHERE date_created = :dateCreated", nativeQuery = true)
     void deleteByDateCreated(@Param(UserConstantes.DATECREATED) Date dateCreated);
     @Modifying
-    @Query(value = "DELETE FROM User WHERE date_updated = :dateUpdated", nativeQuery = true)
+    @Query(value = "DELETE FROM user_punter WHERE date_updated = :dateUpdated", nativeQuery = true)
     void deleteByDateUpdated(@Param(UserConstantes.DATEUPDATED) Date dateUpdated);
 
 }

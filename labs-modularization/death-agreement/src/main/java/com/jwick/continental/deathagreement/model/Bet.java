@@ -24,7 +24,7 @@ import java.util.UUID;
 public class Bet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id_bet")
     @CodeGeneratorFieldDescriptor(fieldReferenceInDto = "id",fieldDescription = "Bet primary key")
     private Long id;
 

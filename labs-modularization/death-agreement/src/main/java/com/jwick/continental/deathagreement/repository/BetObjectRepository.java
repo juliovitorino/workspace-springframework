@@ -55,7 +55,7 @@ public interface BetObjectRepository extends JpaRepository<BetObject, Long>
     List<BetObject> findAllByStatus(@Param(BetObjectConstantes.STATUS) String status);
 
 @Query(value = "SELECT * FROM BET_OBJECT WHERE 1=1 " +
-        "AND (:id = '' OR id = :id) " +
+        "AND (:id = '' OR id_bet_object = :id) " +
         "AND (:who = '' OR who = :who) " +
         "AND (:externalUUID = '' OR externalUUID = :externalUUID) " +
         "AND (:status = '' OR status = :status) " +
@@ -74,7 +74,7 @@ Page<BetObject> findBetObjectByFilter(Pageable pageable,
         );
 
 @Query(value = "SELECT * FROM BET_OBJECT WHERE 1=1 " +
-        "AND (:id = '' OR id = :id) " +
+        "AND (:id = '' OR id_bet_object = :id) " +
         "AND (:who = '' OR who = :who) " +
         "AND (:externalUUID = '' OR externalUUID = :externalUUID) " +
         "AND (:status = '' OR status = :status) " +
@@ -92,55 +92,47 @@ List<BetObject> findBetObjectByFilter(
 
 );
 
-     @Query(value = "SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE id = :id AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE id_bet_object = :id AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdAndStatus(Long id, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE who = :who AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE who = :who AND status = :status ", nativeQuery = true)
      Long loadMaxIdByWhoAndStatus(String who, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE externalUUID = :externalUUID AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE externalUUID = :externalUUID AND status = :status ", nativeQuery = true)
      Long loadMaxIdByExternalUUIDAndStatus(UUID externalUUID, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE dateCreated = :dateCreated AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE dateCreated = :dateCreated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateCreatedAndStatus(Date dateCreated, String status);
-     @Query(value = "SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE dateUpdated = :dateUpdated AND status = :status ", nativeQuery = true)
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE dateUpdated = :dateUpdated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
      @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET who = :who, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE BET_OBJECT SET who = :who, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateWhoById(@Param("id") Long id, @Param(BetObjectConstantes.WHO) String who);
      @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET externalUUID = :externalUUID, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE BET_OBJECT SET externalUUID = :externalUUID, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateExternalUUIDById(@Param("id") Long id, @Param(BetObjectConstantes.EXTERNALUUID) UUID externalUUID);
      @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET status = :status, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE BET_OBJECT SET status = :status, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(BetObjectConstantes.STATUS) String status);
      @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET dateCreated = :dateCreated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE BET_OBJECT SET dateCreated = :dateCreated, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateDateCreatedById(@Param("id") Long id, @Param(BetObjectConstantes.DATECREATED) Date dateCreated);
      @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET dateUpdated = :dateUpdated, dt_updated = current_timestamp  WHERE id = :id", nativeQuery = true)
+     @Query(value = "UPDATE BET_OBJECT SET dateUpdated = :dateUpdated, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateDateUpdatedById(@Param("id") Long id, @Param(BetObjectConstantes.DATEUPDATED) Date dateUpdated);
 
-
-     long countByIdAndStatus(Long id, String status);
-     long countByWhoAndStatus(String who, String status);
-     long countByExternalUUIDAndStatus(UUID externalUUID, String status);
-     long countByDateCreatedAndStatus(Date dateCreated, String status);
-     long countByDateUpdatedAndStatus(Date dateUpdated, String status);
-
-
-    @Query(value = "SELECT * FROM BET_OBJECT WHERE id = (SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE id = :id AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = (SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE id_bet_object = :id AND  status = :status) ", nativeQuery = true)
     Optional<BetObject> findByIdAndStatus(Long id, String status);
-    @Query(value = "SELECT * FROM BET_OBJECT WHERE id = (SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE who = :who AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = (SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE who = :who AND  status = :status) ", nativeQuery = true)
     Optional<BetObject> findByWhoAndStatus(String who, String status);
-    @Query(value = "SELECT * FROM BET_OBJECT WHERE id = (SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE externalUUID = :externalUUID AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = (SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE externalUUID = :externalUUID AND  status = :status) ", nativeQuery = true)
     Optional<BetObject> findByExternalUUIDAndStatus(UUID externalUUID, String status);
-    @Query(value = "SELECT * FROM BET_OBJECT WHERE id = (SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE dateCreated = :dateCreated AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = (SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE dateCreated = :dateCreated AND  status = :status) ", nativeQuery = true)
     Optional<BetObject> findByDateCreatedAndStatus(Date dateCreated, String status);
-    @Query(value = "SELECT * FROM BET_OBJECT WHERE id = (SELECT MAX(id) AS maxid FROM BET_OBJECT WHERE dateUpdated = :dateUpdated AND  status = :status) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = (SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE dateUpdated = :dateUpdated AND  status = :status) ", nativeQuery = true)
     Optional<BetObject> findByDateUpdatedAndStatus(Date dateUpdated, String status);
 
 
-     @Query(value = "SELECT * FROM BET_OBJECT WHERE id = :id AND  status = :status ", nativeQuery = true)
+     @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = :id AND  status = :status ", nativeQuery = true)
      List<BetObject> findAllByIdAndStatus(Long id, String status);
      @Query(value = "SELECT * FROM BET_OBJECT WHERE who = :who AND  status = :status ", nativeQuery = true)
      List<BetObject> findAllByWhoAndStatus(String who, String status);
@@ -153,7 +145,7 @@ List<BetObject> findBetObjectByFilter(
 
 
     @Modifying
-    @Query(value = "DELETE FROM BET_OBJECT WHERE id = :id", nativeQuery = true)
+    @Query(value = "DELETE FROM BET_OBJECT WHERE id_bet_object = :id", nativeQuery = true)
     void deleteById(@Param(BetObjectConstantes.ID) Long id);
     @Modifying
     @Query(value = "DELETE FROM BET_OBJECT WHERE who = :who", nativeQuery = true)

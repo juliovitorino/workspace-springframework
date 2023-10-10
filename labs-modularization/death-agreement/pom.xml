@@ -20,6 +20,7 @@
 		<commons-library.version>1.0.5-SNAPSHOT</commons-library.version>
 		<h2.version>1.4.185</h2.version>
 		<jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
+		<postgresql.version>42.6.0</postgresql.version>
 	</properties>
 
 	<dependencyManagement>
@@ -63,6 +64,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 		</dependency>
 
 		<dependency>
