@@ -22,14 +22,11 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 package com.jwick.continental.deathagreement.service;
 
 import br.com.jcv.commons.library.commodities.service.CommoditieBaseService;
-import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 
 import com.jwick.continental.deathagreement.dto.UserDTO;
-import com.jwick.continental.deathagreement.model.User;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import com.jwick.continental.deathagreement.model.UserPunter;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Date;
 
 /**
@@ -39,7 +36,7 @@ import java.util.Date;
 * @since Fri Oct 06 15:06:15 BRT 2023
 */
 
-public interface UserService extends CommoditieBaseService<UserDTO,User>
+public interface UserService extends CommoditieBaseService<UserDTO, UserPunter>
 {
     UserDTO findUserByIdAndStatus(Long id);
     UserDTO findUserByIdAndStatus(Long id, String status);

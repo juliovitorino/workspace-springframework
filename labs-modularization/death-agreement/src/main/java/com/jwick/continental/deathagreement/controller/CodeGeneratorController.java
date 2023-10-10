@@ -3,9 +3,7 @@ package com.jwick.continental.deathagreement.controller;
 import br.com.jcv.codegen.codegenerator.dto.WritableCode;
 import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorBatch;
-import com.jwick.continental.deathagreement.model.Bet;
-import com.jwick.continental.deathagreement.model.BetObject;
-import com.jwick.continental.deathagreement.model.User;
+import com.jwick.continental.deathagreement.model.JackpotHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +23,7 @@ public class CodeGeneratorController {
         @GetMapping("/model")
     public ResponseEntity generateCode() {
         try {
+            /*
             List<WritableCode> BetCodes = generatorMainStream.generate(Bet.class);
             generatorMainStream.flushCode(BetCodes);
 
@@ -32,6 +31,9 @@ public class CodeGeneratorController {
             generatorMainStream.flushCode(betObjectCodes);
 
             List<WritableCode> userCodes = generatorMainStream.generate(User.class);
+            generatorMainStream.flushCode(userCodes);
+            */
+            List<WritableCode> userCodes = generatorMainStream.generate(JackpotHistory.class);
             generatorMainStream.flushCode(userCodes);
 
             return ResponseEntity.ok().build();
