@@ -1,0 +1,10 @@
+pipeline {
+    agent any
+    stages {
+        stage("Build Commons Library") {
+            step {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+    }
+}
