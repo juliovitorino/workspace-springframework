@@ -58,10 +58,12 @@ public class BetBusinessTest {
     @Mock
     private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
+    @InjectMocks private ConfirmBetBusinessService confirmBetBusinessService;
 
     @BeforeAll
     public void setup() {
         createBetService = new CreateBetServiceImpl();
+        confirmBetBusinessService = new ConfirmBetBusinessServiceImpl();
         MockitoAnnotations.initMocks(this);
 
         uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
@@ -72,9 +74,44 @@ public class BetBusinessTest {
         uuidMockedStatic.close();
     }
 
-    public void whenBetHasBeenMadeJackpotPendingMustHaveIncreasing() {
-        Assertions.fail("Not implemented yet!");
+    @Test
+    public void shouldConfirmBetWhenConfirmTicketFund() {
+        // scenario
+        UUID processId = UUID.fromString(PROCESS_ID);
+        BetDTO betMock = BetDTOBuilder.newBetDTOTestBuilder()
+                .idPunter(3L)
+                .idBetObject(5L)
+                .bet(1.205)
+                .ticket(uuidMock)
+                .status("P")
+                .deathDate(DateUtility.getDate(2030,12,10))
+                .bitcoinAddress(BTC_ADDRESS)
+                .now();
+        BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .who("Muleke Travesso")
+                .externalUUID(UUID.fromString("afd8c05b-002d-4918-9897-6f150234d420"))
+                .jackpotPending(betMock.getBet())
+                .jackpot(0.0)
+                .now();
+        BetObjectDTO targetUpdatedMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .who("Muleke Travesso")
+                .externalUUID(UUID.fromString("afd8c05b-002d-4918-9897-6f150234d420"))
+                .jackpot(betMock.getBet())
+                .jackpotPending(targetMock.getJackpotPending()-betMock.getBet())
+                .now();
+
+        Mockito.when(betServiceMock.findBetByTicketAndStatus(uuidMock, "P")).thenReturn(betMock);
+
+        Mockito.when(betObjectServiceMock.findById(Mockito.anyLong())).thenReturn(targetMock);
+        Mockito.when(betObjectServiceMock.salvar(targetMock)).thenReturn(targetUpdatedMock);
+
+        // action
+        Boolean executed = confirmBetBusinessService.execute(processId, uuidMock);
+
+        // validate
+        Assertions.assertTrue(executed);
     }
+
     @Test
     public void shouldReturnBetObjectNotFoundException() {
         // scenario
