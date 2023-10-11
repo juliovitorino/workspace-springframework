@@ -11,12 +11,14 @@ import com.jwick.continental.deathagreement.config.ContinentalConfig;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
+import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastException;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
+import com.jwick.continental.deathagreement.service.DateTime;
 import com.jwick.continental.deathagreement.service.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -30,6 +32,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -42,6 +49,8 @@ public class BetBusinessTest {
     public static final String CONTINENTAL_BTC_ADDRESS = "bc1qupua5993486zf5g5g00e6nax4w5pd4p0ulx4v0";
     private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
+    private static MockedStatic<DateUtility> dateUtilityMockedStatic;
+    private static SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
     @Mock
     private BetService betServiceMock;
     @Mock
@@ -52,21 +61,48 @@ public class BetBusinessTest {
     private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
     @InjectMocks private ConfirmBetBusinessService confirmBetBusinessService;
-
+    final DateTime dateTimeMock = Mockito.mock(DateTime.class);
     @BeforeAll
     public void setup() {
+        Mockito.when(dateTimeMock.getToday()).thenReturn(DateUtility.getDate(12,10,2023));
+        Mockito.when(dateTimeMock.now()).thenReturn(DateUtility.getDate(12,10,2023));
+
         createBetService = new CreateBetServiceImpl();
         confirmBetBusinessService = new ConfirmBetBusinessServiceImpl();
         MockitoAnnotations.initMocks(this);
 
         uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
+        dateUtilityMockedStatic = Mockito.mockStatic(DateUtility.class, Mockito.RETURNS_DEEP_STUBS);
     }
 
     @AfterAll
     public void tearDown() {
         uuidMockedStatic.close();
+        dateUtilityMockedStatic.close();
     }
 
+    @Test
+    public void shouldReceiveBetCouldntMadeinThePastExceptionWhenTryBetInThePast() throws ParseException {
+        // scenario
+        Date deathDateMock = sdfYMD.parse("2000-09-13");
+        LocalDate pastLocalDate = LocalDate.of(2000,9,13);
+
+        UUID processId = UUID.fromString(PROCESS_ID);
+        BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
+                .bet(180.0)
+                .whoUUID(UUID.fromString("7bed3f75-ff6a-4f87-901a-2c300469165a"))
+                .deathDateBet(pastLocalDate)
+                .now();
+
+        dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateMock)).thenReturn(-1);
+        // action
+        BetCouldntMadeinThePastException exception = Assertions.assertThrows(BetCouldntMadeinThePastException.class,
+                () -> createBetService.execute(processId,betRequestMock)
+        );
+
+        // validate
+        Assertions.assertEquals("You must to do your bet to the future", exception.getMessage());
+    }
     @Test
     public void shouldConfirmBetWhenConfirmTicketFund() {
         // scenario
@@ -108,6 +144,15 @@ public class BetBusinessTest {
     @Test
     public void shouldReturnBetObjectNotFoundException() {
         // scenario
+        uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, 13);
+        cal.set(Calendar.MONTH, 9 - 1);
+        cal.set(Calendar.YEAR, 2040);
+        LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
+        Date deathDateBetMockDate = cal.getTime();
+        dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
+
         UUID processId = UUID.fromString(PROCESS_ID);
         UserDTO punter = UserDTOBuilder.newUserTestBuilder()
                 .id(1L)
@@ -117,7 +162,7 @@ public class BetBusinessTest {
                 .btcAddress(punter.getBtcAddress())
                 .bet(180.0)
                 .whoUUID(UUID.fromString("7bed3f75-ff6a-4f87-901a-2c300469165a"))
-                .deathDateBet(DateUtility.getLocalDate(13,9,2040))
+                .deathDateBet(deathDateBetMockLocalDate)
                 .now();
 
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punter);
@@ -137,6 +182,8 @@ public class BetBusinessTest {
     public void shouldReturnPendingBetWaitingTransferFundsException() {
         // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
+        LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
+        Date deathDateBetMockDate = DateUtility.getDate(13,9,2040);
         UserDTO punterMock = UserDTOBuilder.newUserTestBuilder()
                 .id(1L)
                 .now();
@@ -148,7 +195,7 @@ public class BetBusinessTest {
                 .btcAddress(punterMock.getBtcAddress())
                 .bet(180.0)
                 .whoUUID(targetMock.getExternalUUID())
-                .deathDateBet(DateUtility.getLocalDate(13,9,2040))
+                .deathDateBet(deathDateBetMockLocalDate)
                 .now();
         BetDTO pendingBetMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .idPunter(punterMock.getId())
@@ -156,6 +203,7 @@ public class BetBusinessTest {
                 .bet(betRequestMock.getBet())
                 .status("P")
                 .now();
+        dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
 
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punterMock);
         Mockito.when(userServiceMock.findUserByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punterMock);
@@ -178,6 +226,9 @@ public class BetBusinessTest {
     public void shouldCaptureExceptionForSameBtcAddressForDifferentNickname() {
         // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
+        LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
+        Date deathDateBetMockDate = DateUtility.getDate(13,9,2040);
+
         UserDTO user1 = UserDTOBuilder.newUserTestBuilder()
                 .nickname("Jane Doe")
                 .btcAddress(BTC_ADDRESS)
@@ -192,9 +243,10 @@ public class BetBusinessTest {
                 .btcAddress(user1.getBtcAddress())
                 .bet(250.0)
                 .whoUUID(betObjectDTOMock.getExternalUUID())
-                .deathDateBet(DateUtility.getLocalDate(15,12,2030))
+                .deathDateBet(deathDateBetMockLocalDate)
                 .now();
 
+        dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
 
 
@@ -209,6 +261,10 @@ public class BetBusinessTest {
     public void shouldCreateBetWithSuccess() {
         // scenario
         uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
+        LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
+        Date deathDateBetMockDate = DateUtility.getDate(13,9,2040);
+
+        dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
 
         UserDTO userMock = UserDTOBuilder.newUserTestBuilder().now();
         BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder().now();
@@ -217,7 +273,7 @@ public class BetBusinessTest {
                 .btcAddress(userMock.getBtcAddress())
                 .bet(250.0)
                 .whoUUID(targetMock.getExternalUUID())
-                .deathDateBet(DateUtility.getLocalDate(15,12,2030))
+                .deathDateBet(deathDateBetMockLocalDate)
                 .now();
         UserDTO userToSaveMock = UserDTOBuilder.newUserTestBuilder()
                 .id(null)
@@ -269,6 +325,5 @@ public class BetBusinessTest {
         // validate
         Assertions.assertEquals("3dc936e6-478e-4d21-b167-67dee8b730af", executed.getTicket().toString());
     }
-
 
 }
