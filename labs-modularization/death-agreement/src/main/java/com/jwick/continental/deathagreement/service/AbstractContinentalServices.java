@@ -7,13 +7,17 @@ import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.SimpleDateFormat;
+
 public class AbstractContinentalServices {
 
+    protected static final SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired protected Gson gson;
     @Autowired protected ContinentalConfig config;
     @Autowired protected BetService betService;
     @Autowired protected BetObjectService betObjectService;
     @Autowired protected UserService userService;
+    @Autowired protected DateTime dateTime;
     protected boolean checkUserStatus(Long id, GenericStatusEnums status) {
         try {
             UserDTO userDTO = userService.findById(id);

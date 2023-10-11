@@ -2,10 +2,12 @@ package com.jwick.continental.deathagreement.controller.v1.business.bet;
 
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.enums.BetStatusEnum;
+import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastException;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
@@ -17,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -25,8 +30,17 @@ import java.util.UUID;
 public class CreateBetServiceImpl extends AbstractContinentalServices implements CreateBetService {
 
 
+
     @Override
     public BetResponse execute(UUID processId, BetRequest request) {
+
+        try {
+            if(DateUtility.compare(dateTime.getToday(), sdfYMD.parse(request.getDeathDateBet().toString())) == -1)
+                throw new BetCouldntMadeinThePastException("You must to do your bet to the future", HttpStatus.BAD_REQUEST);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
         try {
             UserDTO btcAddressCheck = userService.findUserByBtcAddressAndStatus(request.getBtcAddress());
             if(! btcAddressCheck.getNickname().equals(request.getNickname())) {
