@@ -19,6 +19,7 @@ public class BetBusinessController {
     @Autowired private CreateBetService createBetService;
     @Autowired private ConfirmBetBusinessService confirmBetBusinessService;
     @Autowired private ViewJackpotBusinessService viewJackpotBusinessService;
+    @Autowired private PurgePendingBetBusinessService pendingBetBusinessService;
 
     @PostMapping
     public ResponseEntity makeBet(@RequestBody @Valid BetRequest betRequest) {
@@ -35,5 +36,10 @@ public class BetBusinessController {
     public ResponseEntity viewJackpot(@PathVariable(name = "target") @Valid UUID target) {
         final UUID pid = UUID.randomUUID();
         return ResponseEntity.ok().body(viewJackpotBusinessService.execute(pid, target));
+    }
+    @GetMapping("/purge")
+    public ResponseEntity purgePendingBets() {
+        final UUID pid = UUID.randomUUID();
+        return ResponseEntity.ok().body(pendingBetBusinessService.execute(pid, pid));
     }
 }

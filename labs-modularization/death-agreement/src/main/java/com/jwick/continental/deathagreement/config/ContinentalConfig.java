@@ -13,4 +13,7 @@ public class ContinentalConfig {
 
     @Value("${continental.unit}")
     private String continentalUnit;
+
+    @Value("${continental.purge-pending-bet-in-days}")
+    private long purgePendingBetInDays;
 }
