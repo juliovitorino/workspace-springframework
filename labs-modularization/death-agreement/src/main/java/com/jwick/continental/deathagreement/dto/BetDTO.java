@@ -30,6 +30,9 @@ import lombok.*;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -50,7 +53,6 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BetDTO extends DTOPadrao implements Serializable
 {
-
     @SerializedName(BetConstantes.IDPUNTER)
     @JsonProperty(BetConstantes.IDPUNTER)
     private Long idPunter;
@@ -73,7 +75,8 @@ public class BetDTO extends DTOPadrao implements Serializable
 
     @SerializedName(BetConstantes.DEATHDATE)
     @JsonProperty(BetConstantes.DEATHDATE)
-    private Date deathDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
+    private LocalDate deathDate;
 
 
     @SerializedName("mensagemResponse")
