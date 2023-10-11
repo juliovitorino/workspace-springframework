@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 
 public class AbstractContinentalServices {
 
-    protected static final SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
+    protected SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired protected Gson gson;
     @Autowired protected ContinentalConfig config;
     @Autowired protected BetService betService;
