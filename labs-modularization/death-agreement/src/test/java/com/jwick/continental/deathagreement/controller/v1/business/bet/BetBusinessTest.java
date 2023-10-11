@@ -35,6 +35,7 @@ import org.springframework.http.HttpStatus;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -49,6 +50,7 @@ public class BetBusinessTest {
     private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
     private static MockedStatic<DateUtility> dateUtilityMockedStatic;
+    private static SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
     @Mock
     private BetService betServiceMock;
     @Mock
@@ -82,8 +84,7 @@ public class BetBusinessTest {
     @Test
     public void shouldReceiveBetCouldntMadeinThePastExceptionWhenTryBetInThePast() throws ParseException {
         // scenario
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date deathDateMock = sdf.parse("2000-09-13");
+        Date deathDateMock = sdfYMD.parse("2000-09-13");
         LocalDate pastLocalDate = LocalDate.of(2000,9,13);
 
         UUID processId = UUID.fromString(PROCESS_ID);
@@ -144,8 +145,12 @@ public class BetBusinessTest {
     public void shouldReturnBetObjectNotFoundException() {
         // scenario
         uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuidMock);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, 13);
+        cal.set(Calendar.MONTH, 9 - 1);
+        cal.set(Calendar.YEAR, 2040);
         LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
-        Date deathDateBetMockDate = DateUtility.getDate(13,9,2040);
+        Date deathDateBetMockDate = cal.getTime();
         dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
 
         UUID processId = UUID.fromString(PROCESS_ID);
@@ -320,6 +325,5 @@ public class BetBusinessTest {
         // validate
         Assertions.assertEquals("3dc936e6-478e-4d21-b167-67dee8b730af", executed.getTicket().toString());
     }
-
 
 }
