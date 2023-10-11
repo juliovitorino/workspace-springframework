@@ -5,15 +5,11 @@ import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.bulder.BetDTOBuilder;
 import com.jwick.continental.deathagreement.bulder.BetObjectBuilder;
 import com.jwick.continental.deathagreement.bulder.BetObjectDTOBuilder;
-import com.jwick.continental.deathagreement.bulder.BetObjectRequestBuilder;
 import com.jwick.continental.deathagreement.bulder.BetRequestBuilder;
-import com.jwick.continental.deathagreement.bulder.BetResponseBuilder;
-import com.jwick.continental.deathagreement.bulder.JackpotHistoryBuilder;
 import com.jwick.continental.deathagreement.bulder.UserDTOBuilder;
 import com.jwick.continental.deathagreement.config.ContinentalConfig;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
-import com.jwick.continental.deathagreement.dto.JackpotHistoryDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
@@ -21,7 +17,6 @@ import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUse
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
-import com.jwick.continental.deathagreement.service.JackpotHistoryService;
 import com.jwick.continental.deathagreement.service.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -53,8 +48,6 @@ public class BetBusinessTest {
     private BetObjectService betObjectServiceMock;
     @Mock
     private UserService userServiceMock;
-    @Mock
-    private JackpotHistoryService jackpotHistoryServiceMock;
     @Mock
     private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
@@ -250,23 +243,6 @@ public class BetBusinessTest {
                 .deathDate(betMock.getDeathDate())
                 .status("P")
                 .now();
-        JackpotHistoryDTO jackpotHistoryMock = JackpotHistoryBuilder.newJackpotHistoryTestBuilder()
-                .betValue(betSavedMock.getBet())
-                .description("Bet")
-                .type("C")
-                .idPunter(betMock.getIdPunter())
-                .ticket(betSavedMock.getTicket())
-                .now();
-        JackpotHistoryDTO jackpotHistorySavedMock = JackpotHistoryBuilder.newJackpotHistoryTestBuilder()
-                .id(1L)
-                .betValue(betSavedMock.getBet())
-                .description("Bet")
-                .type("C")
-                .idPunter(betMock.getIdPunter())
-                .ticket(betSavedMock.getTicket())
-                .now();
-
-        Mockito.when(jackpotHistoryServiceMock.salvar(jackpotHistoryMock)).thenReturn(jackpotHistorySavedMock);
 
         Mockito.when(userServiceMock.findById(Mockito.anyLong())).thenReturn(userMock);
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(userMock);

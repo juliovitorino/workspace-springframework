@@ -4,7 +4,6 @@ import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
-import com.jwick.continental.deathagreement.dto.JackpotHistoryDTO;
 import com.jwick.continental.deathagreement.dto.UserDTO;
 import com.jwick.continental.deathagreement.enums.BetStatusEnum;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
@@ -59,15 +58,6 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         betDTO.setBitcoinAddress(userDTO.getBtcAddress());
         betDTO.setDeathDate(request.getDeathDateBet());
         BetDTO betSaved = betService.salvar(betDTO);
-
-        log.info("execute :: Adding bet to Jackpot History");
-        JackpotHistoryDTO jackpotHistoryDTO = new JackpotHistoryDTO();
-        jackpotHistoryDTO.setIdPunter(betDTO.getIdPunter());
-        jackpotHistoryDTO.setType("C");
-        jackpotHistoryDTO.setBetValue(betDTO.getBet());
-        jackpotHistoryDTO.setDescription("Bet against " + betObjectDTO.getWho() + " from " + request.getNickname());
-        jackpotHistoryDTO.setTicket(betDTO.getTicket());
-        jackpotHistoryService.salvar(jackpotHistoryDTO);
 
         log.info("execute :: Adding bet to Jackpot Pending");
         synchronized (betObjectDTO) {
