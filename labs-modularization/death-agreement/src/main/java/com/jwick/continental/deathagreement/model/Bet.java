@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class Bet {
 
     @Column(name = "death_date")
     @CodeGeneratorFieldDescriptor(fieldDescription = "Suggest death date for Object")
-    private Date deathDate;
+    private LocalDate deathDate;
 
     @CodeGeneratorFieldDescriptor(fieldDescription = "Status field")
     @Column(length = 1)

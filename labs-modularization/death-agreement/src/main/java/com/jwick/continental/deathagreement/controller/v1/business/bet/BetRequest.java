@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,5 +26,6 @@ public class BetRequest implements Serializable {
     private Double bet;
     private String nickname;
     private String btcAddress;
-    private Date deathDateBet;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
+    private LocalDate deathDateBet;
 }

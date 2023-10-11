@@ -77,7 +77,7 @@ public class BetBusinessTest {
                 .bet(1.205)
                 .ticket(uuidMock)
                 .status("P")
-                .deathDate(DateUtility.getDate(2030,12,10))
+                .deathDate(DateUtility.getLocalDate(2030,12,10))
                 .bitcoinAddress(BTC_ADDRESS)
                 .now();
         BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
@@ -117,7 +117,7 @@ public class BetBusinessTest {
                 .btcAddress(punter.getBtcAddress())
                 .bet(180.0)
                 .whoUUID(UUID.fromString("7bed3f75-ff6a-4f87-901a-2c300469165a"))
-                .deathDateBet(DateUtility.getDate(13,9,2040))
+                .deathDateBet(DateUtility.getLocalDate(13,9,2040))
                 .now();
 
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punter);
@@ -148,7 +148,7 @@ public class BetBusinessTest {
                 .btcAddress(punterMock.getBtcAddress())
                 .bet(180.0)
                 .whoUUID(targetMock.getExternalUUID())
-                .deathDateBet(DateUtility.getDate(13,9,2040))
+                .deathDateBet(DateUtility.getLocalDate(13,9,2040))
                 .now();
         BetDTO pendingBetMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .idPunter(punterMock.getId())
@@ -192,7 +192,7 @@ public class BetBusinessTest {
                 .btcAddress(user1.getBtcAddress())
                 .bet(250.0)
                 .whoUUID(betObjectDTOMock.getExternalUUID())
-                .deathDateBet(DateUtility.getDate(15,12,2030))
+                .deathDateBet(DateUtility.getLocalDate(15,12,2030))
                 .now();
 
         Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
@@ -217,7 +217,7 @@ public class BetBusinessTest {
                 .btcAddress(userMock.getBtcAddress())
                 .bet(250.0)
                 .whoUUID(targetMock.getExternalUUID())
-                .deathDateBet(DateUtility.getDate(15,12,2030))
+                .deathDateBet(DateUtility.getLocalDate(15,12,2030))
                 .now();
         UserDTO userToSaveMock = UserDTOBuilder.newUserTestBuilder()
                 .id(null)

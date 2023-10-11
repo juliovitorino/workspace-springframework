@@ -2,6 +2,7 @@ package com.jwick.continental.deathagreement.bulder;
 
 import com.jwick.continental.deathagreement.dto.BetDTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class BetDTOBuilder {
         return this;
     }
 
-    public BetDTOBuilder deathDate(Date deathDate) {
+    public BetDTOBuilder deathDate(LocalDate deathDate) {
         this.betDTO.setDeathDate(deathDate);
         return this;
     }

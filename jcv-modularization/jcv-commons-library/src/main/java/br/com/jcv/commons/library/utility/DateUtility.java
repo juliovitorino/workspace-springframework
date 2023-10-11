@@ -1,5 +1,7 @@
 package br.com.jcv.commons.library.utility;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,13 +12,15 @@ import static java.util.Calendar.YEAR;
 
 public class DateUtility {
 
+    public static LocalDate from(Date input) {
+        return input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
     public static Date addDays(Date date, int days) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(DAY_OF_MONTH, days);
         return calendar.getTime();
     }
-
     public static Date getDateWithDiffBetweenDaysFromNow(int days) {
         return addDays(new Date(), days);
     }
@@ -31,6 +35,10 @@ public class DateUtility {
         calendar.set(YEAR, yy);
         return calendar.getTime();
     }
+     public static LocalDate getLocalDate(int dd, int mm, int yy){
+        return from(getDate(dd,mm,yy));
+    }
+
 
     public static boolean isSameDay(Date date1, Date date2) {
         Calendar calendar1 = Calendar.getInstance();
