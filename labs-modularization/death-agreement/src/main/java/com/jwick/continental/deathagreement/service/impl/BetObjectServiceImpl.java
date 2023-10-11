@@ -149,17 +149,13 @@ public class BetObjectServiceImpl implements BetObjectService
                 if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATECREATED)) betobject.setDateCreated((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATEUPDATED)) betobject.setDateUpdated((Date)entry.getValue());
 
+            }
             if(updates.get(BetObjectConstantes.DATEUPDATED) == null) betobject.setDateUpdated(new Date());
             betobjectRepository.save(betobject);
             return true;
         }
         return false;
     }
-        return false;
-    }
-
-
-
 
     @Override
     @Transactional(transactionManager="transactionManager",

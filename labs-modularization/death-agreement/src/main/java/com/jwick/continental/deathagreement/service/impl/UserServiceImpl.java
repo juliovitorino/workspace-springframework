@@ -142,18 +142,13 @@ public class UserServiceImpl implements UserService
                 if(entry.getKey().equalsIgnoreCase(UserConstantes.STATUS)) user.setStatus((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(UserConstantes.DATECREATED)) user.setDateCreated((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(UserConstantes.DATEUPDATED)) user.setDateUpdated((Date)entry.getValue());
-
-            if(updates.get(UserConstantes.DATEUPDATED) == null) user.setDateUpdated(new Date());
-            userRepository.save(user);
-            return true;
         }
-        return false;
+        if(updates.get(UserConstantes.DATEUPDATED) == null) user.setDateUpdated(new Date());
+        userRepository.save(user);
+        return true;
     }
         return false;
     }
-
-
-
 
     @Override
     @Transactional(transactionManager="transactionManager",

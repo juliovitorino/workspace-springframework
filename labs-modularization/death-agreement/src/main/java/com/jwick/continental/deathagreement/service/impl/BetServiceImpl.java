@@ -152,11 +152,10 @@ public class BetServiceImpl implements BetService
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) bet.setDateCreated((Date)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) bet.setDateUpdated((Date)entry.getValue());
 
-            if(updates.get(BetConstantes.DATEUPDATED) == null) bet.setDateUpdated(new Date());
-            betRepository.save(bet);
-            return true;
         }
-        return false;
+        if(updates.get(BetConstantes.DATEUPDATED) == null) bet.setDateUpdated(new Date());
+        betRepository.save(bet);
+        return true;
     }
         return false;
     }

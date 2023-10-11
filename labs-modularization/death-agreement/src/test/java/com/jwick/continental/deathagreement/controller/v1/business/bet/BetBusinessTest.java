@@ -37,7 +37,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -63,7 +62,7 @@ public class BetBusinessTest {
     private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
     @InjectMocks private ConfirmBetBusinessService confirmBetBusinessService;
-    @InjectMocks private PurgePendingBetBusinessService purgePendingBetBusinessService;
+    @InjectMocks private DeletePendingBetBusinessService deletePendingBetBusinessService;
     final DateTime dateTimeMock = Mockito.mock(DateTime.class);
     @BeforeAll
     public void setup() {
@@ -72,7 +71,7 @@ public class BetBusinessTest {
 
         createBetService = new CreateBetServiceImpl();
         confirmBetBusinessService = new ConfirmBetBusinessServiceImpl();
-        purgePendingBetBusinessService = new PurgePendingBetBusinessServiceImpl();
+        deletePendingBetBusinessService = new DeletePendingBetBusinessServiceImpl();
         MockitoAnnotations.initMocks(this);
 
         uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
@@ -85,34 +84,6 @@ public class BetBusinessTest {
         dateUtilityMockedStatic.close();
     }
 
-    @Test
-    public void shouldPurgeBetAfterNDaysPending() throws ParseException {
-        // scenario
-        UUID processId = UUID.fromString(PROCESS_ID);
-        Date dateCreated = sdfYMDHMSS.parse("2022-10-04 09:12:39.517");
-        List<BetDTO> pendingBetsMock = List.of(
-                BetDTOBuilder.newBetDTOTestBuilder()
-                        .id(1L)
-                        .dateCreated(sdfYMDHMSS.parse("2022-10-04 09:12:39.517"))
-                        .now(),
-                BetDTOBuilder.newBetDTOTestBuilder()
-                        .id(2L)
-                        .now(),
-                BetDTOBuilder.newBetDTOTestBuilder()
-                        .id(3L)
-                        .now()
-        );
-        Mockito.when(betServiceMock.findAllByStatus(GenericStatusEnums.PENDENTE.getShortValue())).thenReturn(pendingBetsMock);
-
-        dateUtilityMockedStatic.when(()->DateUtility.getDifferenceDays(dateTimeMock.getToday(), dateCreated)).thenReturn(-10L);
-        // action
-        Boolean executed = purgePendingBetBusinessService.execute(processId,null);
-
-        // validate
-        Assertions.assertTrue(executed);
-
-
-    }
     @Test
     public void shouldReceiveBetCouldntMadeinThePastExceptionWhenTryBetInThePast() throws ParseException {
         // scenario

@@ -2,6 +2,7 @@ package com.jwick.continental.deathagreement.controller.v1.business.bet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,8 @@ public class BetBusinessController {
     @Autowired private CreateBetService createBetService;
     @Autowired private ConfirmBetBusinessService confirmBetBusinessService;
     @Autowired private ViewJackpotBusinessService viewJackpotBusinessService;
-    @Autowired private PurgePendingBetBusinessService pendingBetBusinessService;
+    @Autowired private DeletePendingBetBusinessService pendingBetBusinessService;
+    @Autowired private DeleteTargetWithNoBetBusinessService deleteTargetWithNoBetBusinessService;
 
     @PostMapping
     public ResponseEntity makeBet(@RequestBody @Valid BetRequest betRequest) {
@@ -37,9 +39,14 @@ public class BetBusinessController {
         final UUID pid = UUID.randomUUID();
         return ResponseEntity.ok().body(viewJackpotBusinessService.execute(pid, target));
     }
-    @GetMapping("/purge")
+    @DeleteMapping
     public ResponseEntity purgePendingBets() {
         final UUID pid = UUID.randomUUID();
-        return ResponseEntity.ok().body(pendingBetBusinessService.execute(pid, pid));
+        return ResponseEntity.ok().body(pendingBetBusinessService.execute(pid, null));
+    }
+    @DeleteMapping("/object")
+    public ResponseEntity deleteObjectTarget() {
+        final UUID pid = UUID.randomUUID();
+        return ResponseEntity.ok().body(deleteTargetWithNoBetBusinessService.execute(pid, null));
     }
 }
