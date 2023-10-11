@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -27,7 +28,11 @@ public class DateUtility {
     public static Date getDateWithDiffBetweenDaysFromDateReference(Date dateReference, int days) {
         return addDays(dateReference, days);
     }
-
+    public static Long getDifferenceDays(Date dReference, Date d2) {
+        long diff = d2.getTime() - dReference.getTime();
+        Long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        return days;
+    }
     public static Date getDate(int dd, int mm, int yy){
         Calendar calendar = Calendar.getInstance();
         calendar.set(DAY_OF_MONTH, dd);
