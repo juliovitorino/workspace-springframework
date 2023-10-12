@@ -107,13 +107,14 @@ public class BetBusinessTest {
     public void shouldConfirmBetWhenConfirmTicketFund() {
         // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
+        LocalDate deathDateMock = LocalDate.of(2030,10,29);
         BetDTO betMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .idPunter(3L)
                 .idBetObject(5L)
                 .bet(1.205)
                 .ticket(uuidMock)
                 .status("P")
-                .deathDate(DateUtility.getLocalDate(2030,12,10))
+                .deathDate(deathDateMock)
                 .bitcoinAddress(BTC_ADDRESS)
                 .now();
         BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
