@@ -121,12 +121,11 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
             ${classebase} ${lclassebase} = ${lclassebase}Data.get();
 
             for (Map.Entry<String,Object> entry : updates.entrySet()) {
-#include static/inc/service-impl-method-partial-update.inc
-            if(updates.get(${classebase}Constantes.DATEUPDATED) == null) ${lclassebase}.setDateUpdated(new Date());
-            ${lclassebase}Repository.save(${lclassebase});
-            return true;
+#include static/inc/service-impl-method-partial-update.inc && excludeFields[id,status,dateCreated,dateUpdated]
         }
-        return false;
+        if(updates.get(${classebase}Constantes.DATEUPDATED) == null) ${lclassebase}.setDateUpdated(new Date());
+        ${lclassebase}Repository.save(${lclassebase});
+        return true;
     }
         return false;
     }

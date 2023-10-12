@@ -30,6 +30,7 @@ package com.jwick.continental.deathagreement.constantes;
 
 public class BetConstantes
 {
+    private BetConstantes() {}
 
     public static final String ID = "id";
     public static final String IDPUNTER = "idPunter";
