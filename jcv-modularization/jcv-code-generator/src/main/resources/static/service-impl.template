@@ -43,6 +43,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ${classebase}ServiceImpl implements ${classebase}Service
 {
+#include static/inc/service-impl-static-message-notfound.inc
+
     @Autowired private ${classebase}Repository ${lclassebase}Repository;
 
     @Override
@@ -56,9 +58,9 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + id,
+                    () -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID  + id,
                         HttpStatus.NOT_FOUND,
-                        "${classebase} não encontrada com id = " + id))
+                        ${Uclassebase}_NOTFOUND_WITH_ID  + id))
                     );
         ${lclassebase}Repository.deleteById(id);
     }
@@ -91,9 +93,9 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + id,
+                    () -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID  + id,
                     HttpStatus.NOT_FOUND,
-                    "${classebase} com id = " + id + " não encontrado."))
+                    ${Uclassebase}_NOTFOUND_WITH_ID  + id ))
                 );
 
         return ${lclassebase}Data.map(this::toDTO).orElse(null);
@@ -110,9 +112,9 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + id,
+                    () -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID  + id,
                         HttpStatus.NOT_FOUND,
-                        "${classebase} com id = " + id + " não encontrado."))
+                        ${Uclassebase}_NOTFOUND_WITH_ID  + id))
                     );
         if (${lclassebase}Data.isPresent()) {
             ${classebase} ${lclassebase} = ${lclassebase}Data.get();
@@ -139,9 +141,9 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
     public ${classebase}DTO updateStatusById(Long id, String status) {
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable( ${lclassebase}Repository.findById(id)
-                .orElseThrow(() -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + id,
+                .orElseThrow(() -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID  + id,
                     HttpStatus.NOT_FOUND,
-                    "${classebase} não encontrada com id = " + id))
+                    ${Uclassebase}_NOTFOUND_WITH_ID + id))
                 );
         ${classebase} ${lclassebase} = ${lclassebase}Data.orElseGet(${classebase}::new);
         ${lclassebase}.setStatus(status);
@@ -152,7 +154,6 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
 
     @Override
     public List<${classebase}DTO> findAllByStatus(String status) {
-        List<${classebase}DTO> lst${classebase}DTO = new ArrayList<>();
         return ${lclassebase}Repository.findAllByStatus(status)
                 .stream()
                 .map(this::toDTO)

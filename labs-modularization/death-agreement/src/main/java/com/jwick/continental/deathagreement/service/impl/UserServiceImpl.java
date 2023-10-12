@@ -169,7 +169,6 @@ public class UserServiceImpl implements UserService
 
     @Override
     public List<UserDTO> findAllByStatus(String status) {
-        List<UserDTO> lstUserDTO = new ArrayList<>();
         return userRepository.findAllByStatus(status)
                 .stream()
                 .map(this::toDTO)

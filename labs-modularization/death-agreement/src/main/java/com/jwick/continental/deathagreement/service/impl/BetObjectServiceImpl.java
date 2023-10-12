@@ -21,33 +21,33 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.service.impl;
 
-import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
-import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
-
-import com.jwick.continental.deathagreement.dto.BetObjectDTO;
-import com.jwick.continental.deathagreement.model.BetObject;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.constantes.BetObjectConstantes;
+import com.jwick.continental.deathagreement.dto.BetObjectDTO;
+import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
+import com.jwick.continental.deathagreement.model.BetObject;
 import com.jwick.continental.deathagreement.repository.BetObjectRepository;
 import com.jwick.continental.deathagreement.service.BetObjectService;
-import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
-
-import java.text.SimpleDateFormat;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
-
-import java.text.ParseException;
-import java.util.*;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**
@@ -62,6 +62,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BetObjectServiceImpl implements BetObjectService
 {
+    public static final String BET_OBJECT_NOTFOUND_WITH_ID = "BetObject não encontrada com id = ";
+    public static final String BET_OBJECT_NOTFOUND_WITH_WHO = "BetObject não encontrada com who = ";
+    public static final String BET_OBJECT_NOTFOUND_WITH_DATECREATED = "BetObject não encontrada com dateCreated = ";
+    public static final String BET_OBJECT_NOTFOUND_WITH_DATEUPDATED = "BetObject não encontrada com dateUpdated = ";
+    public static final String BET_OBJECT_NOTFOUND_WITH_EXTERNALUUID = "BetObject não encontrada com externalUUID = ";
     @Autowired private BetObjectRepository betobjectRepository;
 
     @Override
@@ -75,9 +80,9 @@ public class BetObjectServiceImpl implements BetObjectService
         Optional<BetObject> betobjectData =
             Optional.ofNullable(betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + id,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com id = " + id))
+                            BET_OBJECT_NOTFOUND_WITH_ID + id))
                     );
         betobjectRepository.deleteById(id);
     }
@@ -110,9 +115,9 @@ public class BetObjectServiceImpl implements BetObjectService
         Optional<BetObject> betobjectData =
             Optional.ofNullable(betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada " + id,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID + id,
                     HttpStatus.NOT_FOUND,
-                    "BetObject com id = " + id + " não encontrado."))
+                            BET_OBJECT_NOTFOUND_WITH_ID+ id ))
                 );
         return betobjectData.map(this::toDTO).orElse(null);
     }
@@ -128,9 +133,9 @@ public class BetObjectServiceImpl implements BetObjectService
         Optional<BetObject> betobjectData =
             Optional.ofNullable(betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada " + id,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "BetObject com id = " + id + " não encontrado."))
+                            BET_OBJECT_NOTFOUND_WITH_ID + id))
                     );
         if (betobjectData.isPresent()) {
             BetObject betobject = betobjectData.get();
@@ -155,9 +160,9 @@ public class BetObjectServiceImpl implements BetObjectService
     public BetObjectDTO updateStatusById(Long id, String status) {
         Optional<BetObject> betobjectData =
             Optional.ofNullable( betobjectRepository.findById(id)
-                .orElseThrow(() -> new BetObjectNotFoundException("BetObject não encontrada com id = " +id,
+                .orElseThrow(() -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID +id,
                     HttpStatus.NOT_FOUND,
-                    "BetObject não encontrada com id = " + id))
+                        BET_OBJECT_NOTFOUND_WITH_ID + id))
                 );
         BetObject betobject = betobjectData.isPresent() ? betobjectData.get() : new BetObject();
         betobject.setStatus(status);
@@ -168,7 +173,6 @@ public class BetObjectServiceImpl implements BetObjectService
 
     @Override
     public List<BetObjectDTO> findAllByStatus(String status) {
-        List<BetObjectDTO> lstBetObjectDTO = new ArrayList<>();
         return betobjectRepository.findAllByStatus(status)
                 .stream()
                 .map(this::toDTO)
@@ -318,9 +322,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betobjectRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + id,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com id = " + id))
+                            BET_OBJECT_NOTFOUND_WITH_ID + id))
                 );
         return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
     }
@@ -348,9 +352,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betobjectRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + who,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_WHO + who,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com who = " + who))
+                            BET_OBJECT_NOTFOUND_WITH_WHO + who))
                 );
         return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
     }
@@ -378,9 +382,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betobjectRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + externalUUID,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_EXTERNALUUID+ externalUUID,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com externalUUID = " + externalUUID))
+                            BET_OBJECT_NOTFOUND_WITH_EXTERNALUUID + externalUUID))
                 );
         return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
     }
@@ -407,9 +411,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betobjectRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + dateCreated,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_DATECREATED + dateCreated,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com dateCreated = " + dateCreated))
+                            BET_OBJECT_NOTFOUND_WITH_DATECREATED + dateCreated))
                 );
         return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
     }
@@ -437,9 +441,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betobjectRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + dateUpdated,
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_DATEUPDATED + dateUpdated,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com dateUpdated = " + dateUpdated))
+                            BET_OBJECT_NOTFOUND_WITH_DATEUPDATED + dateUpdated))
                 );
         return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
     }

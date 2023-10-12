@@ -28,7 +28,8 @@ public enum CodeGeneratorTags {
     AGORA("\\$\\{agora\\}"),
     BASE_PACKAGE("\\$\\{package\\}"),
     BASE_CLASS("\\$\\{classebase\\}"),
-    BASE_CLASS_LOWER("\\$\\{lclassebase\\}")
+    BASE_CLASS_LOWER("\\$\\{lclassebase\\}"),
+    BASE_CLASS_UPPER("\\$\\{Uclassebase\\}")
     ;
 
     private String tag;

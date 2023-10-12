@@ -177,7 +177,6 @@ public class BetServiceImpl implements BetService
 
     @Override
     public List<BetDTO> findAllByStatus(String status) {
-        List<BetDTO> lstBetDTO = new ArrayList<>();
         return betRepository.findAllByStatus(status)
                 .stream()
                 .map(this::toDTO)

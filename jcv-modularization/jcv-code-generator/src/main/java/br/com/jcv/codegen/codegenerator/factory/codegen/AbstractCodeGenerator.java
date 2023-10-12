@@ -327,6 +327,7 @@ public abstract class AbstractCodeGenerator {
         newContent = newContent.replaceAll(CodeGeneratorTags.PK.getTag(), fieldPK.getFieldTableName());
         newContent = newContent.replaceAll(CodeGeneratorTags.PKDTO.getTag(), fieldPK.getFieldReferenceInDto());
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+        newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toLowerCase());
         if(field != null) {
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
             newContent = newContent.replaceAll(CodeGeneratorTags.STATUS_CAMPO.getTag(), fieldStatus.getFieldTableName());
@@ -337,6 +338,7 @@ public abstract class AbstractCodeGenerator {
             newContent = newContent.replaceAll(CodeGeneratorTags.AGORA.getTag(), Calendar.getInstance().getTime().toString());
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage());
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+            newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toUpperCase());
             newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMAP.getTag(), schemap);
             newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMA.getTag(), codegen.getSchema());
             newContent = newContent.replaceAll(CodeGeneratorTags.TABELA.getTag(), codegen.getTableName());
