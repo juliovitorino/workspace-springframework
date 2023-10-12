@@ -1,0 +1,28 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.builder;
+
+import ${package}.dto.BetDTO;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
+
+public class ${classebase}DTOBuilder {
+
+    private ${classebase}DTO ${lclassebase}DTO;
+
+    private ${classebase}DTOBuilder(){}
+    public static ${classebase}DTOBuilder new${classebase}DTOTestBuilder() {
+        ${classebase}DTOBuilder builder = new ${classebase}DTOBuilder();
+        builder.${lclassebase}DTO = new ${classebase}DTO();
+        return builder;
+    }
+
+    public ${classebase}DTO now() {
+        return this.${lclassebase}DTO;
+    }
+
+#include static/inc/builder-declared-fields.inc
+
+}

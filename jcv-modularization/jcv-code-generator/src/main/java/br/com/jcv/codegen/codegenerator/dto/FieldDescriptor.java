@@ -17,6 +17,7 @@ public class FieldDescriptor implements Serializable {
     private String fieldType;
     private String fieldReferenceInDto;
     private String fieldDescription;
+    private String regexValidation;
     private boolean isPrimaryKey = false;
     private boolean unique = false;
     private boolean nullable = true;

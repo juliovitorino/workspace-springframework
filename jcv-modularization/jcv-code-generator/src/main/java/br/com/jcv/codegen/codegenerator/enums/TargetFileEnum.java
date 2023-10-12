@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 @Getter
 public enum TargetFileEnum {
+    CodeGeneratorBuilder("CodeGeneratorBuilder", "/builder/${classebase}DTOBuilder"),
     CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}Controller"),
     CodeGeneratorServiceImpl("CodeGeneratorServiceImpl", "/service/impl/${classebase}ServiceImpl"),
     CodeGeneratorService("CodeGeneratorService", "/service/${classebase}Service"),
