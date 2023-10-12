@@ -21,8 +21,10 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.dto;
 
+import br.com.jcv.commons.library.commodities.annotation.RegexValidation;
 import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
+import br.com.jcv.commons.library.utility.RegexValidator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
@@ -71,6 +73,7 @@ public class BetDTO extends DTOPadrao implements Serializable
 
     @SerializedName(BetConstantes.BITCOINADDRESS)
     @JsonProperty(BetConstantes.BITCOINADDRESS)
+    @RegexValidation(regex = "[A-Za-z0-9]*")
     private String bitcoinAddress;
 
     @SerializedName(BetConstantes.TICKET)
@@ -80,10 +83,24 @@ public class BetDTO extends DTOPadrao implements Serializable
     @SerializedName(BetConstantes.DEATHDATE)
     @JsonProperty(BetConstantes.DEATHDATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
+    @RegexValidation(regex = "[23][0-9]{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])")
     private LocalDate deathDate;
 
 
     @SerializedName("mensagemResponse")
     @JsonProperty("mensagemResponse")
     private MensagemResponse mensagemResponse;
+
+    public void setBitcoinAddress(String bitcoinAddress) {
+        if(RegexValidator.execute(BetDTO.class,"bitcoinAddress",bitcoinAddress)) {
+            this.bitcoinAddress = bitcoinAddress;
+        }
+    }
+
+    public void setDeathDate(LocalDate deathDate) {
+        if(RegexValidator.execute(BetDTO.class,"deathDate",deathDate.toString())) {
+            this.deathDate = deathDate;
+        }
+    }
+
 }
