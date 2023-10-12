@@ -116,10 +116,7 @@ public class BetServiceImpl implements BetService
                     "Bet com id = " + id + " não encontrado."))
                 );
 
-        BetDTO response = this.toDTO(betData.get());
-        response.setMensagemResponse(new MensagemResponse("MSG-0001","Comando foi executado com sucesso"));
-
-        return response;
+        return betData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -171,7 +168,7 @@ public class BetServiceImpl implements BetService
                     HttpStatus.NOT_FOUND,
                     "Bet não encontrada com id = " + id))
                 );
-        Bet bet = betData.isPresent() ? betData.get() : new Bet();
+        Bet bet = betData.orElseGet(Bet::new);
         bet.setStatus(status);
         bet.setDateUpdated(new Date());
         return toDTO(betRepository.save(bet));
@@ -241,7 +238,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     response.put("currentPage", paginaBet.getNumber());
     response.put("totalItems", paginaBet.getTotalElements());
     response.put("totalPages", paginaBet.getTotalPages());
-    response.put("pageBetItems", lstBet.stream().map(m->toDTO(m)).collect(Collectors.toList()));
+    response.put("pageBetItems", lstBet.stream().map(this::toDTO).collect(Collectors.toList()));
     return response;
 }
 
@@ -292,7 +289,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
         );
 
-        return lstBet.stream().map(m->toDTO(m)).collect(Collectors.toList());
+        return lstBet.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override

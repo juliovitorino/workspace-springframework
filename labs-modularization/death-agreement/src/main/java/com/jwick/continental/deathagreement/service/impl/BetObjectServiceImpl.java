@@ -114,13 +114,7 @@ public class BetObjectServiceImpl implements BetObjectService
                     HttpStatus.NOT_FOUND,
                     "BetObject com id = " + id + " não encontrado."))
                 );
-        if(betobjectData.isPresent()) {
-            BetObjectDTO response = this.toDTO(betobjectData.get());
-            response.setMensagemResponse(new MensagemResponse("MSG-0001","Comando foi executado com sucesso"));
-            return response;
-        }
-
-        return null;
+        return betobjectData.map(this::toDTO).orElse(null);
     }
 
     @Override

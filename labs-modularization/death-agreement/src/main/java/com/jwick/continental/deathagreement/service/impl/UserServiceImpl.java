@@ -111,10 +111,7 @@ public class UserServiceImpl implements UserService
                     "User com id = " + id + " não encontrado."))
                 );
 
-        UserDTO response = this.toDTO(userData.get());
-        response.setMensagemResponse(new MensagemResponse("MSG-0001","Comando foi executado com sucesso"));
-
-        return response;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override

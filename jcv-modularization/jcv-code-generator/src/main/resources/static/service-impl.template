@@ -56,9 +56,9 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + String.valueOf(id),
+                    () -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + id,
                         HttpStatus.NOT_FOUND,
-                        "${classebase} não encontrada com id = " + String.valueOf(id)))
+                        "${classebase} não encontrada com id = " + id))
                     );
         ${lclassebase}Repository.deleteById(id);
     }
@@ -91,15 +91,12 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + String.valueOf(id),
+                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + id,
                     HttpStatus.NOT_FOUND,
-                    "${classebase} com id = " + String.valueOf(id) + " não encontrado."))
+                    "${classebase} com id = " + id + " não encontrado."))
                 );
 
-        ${classebase}DTO response = this.toDTO(${lclassebase}Data.get());
-        response.setMensagemResponse(new MensagemResponse("MSG-0001","Comando foi executado com sucesso"));
-
-        return response;
+        return ${lclassebase}Data.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -113,9 +110,9 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable(${lclassebase}Repository.findById(id)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + String.valueOf(id),
+                    () -> new ${classebase}NotFoundException("${classebase} não encontrada " + id,
                         HttpStatus.NOT_FOUND,
-                        "${classebase} com id = " + String.valueOf(id) + " não encontrado."))
+                        "${classebase} com id = " + id + " não encontrado."))
                     );
         if (${lclassebase}Data.isPresent()) {
             ${classebase} ${lclassebase} = ${lclassebase}Data.get();
@@ -142,11 +139,11 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
     public ${classebase}DTO updateStatusById(Long id, String status) {
         Optional<${classebase}> ${lclassebase}Data =
             Optional.ofNullable( ${lclassebase}Repository.findById(id)
-                .orElseThrow(() -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + String.valueOf(id),
+                .orElseThrow(() -> new ${classebase}NotFoundException("${classebase} não encontrada com id = " + id,
                     HttpStatus.NOT_FOUND,
-                    "${classebase} não encontrada com id = " + String.valueOf(id)))
+                    "${classebase} não encontrada com id = " + id))
                 );
-        ${classebase} ${lclassebase} = ${lclassebase}Data.isPresent() ? ${lclassebase}Data.get() : new ${classebase}();
+        ${classebase} ${lclassebase} = ${lclassebase}Data.orElseGet(${classebase}::new);
         ${lclassebase}.setStatus(status);
         ${lclassebase}.setDateUpdated(new Date());
         return toDTO(${lclassebase}Repository.save(${lclassebase}));
@@ -186,7 +183,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     response.put("currentPage", pagina${classebase}.getNumber());
     response.put("totalItems", pagina${classebase}.getTotalElements());
     response.put("totalPages", pagina${classebase}.getTotalPages());
-    response.put("page${classebase}Items", lst${classebase}.stream().map(m->toDTO(m)).collect(Collectors.toList()));
+    response.put("page${classebase}Items", lst${classebase}.stream().map(this::toDTO).collect(Collectors.toList()));
     return response;
 }
 
@@ -207,7 +204,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 #include static/inc/service-impl-method-findAllByFilter-list.inc && excludeCharAtBeginFromFirstField[,]
         );
 
-        return lst${classebase}.stream().map(m->toDTO(m)).collect(Collectors.toList());
+        return lst${classebase}.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
 #include static/inc/service-impl-method-findAllModelByFieldAndStatus-list.inc && excludeFields[status]
