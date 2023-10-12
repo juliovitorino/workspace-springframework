@@ -77,13 +77,11 @@ public class BetObjectServiceImpl implements BetObjectService
     )
     public void delete(Long id) {
         log.info("Deletando BetObject com id = {}", id);
-        Optional<BetObject> betobjectData =
-            Optional.ofNullable(betobjectRepository.findById(id)
+        betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID + id,
-                        HttpStatus.NOT_FOUND,
-                            BET_OBJECT_NOTFOUND_WITH_ID + id))
-                    );
+                        () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_ID + id,
+                                HttpStatus.NOT_FOUND,
+                                BET_OBJECT_NOTFOUND_WITH_ID + id));
         betobjectRepository.deleteById(id);
     }
 
@@ -186,7 +184,7 @@ public class BetObjectServiceImpl implements BetObjectService
     noRollbackFor = BetObjectNotFoundException.class
 )
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<BetObject> lstBetObject = new ArrayList<>();
+    List<BetObject> lstBetObject;
     Long id = null;
     String who = null;
     UUID externalUUID = null;
@@ -220,7 +218,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     response.put("currentPage", paginaBetObject.getNumber());
     response.put("totalItems", paginaBetObject.getTotalElements());
     response.put("totalPages", paginaBetObject.getTotalPages());
-    response.put("pageBetObjectItems", lstBetObject.stream().map(m->toDTO(m)).collect(Collectors.toList()));
+    response.put("pageBetObjectItems", lstBetObject.stream().map(this::toDTO).collect(Collectors.toList()));
     return response;
 }
 

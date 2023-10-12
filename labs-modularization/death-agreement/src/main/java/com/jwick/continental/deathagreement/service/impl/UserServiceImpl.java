@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService
     noRollbackFor = UserNotFoundException.class
 )
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<UserPunter> lstUser = new ArrayList<>();
+    List<UserPunter> lstUser;
     Long id = null;
     String nickname = null;
     String btcAddress = null;
@@ -217,7 +217,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     response.put("currentPage", paginaUser.getNumber());
     response.put("totalItems", paginaUser.getTotalElements());
     response.put("totalPages", paginaUser.getTotalPages());
-    response.put("pageUserItems", lstUser.stream().map(m->toDTO(m)).collect(Collectors.toList()));
+    response.put("pageUserItems", lstUser.stream().map(this::toDTO).collect(Collectors.toList()));
     return response;
 }
 

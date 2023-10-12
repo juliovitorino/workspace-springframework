@@ -190,7 +190,7 @@ public class BetServiceImpl implements BetService
     noRollbackFor = BetNotFoundException.class
 )
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<Bet> lstBet = new ArrayList<>();
+    List<Bet> lstBet;
     Long id = null;
     Long idPunter = null;
     Long idBetObject = null;

@@ -15,20 +15,20 @@ public enum BetStatusEnum {
     private String value;
     private String status;
 
-    public static final BetStatusEnum[] STATUS = values();
+    public static final BetStatusEnum[] ALL_STATUS = values();
     BetStatusEnum(String status, String value) {
         this.value = value;
         this.status = status;
     }
 
     public static BetStatusEnum fromValue(String value) {
-        return Arrays.stream(STATUS).filter(valueItem -> valueItem.getValue().equals(value)).findFirst().orElseThrow(
+        return Arrays.stream(ALL_STATUS).filter(valueItem -> valueItem.getValue().equals(value)).findFirst().orElseThrow(
                 ()-> new InvalidBetStatusException("Invalid status " + value, HttpStatus.BAD_REQUEST)
         );
     }
 
     public static BetStatusEnum fromStatus(String status) {
-        return Arrays.stream(STATUS).filter(valueItem -> valueItem.getStatus().equals(status)).findFirst().orElseThrow(
+        return Arrays.stream(ALL_STATUS).filter(valueItem -> valueItem.getStatus().equals(status)).findFirst().orElseThrow(
                 ()-> new InvalidBetStatusException("Invalid status " + status, HttpStatus.BAD_REQUEST)
         );
     }

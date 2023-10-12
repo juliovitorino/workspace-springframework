@@ -55,13 +55,11 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
     )
     public void delete(Long id) {
         log.info("Deletando ${classebase} com id = {}", id);
-        Optional<${classebase}> ${lclassebase}Data =
-            Optional.ofNullable(${lclassebase}Repository.findById(id)
+        ${lclassebase}Repository.findById(id)
                 .orElseThrow(
                     () -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID  + id,
                         HttpStatus.NOT_FOUND,
-                        ${Uclassebase}_NOTFOUND_WITH_ID  + id))
-                    );
+                        ${Uclassebase}_NOTFOUND_WITH_ID  + id));
         ${lclassebase}Repository.deleteById(id);
     }
 
@@ -167,7 +165,7 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
     noRollbackFor = ${classebase}NotFoundException.class
 )
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<${classebase}> lst${classebase} = new ArrayList<>();
+    List<${classebase}> lst${classebase};
 #include static/inc/service-impl-method-findPageByFilter.inc
 
     for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
