@@ -34,7 +34,7 @@ public class Bet {
     private Long idPunter;
 
     @Column(name = "id_bet_object")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet Obejct's ID")
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bet Obejct's ID", regexValidation = "[0-9]+")
     private Long idBetObject;
 
     @Column(precision=20, scale=8)
@@ -42,7 +42,7 @@ public class Bet {
     private Double bet;
 
     @Column(name = "btc_address")
-    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin address")
+    @CodeGeneratorFieldDescriptor(fieldDescription = "Bitcoin address", regexValidation = "[A-Za-z0-9]+")
     private String bitcoinAddress;
 
     @Column

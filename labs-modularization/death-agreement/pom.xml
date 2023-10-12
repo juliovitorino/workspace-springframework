@@ -16,8 +16,8 @@
 	<description>Bet Marketplace Death</description>
 
 	<properties>
-		<jcv-code-generator.version>1.0.5-SNAPSHOT</jcv-code-generator.version>
-		<commons-library.version>1.0.6-SNAPSHOT</commons-library.version>
+		<jcv-code-generator.version>1.0.6-SNAPSHOT</jcv-code-generator.version>
+		<commons-library.version>1.0.7-SNAPSHOT</commons-library.version>
 		<h2.version>1.4.185</h2.version>
 		<jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
 		<postgresql.version>42.6.0</postgresql.version>

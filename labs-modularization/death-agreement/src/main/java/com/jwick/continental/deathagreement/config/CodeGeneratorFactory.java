@@ -5,6 +5,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAbstra
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserCPF;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorApiControllerAdvice;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBuilder;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditieService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
@@ -36,6 +37,11 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorBuilderInstance")
+    public ICodeGeneratorIndividual codeGeneratorBuilderInstance() {
+        log.info("CodeGeneratorBuilderInstance :: has started successfully");
+        return new CodeGeneratorBuilder();
+    }
     @Bean("CodeGeneratorControllerInstance")
     public ICodeGeneratorIndividual codeGeneratorControllerInstance() {
         log.info("CodeGeneratorControllerInstance :: has started successfully");

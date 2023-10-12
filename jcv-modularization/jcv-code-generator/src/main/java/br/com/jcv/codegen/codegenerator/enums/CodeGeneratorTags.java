@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum CodeGeneratorTags {
+    REGEX_VALIDATION("\\$\\{regexValidation\\}"),
     STATUS_CAMPO("\\$\\{campostatus\\}"),
     PROJECT("\\$\\{project\\}"),
     PROJETO("\\$\\{projeto\\}"),

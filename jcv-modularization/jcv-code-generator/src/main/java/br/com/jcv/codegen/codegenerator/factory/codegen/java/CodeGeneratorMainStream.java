@@ -24,6 +24,7 @@ import java.util.List;
 @Component
 public class CodeGeneratorMainStream extends AbstractCodeGenerator implements ICodeGeneratorBatch {
 
+    @Autowired private  @Qualifier("CodeGeneratorBuilderInstance") ICodeGeneratorIndividual generatorBuilder;
     @Autowired private  @Qualifier("CodeGeneratorAnalyserCpfInstance") ICodeGeneratorIndividual generatorAnalyserCpf;
     @Autowired private  @Qualifier("CodeGeneratorAbstractAnalyserInstance") ICodeGeneratorIndividual generatorAbstractAnalyser;
     @Autowired private  @Qualifier("CodeGeneratorMensagemConstantesInstance") ICodeGeneratorIndividual generatorMensagemConstantes;
@@ -54,7 +55,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Override
     public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
         List<WritableCode> codeInBatch = new ArrayList<>();
-        log.info("generate :: is reading {} attributes", inputClassModel.getClass().hashCode());
+        log.info("generate :: is reading {} attributes", inputClassModel.hashCode());
         codeInBatch.add(generatorBusinessService.generate(inputClassModel));
         codeInBatch.add(generatorRequestFilter.generate(inputClassModel));
         codeInBatch.add(generatorLogabck.generate(inputClassModel));
@@ -81,6 +82,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         codeInBatch.add(generatorServiceImpl.generate(inputClassModel));
         codeInBatch.add(generatorSwaggerConfig.generate(inputClassModel));
         codeInBatch.add(generatorController.generate(inputClassModel));
+        codeInBatch.add(generatorBuilder.generate(inputClassModel));
         log.info("generate :: has been executed");
         return codeInBatch;
     }

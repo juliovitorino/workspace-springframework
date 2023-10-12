@@ -246,7 +246,7 @@ public abstract class AbstractCodeGenerator {
 
     private void createFolderStructureIfNeed(CodeGeneratorDTO codegen) {
         final String PING = "/ping.txt";
-        final String[] folders = new String[] {"config","analyser","constantes","controller","dto","enums"
+        final String[] folders = new String[] {"config","builder","analyser","constantes","controller","dto","enums"
                 ,"exception","interfaces","repository","service","service/impl"};
 
         log.info("code generator Output Directory -> {}", codegen.getOutputDir());
@@ -259,6 +259,7 @@ public abstract class AbstractCodeGenerator {
                 System.out.println("*** You must have to create and check the following folder structure");
                 System.out.println(codegen.getOutputDir());
                 System.out.println("+-- /analyser");
+                System.out.println("+-- /builder");
                 System.out.println("+-- /config");
                 System.out.println("+-- /constantes");
                 System.out.println("+-- /controller");
@@ -330,6 +331,7 @@ public abstract class AbstractCodeGenerator {
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toLowerCase());
         if(field != null) {
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+            newContent = newContent.replaceAll(CodeGeneratorTags.REGEX_VALIDATION.getTag(), getRegexValidationAnnotation(field.getRegexValidation()));
             newContent = newContent.replaceAll(CodeGeneratorTags.STATUS_CAMPO.getTag(), fieldStatus.getFieldTableName());
             newContent = newContent.replaceAll(CodeGeneratorTags.PROJETO.getTag(), codegen.getProject());
             newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
@@ -352,6 +354,11 @@ public abstract class AbstractCodeGenerator {
             newContent = newContent.replaceAll(CodeGeneratorTags.DTO.getTag(), field.getFieldReferenceInDto());
         }
         return newContent;
+    }
+
+    private String getRegexValidationAnnotation(String regexValidation) {
+        if(regexValidation.isEmpty()) return "";
+        return "@RegexValidation(regex = " + String.valueOf('"') + regexValidation + String.valueOf('"') +")";
     }
 
     private String camelCase(String field) {
@@ -433,6 +440,7 @@ public abstract class AbstractCodeGenerator {
                 ?  fieldItem.getName()
                 : codeGeneratorFieldDescriptor.fieldReferenceInDto());
         fieldDescriptor.setFieldDescription(codeGeneratorFieldDescriptor.fieldDescription());
+        fieldDescriptor.setRegexValidation(codeGeneratorFieldDescriptor.regexValidation());
 
         log.info("getFieldDescriptor :: collecting info for @Column Annotation for field -> {}", fieldItem.getName());
         Column columnAnnotation = fieldItem.getAnnotation(Column.class);
