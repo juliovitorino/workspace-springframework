@@ -20,17 +20,22 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 package com.jwick.continental.deathagreement.dto;
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
+
 import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
-
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
-import lombok.*;
-
-import com.jwick.continental.deathagreement.constantes.UserConstantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
-import java.util.Date;
+import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
 * UserDTO - Data Transfer Object

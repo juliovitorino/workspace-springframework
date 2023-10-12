@@ -22,15 +22,11 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 package com.jwick.continental.deathagreement.service;
 
 import br.com.jcv.commons.library.commodities.service.CommoditieBaseService;
-import br.com.jcv.commons.library.commodities.dto.RequestFilter;
-
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.model.BetObject;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**

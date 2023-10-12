@@ -76,9 +76,9 @@ public class BetServiceImpl implements BetService
         Optional<Bet> betData =
             Optional.ofNullable(betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + String.valueOf(id),
+                    () -> new BetNotFoundException("Bet não encontrada com id = " + id,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com id = " + String.valueOf(id)))
+                        "Bet não encontrada com id = " + id))
                     );
         betRepository.deleteById(id);
     }
@@ -111,9 +111,9 @@ public class BetServiceImpl implements BetService
         Optional<Bet> betData =
             Optional.ofNullable(betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada " + String.valueOf(id),
+                    () -> new BetNotFoundException("Bet não encontrada " + id,
                     HttpStatus.NOT_FOUND,
-                    "Bet com id = " + String.valueOf(id) + " não encontrado."))
+                    "Bet com id = " + id + " não encontrado."))
                 );
 
         BetDTO response = this.toDTO(betData.get());
@@ -133,25 +133,20 @@ public class BetServiceImpl implements BetService
         Optional<Bet> betData =
             Optional.ofNullable(betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada " + String.valueOf(id),
+                    () -> new BetNotFoundException("Bet não encontrada " +id,
                         HttpStatus.NOT_FOUND,
-                        "Bet com id = " + String.valueOf(id) + " não encontrado."))
+                        "Bet com id = " + id + " não encontrado."))
                     );
         if (betData.isPresent()) {
             Bet bet = betData.get();
 
             for (Map.Entry<String,Object> entry : updates.entrySet()) {
-                if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) bet.setId((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.IDPUNTER)) bet.setIdPunter((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) bet.setIdBetObject((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet.setBet((Double)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bet.setBitcoinAddress((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) bet.setTicket((UUID)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) bet.setDeathDate((LocalDate) entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) bet.setStatus((String)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) bet.setDateCreated((Date)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) bet.setDateUpdated((Date)entry.getValue());
-
         }
         if(updates.get(BetConstantes.DATEUPDATED) == null) bet.setDateUpdated(new Date());
         betRepository.save(bet);
@@ -172,9 +167,9 @@ public class BetServiceImpl implements BetService
     public BetDTO updateStatusById(Long id, String status) {
         Optional<Bet> betData =
             Optional.ofNullable( betRepository.findById(id)
-                .orElseThrow(() -> new BetNotFoundException("Bet não encontrada com id = " + String.valueOf(id),
+                .orElseThrow(() -> new BetNotFoundException("Bet não encontrada com id = " + id,
                     HttpStatus.NOT_FOUND,
-                    "Bet não encontrada com id = " + String.valueOf(id)))
+                    "Bet não encontrada com id = " + id))
                 );
         Bet bet = betData.isPresent() ? betData.get() : new Bet();
         bet.setStatus(status);

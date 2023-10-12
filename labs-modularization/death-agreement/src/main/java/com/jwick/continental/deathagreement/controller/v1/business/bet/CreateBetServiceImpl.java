@@ -45,7 +45,9 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
             if(! btcAddressCheck.getNickname().equals(request.getNickname())) {
                 throw new BtcAddressNotBelongThisUserException("Other user is using this btc address", HttpStatus.BAD_REQUEST);
             }
-        } catch (UserNotFoundException ignored) {}
+        } catch (UserNotFoundException ignored) {
+            log.info("ignored UserNotFoundException");
+        }
 
         log.info("execute :: is checking user information => {}", request.getNickname());
         UserDTO userDTO = checkUserInformationOrCreateIfNew(request);

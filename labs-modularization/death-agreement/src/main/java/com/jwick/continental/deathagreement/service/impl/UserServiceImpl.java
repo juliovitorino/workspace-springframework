@@ -71,9 +71,9 @@ public class UserServiceImpl implements UserService
         Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + String.valueOf(id),
+                    () -> new UserNotFoundException("User não encontrada com id = " + id,
                         HttpStatus.NOT_FOUND,
-                        "User não encontrada com id = " + String.valueOf(id)))
+                        "User não encontrada com id = " + id))
                     );
         userRepository.deleteById(id);
     }
@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService
         Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada " + String.valueOf(id),
+                    () -> new UserNotFoundException("User não encontrada " + id,
                     HttpStatus.NOT_FOUND,
-                    "User com id = " + String.valueOf(id) + " não encontrado."))
+                    "User com id = " + id + " não encontrado."))
                 );
 
         UserDTO response = this.toDTO(userData.get());
@@ -128,9 +128,9 @@ public class UserServiceImpl implements UserService
         Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada " + String.valueOf(id),
+                    () -> new UserNotFoundException("User não encontrada " + id,
                         HttpStatus.NOT_FOUND,
-                        "User com id = " + String.valueOf(id) + " não encontrado."))
+                        "User com id = " + id + " não encontrado."))
                     );
         if (userData.isPresent()) {
             UserPunter user = userData.get();
@@ -159,9 +159,9 @@ public class UserServiceImpl implements UserService
     public UserDTO updateStatusById(Long id, String status) {
         Optional<UserPunter> userData =
             Optional.ofNullable( userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User não encontrada com id = " + String.valueOf(id),
+                .orElseThrow(() -> new UserNotFoundException("User não encontrada com id = " + id,
                     HttpStatus.NOT_FOUND,
-                    "User não encontrada com id = " + String.valueOf(id)))
+                    "User não encontrada com id = " + id))
                 );
         UserPunter user = userData.isPresent() ? userData.get() : new UserPunter();
         user.setStatus(status);

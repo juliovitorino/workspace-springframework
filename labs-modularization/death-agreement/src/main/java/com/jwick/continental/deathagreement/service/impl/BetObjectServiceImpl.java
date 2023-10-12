@@ -75,9 +75,9 @@ public class BetObjectServiceImpl implements BetObjectService
         Optional<BetObject> betobjectData =
             Optional.ofNullable(betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + String.valueOf(id),
+                    () -> new BetObjectNotFoundException("BetObject não encontrada com id = " + id,
                         HttpStatus.NOT_FOUND,
-                        "BetObject não encontrada com id = " + String.valueOf(id)))
+                        "BetObject não encontrada com id = " + id))
                     );
         betobjectRepository.deleteById(id);
     }
@@ -110,9 +110,9 @@ public class BetObjectServiceImpl implements BetObjectService
         Optional<BetObject> betobjectData =
             Optional.ofNullable(betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada " + String.valueOf(id),
+                    () -> new BetObjectNotFoundException("BetObject não encontrada " + id,
                     HttpStatus.NOT_FOUND,
-                    "BetObject com id = " + String.valueOf(id) + " não encontrado."))
+                    "BetObject com id = " + id + " não encontrado."))
                 );
         if(betobjectData.isPresent()) {
             BetObjectDTO response = this.toDTO(betobjectData.get());
@@ -134,21 +134,16 @@ public class BetObjectServiceImpl implements BetObjectService
         Optional<BetObject> betobjectData =
             Optional.ofNullable(betobjectRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetObjectNotFoundException("BetObject não encontrada " + String.valueOf(id),
+                    () -> new BetObjectNotFoundException("BetObject não encontrada " + id,
                         HttpStatus.NOT_FOUND,
-                        "BetObject com id = " + String.valueOf(id) + " não encontrado."))
+                        "BetObject com id = " + id + " não encontrado."))
                     );
         if (betobjectData.isPresent()) {
             BetObject betobject = betobjectData.get();
 
             for (Map.Entry<String,Object> entry : updates.entrySet()) {
-                if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.ID)) betobject.setId((Long)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.WHO)) betobject.setWho((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.EXTERNALUUID)) betobject.setExternalUUID((UUID)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.STATUS)) betobject.setStatus((String)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATECREATED)) betobject.setDateCreated((Date)entry.getValue());
-                if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATEUPDATED)) betobject.setDateUpdated((Date)entry.getValue());
-
             }
             if(updates.get(BetObjectConstantes.DATEUPDATED) == null) betobject.setDateUpdated(new Date());
             betobjectRepository.save(betobject);
@@ -166,9 +161,9 @@ public class BetObjectServiceImpl implements BetObjectService
     public BetObjectDTO updateStatusById(Long id, String status) {
         Optional<BetObject> betobjectData =
             Optional.ofNullable( betobjectRepository.findById(id)
-                .orElseThrow(() -> new BetObjectNotFoundException("BetObject não encontrada com id = " + String.valueOf(id),
+                .orElseThrow(() -> new BetObjectNotFoundException("BetObject não encontrada com id = " +id,
                     HttpStatus.NOT_FOUND,
-                    "BetObject não encontrada com id = " + String.valueOf(id)))
+                    "BetObject não encontrada com id = " + id))
                 );
         BetObject betobject = betobjectData.isPresent() ? betobjectData.get() : new BetObject();
         betobject.setStatus(status);
