@@ -33,8 +33,8 @@ public class CodeGeneratorController {
             List<WritableCode> userCodes = generatorMainStream.generate(User.class);
             generatorMainStream.flushCode(userCodes);
             */
-            List<WritableCode> BetCodes = generatorMainStream.generate(Bet.class);
-            generatorMainStream.flushCode(BetCodes);
+            List<WritableCode> betCodes = generatorMainStream.generate(Bet.class);
+            generatorMainStream.flushCode(betCodes);
             return ResponseEntity.ok().build();
         } catch(CodeGeneratorFolderStructureNotFound e) {
             return ResponseEntity.badRequest().build();
