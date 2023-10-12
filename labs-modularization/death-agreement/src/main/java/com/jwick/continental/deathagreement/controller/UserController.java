@@ -49,7 +49,6 @@ import java.util.Objects;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import javax.validation.Valid;
 
 /**
 * UserController - Controller for User API
@@ -215,7 +214,7 @@ public class UserController
             userDTO.setId(id);
             userDTO.setDateUpdated(new Date());
             UserDTO userSaved = userService.salvar(userDTO);
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+            return new ResponseEntity<>(userSaved, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {

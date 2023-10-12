@@ -50,7 +50,6 @@ import java.util.UUID;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import javax.validation.Valid;
 
 /**
 * BetController - Controller for Bet API
@@ -216,7 +215,7 @@ public class BetController
             betDTO.setId(id);
             betDTO.setDateUpdated(new Date());
             BetDTO betSaved = betService.salvar(betDTO);
-            return new ResponseEntity<>(betDTO, HttpStatus.OK);
+            return new ResponseEntity<>(betSaved, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
