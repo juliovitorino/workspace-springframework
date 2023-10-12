@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.controller.v1.business.betObject;
+package com.jwick.continental.deathagreement.controller.v1.business.betobject;
 
 import com.jwick.continental.deathagreement.bulder.BetObjectDTOBuilder;
 import com.jwick.continental.deathagreement.bulder.BetObjectRequestBuilder;

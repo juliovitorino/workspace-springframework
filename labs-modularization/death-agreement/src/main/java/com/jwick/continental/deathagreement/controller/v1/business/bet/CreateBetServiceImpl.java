@@ -2,6 +2,7 @@ package com.jwick.continental.deathagreement.controller.v1.business.bet;
 
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
@@ -20,8 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -38,7 +37,7 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
             if(DateUtility.compare(dateTime.getToday(), sdfYMD.parse(request.getDeathDateBet().toString())) == -1)
                 throw new BetCouldntMadeinThePastException("You must to do your bet to the future", HttpStatus.BAD_REQUEST);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new CommoditieBaseException("Invalid Parse date => " + request.getDeathDateBet(), HttpStatus.BAD_REQUEST);
         }
 
         try {
@@ -49,7 +48,7 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         } catch (UserNotFoundException ignored) {}
 
         log.info("execute :: is checking user information => {}", request.getNickname());
-        UserDTO userDTO = CheckUserInformationOrCreateIfNew(request);
+        UserDTO userDTO = checkUserInformationOrCreateIfNew(request);
         if(checkUserStatus(userDTO.getId(), GenericStatusEnums.PENDENTE)) {
             userService.updateStatusById(userDTO.getId(), GenericStatusEnums.ATIVO.getShortValue());
         }
@@ -97,14 +96,14 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
     private void checkDuplicatedPendingBet(UserDTO userDTO, BetObjectDTO betObjectDTO) {
         log.info("execute :: is checking for for repeated double bet");
         try {
-            BetDTO doubleBet = betService.findBetByIdPunterAndIdBetObjectAndStatus(userDTO.getId(), betObjectDTO.getId(),GenericStatusEnums.PENDENTE.getShortValue());
+            betService.findBetByIdPunterAndIdBetObjectAndStatus(userDTO.getId(), betObjectDTO.getId(),GenericStatusEnums.PENDENTE.getShortValue());
             throw new PendingBetWaitingTransferFundsException("Bet is pending and waiting confirmation", HttpStatus.BAD_REQUEST);
         } catch (BetNotFoundException ignored) {
             log.info("execute :: No pending Bet found!");
         }
     }
 
-    private UserDTO CheckUserInformationOrCreateIfNew(BetRequest request) {
+    private UserDTO checkUserInformationOrCreateIfNew(BetRequest request) {
         UserDTO userDTO = null;
         try {
             userDTO = userService.findUserByNicknameAndStatus(request.getNickname());

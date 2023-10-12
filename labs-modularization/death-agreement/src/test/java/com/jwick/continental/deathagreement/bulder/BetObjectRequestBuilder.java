@@ -1,6 +1,6 @@
 package com.jwick.continental.deathagreement.bulder;
 
-import com.jwick.continental.deathagreement.controller.v1.business.betObject.BetObjectRequest;
+import com.jwick.continental.deathagreement.controller.v1.business.betobject.BetObjectRequest;
 
 public class BetObjectRequestBuilder {
 

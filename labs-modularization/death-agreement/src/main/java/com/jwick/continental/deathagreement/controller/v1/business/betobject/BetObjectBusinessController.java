@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.controller.v1.business.betObject;
+package com.jwick.continental.deathagreement.controller.v1.business.betobject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

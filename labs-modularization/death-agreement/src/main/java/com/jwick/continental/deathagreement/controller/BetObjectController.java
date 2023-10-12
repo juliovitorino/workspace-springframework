@@ -233,12 +233,12 @@ public class BetObjectController
     @RequestMapping(value = "/{id}",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> partialUpdateGeneric(
+    public ResponseEntity partialUpdateGeneric(
             @RequestBody Map<String, Object> updates,
             @PathVariable("id") Long id) {
         BetObjectDTO betobjectData = betobjectService.findById(id);
         if (betobjectData == null || !betobjectService.partialUpdate(id, updates)) {
-            return (ResponseEntity<?>) ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("BetObject atualizada");
     }
