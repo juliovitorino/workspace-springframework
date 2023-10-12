@@ -62,6 +62,15 @@ import java.util.stream.Collectors;
 @Service
 public class BetServiceImpl implements BetService
 {
+    public static final String BET_NOTFOUND_WITH_ID = "Bet não encontrada com id = ";
+    public static final String BET_NOTFOUND_WITH_TICKET = "Bet não encontrada com ticket = ";
+    public static final String BET_NOTFOUND_WITH_ID_PUNTER = "Bet não encontrada com idPunter = ";
+    public static final String BET_NOTFOUND_WITH_ID_BET_OBJECT = "Bet não encontrada com idBetObject = ";
+    public static final String BET_NOTFOUND_WITH_BET = "Bet não encontrada com bet = ";
+    public static final String BET_NOTFOUND_WITH_BITCOIN_ADDRESS = "Bet não encontrada com bitcoinAddress = ";
+    public static final String BET_NOTFOUND_WITH_DEATH_DATE = "Bet não encontrada com deathDate = ";
+    public static final String BET_NOTFOUND_WITH_DATECREATED = "Bet não encontrada com dateCreated = ";
+    public static final String BET_NOTFOUND_WITH_DATEUPDATED = "Bet não encontrada com dateUpdated = ";
     @Autowired private BetRepository betRepository;
 
     @Override
@@ -75,9 +84,9 @@ public class BetServiceImpl implements BetService
         Optional<Bet> betData =
             Optional.ofNullable(betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + id,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com id = " + id))
+                        BET_NOTFOUND_WITH_ID + id))
                     );
         betRepository.deleteById(id);
     }
@@ -110,9 +119,9 @@ public class BetServiceImpl implements BetService
         Optional<Bet> betData =
             Optional.ofNullable(betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada " + id,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID + id,
                     HttpStatus.NOT_FOUND,
-                    "Bet com id = " + id + " não encontrado."))
+                    BET_NOTFOUND_WITH_ID + id))
                 );
 
         return betData.map(this::toDTO).orElse(null);
@@ -129,9 +138,9 @@ public class BetServiceImpl implements BetService
         Optional<Bet> betData =
             Optional.ofNullable(betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada " +id,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID+id,
                         HttpStatus.NOT_FOUND,
-                        "Bet com id = " + id + " não encontrado."))
+                        BET_NOTFOUND_WITH_ID + id))
                     );
         if (betData.isPresent()) {
             Bet bet = betData.get();
@@ -163,9 +172,9 @@ public class BetServiceImpl implements BetService
     public BetDTO updateStatusById(Long id, String status) {
         Optional<Bet> betData =
             Optional.ofNullable( betRepository.findById(id)
-                .orElseThrow(() -> new BetNotFoundException("Bet não encontrada com id = " + id,
+                .orElseThrow(() -> new BetNotFoundException(BET_NOTFOUND_WITH_ID + id,
                     HttpStatus.NOT_FOUND,
-                    "Bet não encontrada com id = " + id))
+                    BET_NOTFOUND_WITH_ID + id))
                 );
         Bet bet = betData.orElseGet(Bet::new);
         bet.setStatus(status);
@@ -386,9 +395,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + id,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com id = " + id))
+                        BET_NOTFOUND_WITH_ID + id))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -416,9 +425,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + idPunter,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID_PUNTER + idPunter,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com idPunter = " + idPunter))
+                            BET_NOTFOUND_WITH_ID_PUNTER + idPunter))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -436,9 +445,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + idPunter,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID_PUNTER + idPunter,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com idPunter = " + idPunter))
+                            BET_NOTFOUND_WITH_ID_PUNTER + idPunter))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -466,9 +475,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + idBetObject,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID_BET_OBJECT + idBetObject,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com idBetObject = " + idBetObject))
+                            BET_NOTFOUND_WITH_ID_BET_OBJECT + idBetObject))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -496,9 +505,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + bet,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_BET + bet,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com bet = " + bet))
+                            BET_NOTFOUND_WITH_BET + bet))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -526,9 +535,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + bitcoinAddress,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_BITCOIN_ADDRESS + bitcoinAddress,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com bitcoinAddress = " + bitcoinAddress))
+                            BET_NOTFOUND_WITH_BITCOIN_ADDRESS + bitcoinAddress))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -556,9 +565,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + ticket,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_TICKET + ticket,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com ticket = " + ticket))
+                            BET_NOTFOUND_WITH_TICKET + ticket))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -586,9 +595,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + deathDate,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_DEATH_DATE + deathDate,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com deathDate = " + deathDate))
+                            BET_NOTFOUND_WITH_DEATH_DATE + deathDate))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -616,9 +625,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + dateCreated,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_DATECREATED + dateCreated,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com dateCreated = " + dateCreated))
+                            BET_NOTFOUND_WITH_DATECREATED + dateCreated))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
@@ -646,9 +655,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( betRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new BetNotFoundException("Bet não encontrada com id = " + dateUpdated,
+                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_DATEUPDATED + dateUpdated,
                         HttpStatus.NOT_FOUND,
-                        "Bet não encontrada com dateUpdated = " + dateUpdated))
+                            BET_NOTFOUND_WITH_DATEUPDATED + dateUpdated))
                 );
         return betData.isPresent() ? this.toDTO(betData.get()) : null ;
     }
