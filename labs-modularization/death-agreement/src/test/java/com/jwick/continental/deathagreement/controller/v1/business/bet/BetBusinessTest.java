@@ -50,7 +50,7 @@ public class BetBusinessTest {
     private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
     private static MockedStatic<DateUtility> dateUtilityMockedStatic;
-    private SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
     @Mock
     private BetService betServiceMock;
     @Mock

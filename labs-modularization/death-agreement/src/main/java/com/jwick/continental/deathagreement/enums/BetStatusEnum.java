@@ -15,7 +15,7 @@ public enum BetStatusEnum {
     private String value;
     private String status;
 
-    public static final BetStatusEnum[] ALL_STATUS = values();
+    private static final BetStatusEnum[] ALL_STATUS = values();
     BetStatusEnum(String status, String value) {
         this.value = value;
         this.status = status;
