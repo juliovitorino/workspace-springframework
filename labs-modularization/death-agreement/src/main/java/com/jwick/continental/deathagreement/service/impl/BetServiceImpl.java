@@ -21,34 +21,33 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.service.impl;
 
-import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
-import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
-
-import com.jwick.continental.deathagreement.dto.BetDTO;
-import com.jwick.continental.deathagreement.model.Bet;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
+import com.jwick.continental.deathagreement.dto.BetDTO;
+import com.jwick.continental.deathagreement.exception.BetNotFoundException;
+import com.jwick.continental.deathagreement.model.Bet;
 import com.jwick.continental.deathagreement.repository.BetRepository;
 import com.jwick.continental.deathagreement.service.BetService;
-import com.jwick.continental.deathagreement.exception.BetNotFoundException;
-
-import java.text.SimpleDateFormat;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
-
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**

@@ -21,29 +21,31 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.service.impl;
 
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
-import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
-
-import com.jwick.continental.deathagreement.dto.UserDTO;
-import com.jwick.continental.deathagreement.model.UserPunter;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import com.jwick.continental.deathagreement.dto.UserDTO;
+import com.jwick.continental.deathagreement.exception.UserNotFoundException;
+import com.jwick.continental.deathagreement.model.UserPunter;
 import com.jwick.continental.deathagreement.repository.UserRepository;
 import com.jwick.continental.deathagreement.service.UserService;
-import com.jwick.continental.deathagreement.exception.UserNotFoundException;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
-
-import java.util.*;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -256,7 +258,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
         );
 
-        return lstUser.stream().map(m->toDTO(m)).collect(Collectors.toList());
+        return lstUser.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override

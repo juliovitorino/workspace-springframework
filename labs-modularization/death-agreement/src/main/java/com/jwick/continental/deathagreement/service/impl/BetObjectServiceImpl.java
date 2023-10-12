@@ -39,7 +39,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -257,7 +256,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
         );
 
-        return lstBetObject.stream().map(m->toDTO(m)).collect(Collectors.toList());
+        return lstBetObject.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
