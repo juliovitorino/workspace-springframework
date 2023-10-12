@@ -81,13 +81,11 @@ public class BetServiceImpl implements BetService
     )
     public void delete(Long id) {
         log.info("Deletando Bet com id = {}", id);
-        Optional<Bet> betData =
-            Optional.ofNullable(betRepository.findById(id)
+        betRepository.findById(id)
                 .orElseThrow(
-                    () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID + id,
-                        HttpStatus.NOT_FOUND,
-                        BET_NOTFOUND_WITH_ID + id))
-                    );
+                        () -> new BetNotFoundException(BET_NOTFOUND_WITH_ID + id,
+                                HttpStatus.NOT_FOUND,
+                                BET_NOTFOUND_WITH_ID + id));
         betRepository.deleteById(id);
     }
 

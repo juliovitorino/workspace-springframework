@@ -75,13 +75,11 @@ public class UserServiceImpl implements UserService
     )
     public void delete(Long id) {
         log.info("Deletando User com id = {}", id);
-        Optional<UserPunter> userData =
-            Optional.ofNullable(userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_ID + id,
-                        HttpStatus.NOT_FOUND,
-                            USER_NOTFOUND_WITH_ID + id))
-                    );
+                        () -> new UserNotFoundException(USER_NOTFOUND_WITH_ID + id,
+                                HttpStatus.NOT_FOUND,
+                                USER_NOTFOUND_WITH_ID + id));
         userRepository.deleteById(id);
     }
 
