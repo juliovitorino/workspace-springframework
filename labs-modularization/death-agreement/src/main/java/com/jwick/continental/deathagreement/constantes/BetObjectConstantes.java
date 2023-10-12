@@ -30,7 +30,7 @@ package com.jwick.continental.deathagreement.constantes;
 
 public class BetObjectConstantes
 {
-
+    private BetObjectConstantes() {}
     public static final String ID = "id";
     public static final String WHO = "who";
     public static final String EXTERNALUUID = "externalUUID";

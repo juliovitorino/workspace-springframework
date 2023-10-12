@@ -20,20 +20,24 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 package com.jwick.continental.deathagreement.dto;
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
+
 import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
-
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
-import lombok.*;
-
-import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import com.jwick.continental.deathagreement.constantes.BetConstantes;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 /**

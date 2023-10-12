@@ -12,6 +12,7 @@ import ${package}.constantes.${classebase}Constantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;
+import java.util.UUID;
 
 /**
 * ${classebase}DTO - Data Transfer Object

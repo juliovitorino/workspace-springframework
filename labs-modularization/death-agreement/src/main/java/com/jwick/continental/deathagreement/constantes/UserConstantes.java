@@ -30,6 +30,7 @@ package com.jwick.continental.deathagreement.constantes;
 
 public class UserConstantes
 {
+    private UserConstantes(){}
 
     public static final String ID = "id";
     public static final String NICKNAME = "nickname";

@@ -1,6 +1,5 @@
 package com.jwick.continental.deathagreement.bulder;
 
-import com.jwick.continental.deathagreement.controller.v1.business.bet.BetRequest;
 import com.jwick.continental.deathagreement.controller.v1.business.bet.BetResponse;
 
 import java.util.UUID;

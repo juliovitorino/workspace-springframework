@@ -50,7 +50,6 @@ import java.util.UUID;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import javax.validation.Valid;
 
 /**
 * BetObjectController - Controller for BetObject API
@@ -216,7 +215,7 @@ public class BetObjectController
             betobjectDTO.setId(id);
             betobjectDTO.setDateUpdated(new Date());
             BetObjectDTO betobjectSaved = betobjectService.salvar(betobjectDTO);
-            return new ResponseEntity<>(betobjectDTO, HttpStatus.OK);
+            return new ResponseEntity<>(betobjectSaved, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
@@ -234,12 +233,12 @@ public class BetObjectController
     @RequestMapping(value = "/{id}",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> partialUpdateGeneric(
+    public ResponseEntity partialUpdateGeneric(
             @RequestBody Map<String, Object> updates,
             @PathVariable("id") Long id) {
         BetObjectDTO betobjectData = betobjectService.findById(id);
         if (betobjectData == null || !betobjectService.partialUpdate(id, updates)) {
-            return (ResponseEntity<?>) ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("BetObject atualizada");
     }

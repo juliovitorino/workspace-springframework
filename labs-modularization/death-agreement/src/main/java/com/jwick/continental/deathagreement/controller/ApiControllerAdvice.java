@@ -23,20 +23,17 @@ package com.jwick.continental.deathagreement.controller;
 
 import br.com.jcv.commons.library.commodities.dto.GenericErrorResponse;
 import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
@@ -54,7 +51,7 @@ public class ApiControllerAdvice {
                 new GenericErrorResponse<Map<String, ? extends Serializable>>(
                         e.getHttpStatus().value() ,
                         e.getMensagemResponse().getMensagem(),
-                        new ArrayList<>(),
+                        stackTraceList,
                         Map.of(),
                         e.getMensagemResponse().getMsgcode());
         return ResponseEntity.status(e.getHttpStatus()).body(response);

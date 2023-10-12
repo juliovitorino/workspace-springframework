@@ -26,11 +26,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import javax.validation.Valid;
 
 /**
 * ${classebase}Controller - Controller for ${classebase} API
@@ -161,7 +161,7 @@ public class ${classebase}Controller
             ${lclassebase}DTO.setId(id);
             ${lclassebase}DTO.setDateUpdated(new Date());
             ${classebase}DTO ${lclassebase}Saved = ${lclassebase}Service.salvar(${lclassebase}DTO);
-            return new ResponseEntity<>(${lclassebase}DTO, HttpStatus.OK);
+            return new ResponseEntity<>(${lclassebase}Saved, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
@@ -174,12 +174,12 @@ public class ${classebase}Controller
     @RequestMapping(value = "/{id}",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> partialUpdateGeneric(
+    public ResponseEntity partialUpdateGeneric(
             @RequestBody Map<String, Object> updates,
             @PathVariable("id") Long id) {
         ${classebase}DTO ${lclassebase}Data = ${lclassebase}Service.findById(id);
         if (${lclassebase}Data == null || !${lclassebase}Service.partialUpdate(id, updates)) {
-            return (ResponseEntity<?>) ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("${classebase} atualizada");
     }

@@ -50,8 +50,7 @@ public class BetBusinessTest {
     private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
     private static MockedStatic<DateUtility> dateUtilityMockedStatic;
-    private static SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat sdfYMDHMSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private final SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
     @Mock
     private BetService betServiceMock;
     @Mock
@@ -62,7 +61,6 @@ public class BetBusinessTest {
     private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
     @InjectMocks private ConfirmBetBusinessService confirmBetBusinessService;
-    @InjectMocks private DeletePendingBetBusinessService deletePendingBetBusinessService;
     final DateTime dateTimeMock = Mockito.mock(DateTime.class);
     @BeforeAll
     public void setup() {
@@ -71,7 +69,6 @@ public class BetBusinessTest {
 
         createBetService = new CreateBetServiceImpl();
         confirmBetBusinessService = new ConfirmBetBusinessServiceImpl();
-        deletePendingBetBusinessService = new DeletePendingBetBusinessServiceImpl();
         MockitoAnnotations.initMocks(this);
 
         uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);

@@ -1,9 +1,7 @@
 package com.jwick.continental.deathagreement.controller.v1.business.bet;
 
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
-import br.com.jcv.commons.library.commodities.service.BusinessService;
 import br.com.jcv.commons.library.utility.DateUtility;
-import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.service.AbstractContinentalServices;
 import lombok.extern.slf4j.Slf4j;

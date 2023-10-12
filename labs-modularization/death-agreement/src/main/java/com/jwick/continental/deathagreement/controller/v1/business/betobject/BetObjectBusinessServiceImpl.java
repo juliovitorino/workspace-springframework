@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.controller.v1.business.betObject;
+package com.jwick.continental.deathagreement.controller.v1.business.betobject;
 
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;

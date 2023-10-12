@@ -2,10 +2,8 @@ package com.jwick.continental.deathagreement.bulder;
 
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.controller.v1.business.bet.BetRequest;
-import com.jwick.continental.deathagreement.controller.v1.business.betObject.BetObjectRequest;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 public class BetRequestBuilder {

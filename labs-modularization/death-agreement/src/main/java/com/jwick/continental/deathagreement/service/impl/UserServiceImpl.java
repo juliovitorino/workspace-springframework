@@ -21,29 +21,31 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.service.impl;
 
-import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
-import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
-
-import com.jwick.continental.deathagreement.dto.UserDTO;
-import com.jwick.continental.deathagreement.model.UserPunter;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import com.jwick.continental.deathagreement.dto.UserDTO;
+import com.jwick.continental.deathagreement.exception.UserNotFoundException;
+import com.jwick.continental.deathagreement.model.UserPunter;
 import com.jwick.continental.deathagreement.repository.UserRepository;
 import com.jwick.continental.deathagreement.service.UserService;
-import com.jwick.continental.deathagreement.exception.UserNotFoundException;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
-
-import java.util.*;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -58,6 +60,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserServiceImpl implements UserService
 {
+    public static final String USER_NOTFOUND_WITH_ID = "User não encontrada com id = ";
+    public static final String USER_NOTFOUND_WITH_BTC_ADDRESS = "User não encontrada com btcAddress = ";
+    public static final String USER_NOTFOUND_WITH_NICKNAME = "User não encontrada com nickname = ";
+    public static final String USER_NOTFOUND_WITH_DATECREATED = "User não encontrada com dateCreated = ";
+    public static final String USER_NOTFOUND_WITH_DATEUPDATED = "User não encontrada com dateUpdated = ";
     @Autowired private UserRepository userRepository;
 
     @Override
@@ -68,13 +75,11 @@ public class UserServiceImpl implements UserService
     )
     public void delete(Long id) {
         log.info("Deletando User com id = {}", id);
-        Optional<UserPunter> userData =
-            Optional.ofNullable(userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + String.valueOf(id),
-                        HttpStatus.NOT_FOUND,
-                        "User não encontrada com id = " + String.valueOf(id)))
-                    );
+                        () -> new UserNotFoundException(USER_NOTFOUND_WITH_ID + id,
+                                HttpStatus.NOT_FOUND,
+                                USER_NOTFOUND_WITH_ID + id));
         userRepository.deleteById(id);
     }
 
@@ -106,15 +111,12 @@ public class UserServiceImpl implements UserService
         Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada " + String.valueOf(id),
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_ID+ id,
                     HttpStatus.NOT_FOUND,
-                    "User com id = " + String.valueOf(id) + " não encontrado."))
+                            USER_NOTFOUND_WITH_ID+id))
                 );
 
-        UserDTO response = this.toDTO(userData.get());
-        response.setMensagemResponse(new MensagemResponse("MSG-0001","Comando foi executado com sucesso"));
-
-        return response;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -128,9 +130,9 @@ public class UserServiceImpl implements UserService
         Optional<UserPunter> userData =
             Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada " + String.valueOf(id),
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "User com id = " + String.valueOf(id) + " não encontrado."))
+                            USER_NOTFOUND_WITH_ID + id))
                     );
         if (userData.isPresent()) {
             UserPunter user = userData.get();
@@ -159,11 +161,11 @@ public class UserServiceImpl implements UserService
     public UserDTO updateStatusById(Long id, String status) {
         Optional<UserPunter> userData =
             Optional.ofNullable( userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User não encontrada com id = " + String.valueOf(id),
+                .orElseThrow(() -> new UserNotFoundException(USER_NOTFOUND_WITH_ID + id,
                     HttpStatus.NOT_FOUND,
-                    "User não encontrada com id = " + String.valueOf(id)))
+                    USER_NOTFOUND_WITH_ID+ id))
                 );
-        UserPunter user = userData.isPresent() ? userData.get() : new UserPunter();
+        UserPunter user = userData.orElseGet(UserPunter::new);
         user.setStatus(status);
         user.setDateUpdated(new Date());
         return toDTO(userRepository.save(user));
@@ -172,7 +174,6 @@ public class UserServiceImpl implements UserService
 
     @Override
     public List<UserDTO> findAllByStatus(String status) {
-        List<UserDTO> lstUserDTO = new ArrayList<>();
         return userRepository.findAllByStatus(status)
                 .stream()
                 .map(this::toDTO)
@@ -186,7 +187,7 @@ public class UserServiceImpl implements UserService
     noRollbackFor = UserNotFoundException.class
 )
 public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<UserPunter> lstUser = new ArrayList<>();
+    List<UserPunter> lstUser;
     Long id = null;
     String nickname = null;
     String btcAddress = null;
@@ -221,7 +222,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     response.put("currentPage", paginaUser.getNumber());
     response.put("totalItems", paginaUser.getTotalElements());
     response.put("totalPages", paginaUser.getTotalPages());
-    response.put("pageUserItems", lstUser.stream().map(m->toDTO(m)).collect(Collectors.toList()));
+    response.put("pageUserItems", lstUser.stream().map(this::toDTO).collect(Collectors.toList()));
     return response;
 }
 
@@ -260,7 +261,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
         );
 
-        return lstUser.stream().map(m->toDTO(m)).collect(Collectors.toList());
+        return lstUser.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -323,11 +324,11 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + id,
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_ID + id,
                         HttpStatus.NOT_FOUND,
-                        "User não encontrada com id = " + id))
+                            USER_NOTFOUND_WITH_ID + id))
                 );
-        return userData.isPresent() ? this.toDTO(userData.get()) : null ;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -353,11 +354,11 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + nickname,
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_NICKNAME + nickname,
                         HttpStatus.NOT_FOUND,
-                        "User não encontrada com nickname = " + nickname))
+                            USER_NOTFOUND_WITH_NICKNAME + nickname))
                 );
-        return userData.isPresent() ? this.toDTO(userData.get()) : null ;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -383,11 +384,11 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + btcAddress,
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_BTC_ADDRESS + btcAddress,
                         HttpStatus.NOT_FOUND,
-                        "User não encontrada com btcAddress = " + btcAddress))
+                            USER_NOTFOUND_WITH_BTC_ADDRESS + btcAddress))
                 );
-        return userData.isPresent() ? this.toDTO(userData.get()) : null ;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -413,11 +414,11 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + dateCreated,
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_DATECREATED + dateCreated,
                         HttpStatus.NOT_FOUND,
-                        "User não encontrada com dateCreated = " + dateCreated))
+                            USER_NOTFOUND_WITH_DATECREATED + dateCreated))
                 );
-        return userData.isPresent() ? this.toDTO(userData.get()) : null ;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -443,11 +444,11 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserNotFoundException("User não encontrada com id = " + dateUpdated,
+                    () -> new UserNotFoundException(USER_NOTFOUND_WITH_DATEUPDATED + dateUpdated,
                         HttpStatus.NOT_FOUND,
-                        "User não encontrada com dateUpdated = " + dateUpdated))
+                            USER_NOTFOUND_WITH_DATEUPDATED + dateUpdated))
                 );
-        return userData.isPresent() ? this.toDTO(userData.get()) : null ;
+        return userData.map(this::toDTO).orElse(null);
     }
 
     @Override
