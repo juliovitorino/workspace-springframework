@@ -30,7 +30,7 @@ pipeline {
         stage ('Response Quality Gate Hook') {
             steps {
                 sleep(10)
-                timeout(time: 1, unit: 'MINUTES') {
+                timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
