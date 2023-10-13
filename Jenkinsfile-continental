@@ -12,6 +12,7 @@ pipeline {
             steps {
                 dir('labs-modularization/death-agreement') {
                     sh 'mvn test'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
