@@ -7,6 +7,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Getter
 public class ContinentalConfig {
+    @Value("${spring.datasource.driver-class-name}")
+    private String dbDriverClassName;
+
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
+
+    @Value("${spring.datasource.password}")
+    private String dbPassword;
+
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
 
     @Value("${continental.btc-address}")
     private String continentalBtcAddress;
