@@ -19,7 +19,6 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorGeneri
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorIAnalyser;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorInvalidFormatException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorLogback;
-import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMainStream;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemConstantes;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorMensagemResponse;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorNotFoundException;
@@ -30,6 +29,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServic
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImpl;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorTansactionJpaConfig;
+import com.jwick.continental.deathagreement.controller.v1.business.codegen.CodeGeneratorMainStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
