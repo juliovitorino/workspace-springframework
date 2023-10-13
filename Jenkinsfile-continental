@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir('labs-modularization/death-agreement') {
                     withSonarQubeEnv('SONAR_LOCAL') {
-                        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectKey=Continental -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a46f688e42022aaabf0dfefac6ed543cfcb3ee44 -Dsonar.java.binaries=target/classes -Dsonar.sources=src -Dsonar.tests=src/test -Dsonar.language=java -Dsonar.dynamicAnalysis=reuseReports -Dsonar.junit.reportsPath=target/surefire-reports -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Continental -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a46f688e42022aaabf0dfefac6ed543cfcb3ee44 -Dsonar.java.binaries=target/classes -Dsonar.sourceEncoding=UTF-8 -Dsonar.sources=src -Dsonar.language=java -Dsonar.dynamicAnalysis=reuseReports -Dsonar.junit.reportsPath=target/surefire-reports -Dsonar.coverage.exclusions=**/.mvn,**/src/test/**,**model/**,**Application.java"
                     }
                 } 
             }
