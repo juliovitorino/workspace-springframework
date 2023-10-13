@@ -73,7 +73,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
 
         String OutputFilename = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
-        FileOutputStream fos;
+        FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(OutputFilename);
             DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
@@ -81,6 +81,13 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
             outStream.close();
         } catch (IOException e){
             throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
         }
     }
 
