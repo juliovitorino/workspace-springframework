@@ -31,6 +31,6 @@ public class DeleteDueDeathDateBetBusinessServiceImpl extends AbstractContinenta
         }
         log.info("execute :: processId = {} :: it was processed {} due death date", processId, count);
 
-        return null;
+        return true;
     }
 }
