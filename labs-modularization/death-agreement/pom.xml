@@ -73,13 +73,14 @@
 			<version>${postgresql.version}</version>
 		</dependency>
 
-		<!-- Unit Tests -->
+		<!-- Unit Tests Junit 5 + Mockito-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Unit Tests Junit 5 + Mockito-->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>
@@ -100,6 +101,7 @@
 		<finalName>death-bet-agreement</finalName>
 
 		<plugins>
+			<!-- plugin for code coverage -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
