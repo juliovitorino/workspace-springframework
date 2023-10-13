@@ -22,6 +22,7 @@ public class BetBusinessController {
     @Autowired private ViewJackpotBusinessService viewJackpotBusinessService;
     @Autowired private DeletePendingBetBusinessService pendingBetBusinessService;
     @Autowired private DeleteTargetWithNoBetBusinessService deleteTargetWithNoBetBusinessService;
+    @Autowired private DeleteDueDeathDateBetBusinessService deleteDueDeathDateBetBusinessService;
 
     @PostMapping
     public ResponseEntity makeBet(@RequestBody @Valid BetRequest betRequest) {
@@ -48,5 +49,10 @@ public class BetBusinessController {
     public ResponseEntity deleteObjectTarget() {
         final UUID pid = UUID.randomUUID();
         return ResponseEntity.ok().body(deleteTargetWithNoBetBusinessService.execute(pid, null));
+    }
+    @DeleteMapping("/dueDeathDateBet")
+    public ResponseEntity deleteDueDeathDateBet() {
+        final UUID pid = UUID.randomUUID();
+        return ResponseEntity.ok().body(deleteDueDeathDateBetBusinessService.execute(pid, null));
     }
 }
