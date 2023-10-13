@@ -37,7 +37,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Autowired private  @Qualifier("CodeGeneratorTansactionJpaConfigInstance") ICodeGeneratorIndividual generatorTransactionJpaConfig;
 
     @Override
-    public <Input> List<WritableCode> generate(Class<Input> inputClassModel) {
+    public <T> List<WritableCode> generate(Class<T> inputClassModel) {
         List<WritableCode> codeInBatch = new ArrayList<>();
         log.info("generate :: is reading {} attributes", inputClassModel.hashCode());
         codeInBatch.add(generatorApiAdvice.generate(inputClassModel));
@@ -62,32 +62,34 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
                     writableCode.getTargetFileCodeInfo().getTargetPathFile(),
                     writableCode.getTargetFileCodeInfo().getTargetExtension());
 
-            writeCode(writableCode.getSourceCode(),
-                    writableCode.getCodeGenerator(),
-                    writableCode.getTargetFileCodeInfo().getTargetPathFile(),
-                    writableCode.getTargetFileCodeInfo().getTargetExtension());
+            try {
+                writeCode(writableCode.getSourceCode(),
+                        writableCode.getCodeGenerator(),
+                        writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                        writableCode.getTargetFileCodeInfo().getTargetExtension());
+            } catch (IOException e) {
+                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
         }
 
     }
 
-    private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension){
+    private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension) throws IOException {
 
-        String OutputFilename = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
+        String outputFileName = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(OutputFilename);
-            DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
+            fos = new FileOutputStream(outputFileName);
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            DataOutputStream outStream = new DataOutputStream(bos);
             outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
             outStream.close();
+            bos.close();
         } catch (IOException e){
             throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         } finally {
-            try {
-                assert fos != null;
-                fos.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+            assert fos != null;
+            fos.close();
         }
     }
 
