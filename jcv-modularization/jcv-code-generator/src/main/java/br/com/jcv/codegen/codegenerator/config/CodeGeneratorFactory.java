@@ -30,14 +30,22 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorReques
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImpl;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorTansactionJpaConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static br.com.jcv.codegen.codegenerator.enums.TargetFileEnum.CodeGeneratorTansactionJpaConfig;
 
 @Configuration
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorTansactionJpaConfigInstance")
+    public ICodeGeneratorIndividual codeGeneratorTansactionJpaConfigInstance() {
+        log.info("CodeGeneratorTansactionJpaConfigInstance :: has started successfully");
+        return new CodeGeneratorTansactionJpaConfig();
+    }
     @Bean("CodeGeneratorBuilderInstance")
     public ICodeGeneratorIndividual codeGeneratorBuilderInstance() {
         log.info("CodeGeneratorBuilderInstance :: has started successfully");

@@ -19,7 +19,7 @@ public class RegexValidator {
             if(execute(exp.regex(), content)) {
                 return true;
             } else {
-                throw new InvalidRegexException("Content " + field + " does not matches with annotation regex " + exp.regex(),
+                throw new InvalidRegexException("Content " + content + " does not matches with annotation regex " + exp.regex(),
                         HttpStatus.BAD_REQUEST);
             }
         } catch (NoSuchFieldException e) {
