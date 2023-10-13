@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.controller;
+package com.jwick.continental.deathagreement.controller.v1.business.codegen;
 
 import br.com.jcv.codegen.codegenerator.dto.WritableCode;
 import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
