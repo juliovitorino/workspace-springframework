@@ -85,8 +85,6 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
             bos = new BufferedOutputStream(fos);
             outStream = new DataOutputStream(bos);
             outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
-            outStream.close();
-            bos.close();
         } catch (IOException e){
             throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         } finally {
