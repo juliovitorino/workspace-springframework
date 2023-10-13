@@ -31,7 +31,7 @@ public class DeleteDueDeathDateBetBusinessServiceTest {
     public static final String BTC_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
     private static final String PROCESS_ID = "a98de2c9-ea34-448c-9110-eafd93cc8d48";
     @Mock private BetService betServiceMock;
-    @InjectMocks private DeleteDueDeathDateBetBusinessService deleteDueDeathDateBetBusinessService;
+    @InjectMocks private DeleteDueDeathDateBetBusinessServiceImpl deleteDueDeathDateBetBusinessService;
     private static MockedStatic<UUID> uuidMockedStatic;
     private static MockedStatic<DateUtility> dateUtilityMockedStatic;
     final DateTime dateTimeMock = Mockito.mock(DateTime.class);
