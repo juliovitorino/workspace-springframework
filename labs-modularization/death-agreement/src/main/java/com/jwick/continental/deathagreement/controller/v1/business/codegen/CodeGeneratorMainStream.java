@@ -86,7 +86,7 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
                 assert fos != null;
                 fos.close();
             } catch (IOException e) {
-                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+                System.out.println(e.getMessage());
             }
         }
     }
