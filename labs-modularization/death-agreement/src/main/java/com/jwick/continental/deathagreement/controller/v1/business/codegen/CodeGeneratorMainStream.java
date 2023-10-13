@@ -78,10 +78,12 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
 
         String outputFileName = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
         FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        DataOutputStream outStream = null;
         try {
             fos = new FileOutputStream(outputFileName);
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            DataOutputStream outStream = new DataOutputStream(bos);
+            bos = new BufferedOutputStream(fos);
+            outStream = new DataOutputStream(bos);
             outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
             outStream.close();
             bos.close();
@@ -90,6 +92,10 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         } finally {
             assert fos != null;
             fos.close();
+            assert bos != null;
+            bos.close();
+            assert outStream != null;
+            outStream.close();
         }
     }
 
