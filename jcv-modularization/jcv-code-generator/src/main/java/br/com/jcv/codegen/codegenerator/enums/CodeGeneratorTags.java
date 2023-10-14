@@ -27,6 +27,7 @@ public enum CodeGeneratorTags {
     AUTOR("\\$\\{autor\\}"),
     NOW("\\$\\{now\\}"),
     AGORA("\\$\\{agora\\}"),
+    MAGIC_CONTENT("\\$\\{magic-content\\}"),
     BASE_PACKAGE("\\$\\{package\\}"),
     BASE_CLASS("\\$\\{classebase\\}"),
     BASE_CLASS_LOWER("\\$\\{lclassebase\\}"),

@@ -21,65 +21,49 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.builder;
 
-import com.jwick.continental.deathagreement.dto.BetDTO;
+import com.jwick.continental.deathagreement.model.UserPunter;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
-public class BetDTOBuilder {
+public class UserPunterModelBuilder {
 
-    private BetDTO betDTO;
+    private UserPunter userpunter;
 
-    private BetDTOBuilder(){}
-    public static BetDTOBuilder newBetDTOTestBuilder() {
-        BetDTOBuilder builder = new BetDTOBuilder();
-        builder.betDTO = new BetDTO();
+    private UserPunterModelBuilder(){}
+    public static UserPunterModelBuilder newUserPunterModelTestBuilder() {
+        UserPunterModelBuilder builder = new UserPunterModelBuilder();
+        builder.userpunter = new UserPunter();
         return builder;
     }
 
-    public BetDTO now() {
-        return this.betDTO;
+    public UserPunter now() {
+        return this.userpunter;
     }
 
-    public BetDTOBuilder id(Long id){
-        this.betDTO.setId(id);
+    public UserPunterModelBuilder id(Long id){
+        this.userpunter.setId(id);
         return this;
     }
-    public BetDTOBuilder idPunter(Long idPunter){
-        this.betDTO.setIdPunter(idPunter);
+    public UserPunterModelBuilder nickname(String nickname){
+        this.userpunter.setNickname(nickname);
         return this;
     }
-    public BetDTOBuilder idBetObject(Long idBetObject){
-        this.betDTO.setIdBetObject(idBetObject);
+    public UserPunterModelBuilder btcAddress(String btcAddress){
+        this.userpunter.setBtcAddress(btcAddress);
         return this;
     }
-    public BetDTOBuilder bet(Double bet){
-        this.betDTO.setBet(bet);
+    public UserPunterModelBuilder status(String status){
+        this.userpunter.setStatus(status);
         return this;
     }
-    public BetDTOBuilder bitcoinAddress(String bitcoinAddress){
-        this.betDTO.setBitcoinAddress(bitcoinAddress);
+    public UserPunterModelBuilder dateCreated(Date dateCreated){
+        this.userpunter.setDateCreated(dateCreated);
         return this;
     }
-    public BetDTOBuilder ticket(UUID ticket){
-        this.betDTO.setTicket(ticket);
-        return this;
-    }
-    public BetDTOBuilder deathDate(LocalDate deathDate){
-        this.betDTO.setDeathDate(deathDate);
-        return this;
-    }
-    public BetDTOBuilder status(String status){
-        this.betDTO.setStatus(status);
-        return this;
-    }
-    public BetDTOBuilder dateCreated(Date dateCreated){
-        this.betDTO.setDateCreated(dateCreated);
-        return this;
-    }
-    public BetDTOBuilder dateUpdated(Date dateUpdated){
-        this.betDTO.setDateUpdated(dateUpdated);
+    public UserPunterModelBuilder dateUpdated(Date dateUpdated){
+        this.userpunter.setDateUpdated(dateUpdated);
         return this;
     }
 

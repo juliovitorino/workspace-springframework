@@ -28,6 +28,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorReposi
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImpl;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImplTest;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorTansactionJpaConfig;
 import com.jwick.continental.deathagreement.controller.v1.business.codegen.CodeGeneratorMainStream;
@@ -39,6 +40,16 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorConstantesTest")
+    public ICodeGeneratorIndividual codeGeneratorConstantesTest() {
+        log.info("CodeGeneratorConstantesTest :: has started successfully");
+        return new CodeGeneratorConstantes();
+    }
+    @Bean("CodeGeneratorServiceImplTest")
+    public ICodeGeneratorIndividual codeGeneratorServiceImplTest() {
+        log.info("CodeGeneratorServiceImplTest :: has started successfully");
+        return new CodeGeneratorServiceImplTest();
+    }
     @Bean("CodeGeneratorTansactionJpaConfigInstance")
     public ICodeGeneratorIndividual codeGeneratorTansactionJpaConfigInstance() {
         log.info("CodeGeneratorTansactionJpaConfigInstance :: has started successfully");

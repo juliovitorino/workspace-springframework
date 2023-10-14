@@ -13,6 +13,7 @@ public enum TargetFileEnum {
     CodeGeneratorBuilder("CodeGeneratorBuilder", "/builder/${classebase}DTOBuilder"),
     CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}Controller"),
     CodeGeneratorServiceImpl("CodeGeneratorServiceImpl", "/service/impl/${classebase}ServiceImpl"),
+    CodeGeneratorServiceImplTest("CodeGeneratorServiceImplTest", "/service/impl/${classebase}ServiceImplTest"),
     CodeGeneratorService("CodeGeneratorService", "/service/${classebase}Service"),
     CodeGeneratorCommoditieService("CodeGeneratorCommoditieService", "/interfaces/CommoditieBaseService"),
     CodeGeneratorRepository("CodeGeneratorRepository", "/repository/${classebase}Repository"),

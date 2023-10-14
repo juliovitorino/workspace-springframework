@@ -23,6 +23,7 @@ package com.jwick.continental.deathagreement.service.impl;
 
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.utility.DateTime;
 import com.jwick.continental.deathagreement.constantes.BetObjectConstantes;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
@@ -67,6 +68,7 @@ public class BetObjectServiceImpl implements BetObjectService
     public static final String BET_OBJECT_NOTFOUND_WITH_DATEUPDATED = "BetObject não encontrada com dateUpdated = ";
     public static final String BET_OBJECT_NOTFOUND_WITH_EXTERNALUUID = "BetObject não encontrada com externalUUID = ";
     @Autowired private BetObjectRepository betobjectRepository;
+    @Autowired private DateTime dateTime;
 
     @Override
     @Transactional(transactionManager="transactionManager",
@@ -91,7 +93,7 @@ public class BetObjectServiceImpl implements BetObjectService
         noRollbackFor = BetObjectNotFoundException.class
     )
     public BetObjectDTO salvar(BetObjectDTO betobjectDTO) {
-        Date now = new Date();
+        Date now = dateTime.getToday();
         if(Objects.nonNull(betobjectDTO.getId()) && betobjectDTO.getId() != 0) {
             betobjectDTO.setDateUpdated(now);
         } else {

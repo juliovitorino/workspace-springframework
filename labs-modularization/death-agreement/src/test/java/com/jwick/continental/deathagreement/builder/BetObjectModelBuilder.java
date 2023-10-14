@@ -21,65 +21,57 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.builder;
 
-import com.jwick.continental.deathagreement.dto.BetDTO;
+import com.jwick.continental.deathagreement.model.BetObject;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
-public class BetDTOBuilder {
+public class BetObjectModelBuilder {
 
-    private BetDTO betDTO;
+    private BetObject betobject;
 
-    private BetDTOBuilder(){}
-    public static BetDTOBuilder newBetDTOTestBuilder() {
-        BetDTOBuilder builder = new BetDTOBuilder();
-        builder.betDTO = new BetDTO();
+    private BetObjectModelBuilder(){}
+    public static BetObjectModelBuilder newBetObjectModelTestBuilder() {
+        BetObjectModelBuilder builder = new BetObjectModelBuilder();
+        builder.betobject = new BetObject();
         return builder;
     }
 
-    public BetDTO now() {
-        return this.betDTO;
+    public BetObject now() {
+        return this.betobject;
     }
 
-    public BetDTOBuilder id(Long id){
-        this.betDTO.setId(id);
+    public BetObjectModelBuilder id(Long id){
+        this.betobject.setId(id);
         return this;
     }
-    public BetDTOBuilder idPunter(Long idPunter){
-        this.betDTO.setIdPunter(idPunter);
+    public BetObjectModelBuilder who(String who){
+        this.betobject.setWho(who);
         return this;
     }
-    public BetDTOBuilder idBetObject(Long idBetObject){
-        this.betDTO.setIdBetObject(idBetObject);
+    public BetObjectModelBuilder externalUUID(UUID externalUUID){
+        this.betobject.setExternalUUID(externalUUID);
         return this;
     }
-    public BetDTOBuilder bet(Double bet){
-        this.betDTO.setBet(bet);
+    public BetObjectModelBuilder jackpot(Double jackpot){
+        this.betobject.setJackpot(jackpot);
         return this;
     }
-    public BetDTOBuilder bitcoinAddress(String bitcoinAddress){
-        this.betDTO.setBitcoinAddress(bitcoinAddress);
+    public BetObjectModelBuilder jackpotPending(Double jackpotPending){
+        this.betobject.setJackpotPending(jackpotPending);
         return this;
     }
-    public BetDTOBuilder ticket(UUID ticket){
-        this.betDTO.setTicket(ticket);
+    public BetObjectModelBuilder status(String status){
+        this.betobject.setStatus(status);
         return this;
     }
-    public BetDTOBuilder deathDate(LocalDate deathDate){
-        this.betDTO.setDeathDate(deathDate);
+    public BetObjectModelBuilder dateCreated(Date dateCreated){
+        this.betobject.setDateCreated(dateCreated);
         return this;
     }
-    public BetDTOBuilder status(String status){
-        this.betDTO.setStatus(status);
-        return this;
-    }
-    public BetDTOBuilder dateCreated(Date dateCreated){
-        this.betDTO.setDateCreated(dateCreated);
-        return this;
-    }
-    public BetDTOBuilder dateUpdated(Date dateUpdated){
-        this.betDTO.setDateUpdated(dateUpdated);
+    public BetObjectModelBuilder dateUpdated(Date dateUpdated){
+        this.betobject.setDateUpdated(dateUpdated);
         return this;
     }
 

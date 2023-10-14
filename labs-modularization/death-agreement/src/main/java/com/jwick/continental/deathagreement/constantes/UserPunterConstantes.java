@@ -19,29 +19,22 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 
-package com.jwick.continental.deathagreement.exception;
+package com.jwick.continental.deathagreement.constantes;
 
-import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+/**
+* UserPunterConstantes - Constantes para geral das Entity e DTO
+*
+* @author UserPunter
+* @since Sat Oct 14 15:03:48 BRT 2023
+*/
 
-import java.util.HashMap;
-import org.springframework.http.HttpStatus;
-import java.util.Map;
+public class UserPunterConstantes {
+    private UserPunterConstantes() {}
+    public static final String ID = "id";
+    public static final String NICKNAME = "nickname";
+    public static final String BTCADDRESS = "btcAddress";
+    public static final String STATUS = "status";
+    public static final String DATECREATED = "dateCreated";
+    public static final String DATEUPDATED = "dateUpdated";
 
-
-public class UserNotFoundException extends CommoditieBaseException {
-    public UserNotFoundException(String input, HttpStatus httpStatus, String msgcode, Map<String,String> mapParams) {
-        super(input, httpStatus, msgcode, mapParams);
-    }
-
-    public UserNotFoundException(String input, HttpStatus httpStatus, String msgcode) {
-        this(input, httpStatus, msgcode, null);
-    }
-
-    public UserNotFoundException(String input, HttpStatus httpStatus) {
-      this(input, httpStatus, null, new HashMap<>());
-    }
-
-    public UserNotFoundException(String input, int httpStatus) {
-      this(input, HttpStatus.valueOf(httpStatus), null, new HashMap<>());
-    }
 }

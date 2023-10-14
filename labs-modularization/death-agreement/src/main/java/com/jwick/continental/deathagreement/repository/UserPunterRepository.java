@@ -23,7 +23,7 @@ package com.jwick.continental.deathagreement.repository;
 
 import java.util.List;
 import com.jwick.continental.deathagreement.model.UserPunter;
-import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import com.jwick.continental.deathagreement.constantes.UserPunterConstantes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,25 +33,25 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.Date;
-
+import java.util.UUID;
 
 /**
 *
-* UserRepository - Interface dos métodos de acesso aos dados da tabela User
-* Camada de dados User - camada responsável SOMENTE pela acesso aos dados do sistema.
+* UserPunterRepository - Interface dos métodos de acesso aos dados da tabela user_punter
+* Camada de dados UserPunter - camada responsável SOMENTE pela acesso aos dados do sistema.
 * Não é uma camada visível para outros dispositivos, como as camadas de apresentação e aplicação.
 *
 * Changelog:
 *
-* @autor User
-* @since Fri Oct 06 17:47:30 BRT 2023
+* @autor UserPunter
+* @since Sat Oct 14 15:03:48 BRT 2023
 *
 */
 @Repository
-public interface UserRepository extends JpaRepository<UserPunter, Long>
+public interface UserPunterRepository extends JpaRepository<UserPunter, Long>
 {
     @Query(value = "SELECT * FROM user_punter WHERE  status = :status", nativeQuery = true)
-    List<UserPunter> findAllByStatus(@Param(UserConstantes.STATUS) String status);
+    List<UserPunter> findAllByStatus(@Param(UserPunterConstantes.STATUS) String status);
 
 @Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
         "AND (:id = '' OR id_user_punter = :id) " +
@@ -62,13 +62,13 @@ public interface UserRepository extends JpaRepository<UserPunter, Long>
         "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
         , nativeQuery = true)
-Page<UserPunter> findUserByFilter(Pageable pageable,
-                                  @Param(UserConstantes.ID) Long id,
-                                  @Param(UserConstantes.NICKNAME) String nickname,
-                                  @Param(UserConstantes.BTCADDRESS) String btcAddress,
-                                  @Param(UserConstantes.STATUS) String status,
-                                  @Param(UserConstantes.DATECREATED) Date dateCreated,
-                                  @Param(UserConstantes.DATEUPDATED) Date dateUpdated
+Page<UserPunter> findUserPunterByFilter(Pageable pageable,
+        @Param(UserPunterConstantes.ID) Long id,
+        @Param(UserPunterConstantes.NICKNAME) String nickname,
+        @Param(UserPunterConstantes.BTCADDRESS) String btcAddress,
+        @Param(UserPunterConstantes.STATUS) String status,
+        @Param(UserPunterConstantes.DATECREATED) Date dateCreated,
+        @Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated
 
         );
 
@@ -81,13 +81,13 @@ Page<UserPunter> findUserByFilter(Pageable pageable,
         "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
         , nativeQuery = true)
-List<UserPunter> findUserByFilter(
-        @Param(UserConstantes.ID) Long id,
-        @Param(UserConstantes.NICKNAME) String nickname,
-        @Param(UserConstantes.BTCADDRESS) String btcAddress,
-        @Param(UserConstantes.STATUS) String status,
-        @Param(UserConstantes.DATECREATED) Date dateCreated,
-        @Param(UserConstantes.DATEUPDATED) Date dateUpdated
+List<UserPunter> findUserPunterByFilter(
+        @Param(UserPunterConstantes.ID) Long id,
+        @Param(UserPunterConstantes.NICKNAME) String nickname,
+        @Param(UserPunterConstantes.BTCADDRESS) String btcAddress,
+        @Param(UserPunterConstantes.STATUS) String status,
+        @Param(UserPunterConstantes.DATECREATED) Date dateCreated,
+        @Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated
 
 );
 
@@ -102,21 +102,22 @@ List<UserPunter> findUserByFilter(
      @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE date_updated = :dateUpdated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateUpdatedAndStatus(Date dateUpdated, String status);
 
+
      @Modifying
      @Query(value = "UPDATE user_punter SET nickname = :nickname, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateNicknameById(@Param("id") Long id, @Param(UserConstantes.NICKNAME) String nickname);
+     void updateNicknameById(@Param("id") Long id, @Param(UserPunterConstantes.NICKNAME) String nickname);
      @Modifying
      @Query(value = "UPDATE user_punter SET btc_address = :btcAddress, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateBtcAddressById(@Param("id") Long id, @Param(UserConstantes.BTCADDRESS) String btcAddress);
+     void updateBtcAddressById(@Param("id") Long id, @Param(UserPunterConstantes.BTCADDRESS) String btcAddress);
      @Modifying
      @Query(value = "UPDATE user_punter SET status = :status, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateStatusById(@Param("id") Long id, @Param(UserConstantes.STATUS) String status);
+     void updateStatusById(@Param("id") Long id, @Param(UserPunterConstantes.STATUS) String status);
      @Modifying
      @Query(value = "UPDATE user_punter SET date_created = :dateCreated, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateDateCreatedById(@Param("id") Long id, @Param(UserConstantes.DATECREATED) Date dateCreated);
+     void updateDateCreatedById(@Param("id") Long id, @Param(UserPunterConstantes.DATECREATED) Date dateCreated);
      @Modifying
      @Query(value = "UPDATE user_punter SET date_updated = :dateUpdated, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateDateUpdatedById(@Param("id") Long id, @Param(UserConstantes.DATEUPDATED) Date dateUpdated);
+     void updateDateUpdatedById(@Param("id") Long id, @Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated);
 
     @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE id_user_punter = :id AND  status = :status) ", nativeQuery = true)
     Optional<UserPunter> findByIdAndStatus(Long id, String status);
@@ -144,21 +145,21 @@ List<UserPunter> findUserByFilter(
 
     @Modifying
     @Query(value = "DELETE FROM user_punter WHERE id_user_punter = :id", nativeQuery = true)
-    void deleteById(@Param(UserConstantes.ID) Long id);
+    void deleteById(@Param(UserPunterConstantes.ID) Long id);
     @Modifying
     @Query(value = "DELETE FROM user_punter WHERE nickname = :nickname", nativeQuery = true)
-    void deleteByNickname(@Param(UserConstantes.NICKNAME) String nickname);
+    void deleteByNickname(@Param(UserPunterConstantes.NICKNAME) String nickname);
     @Modifying
     @Query(value = "DELETE FROM user_punter WHERE btc_address = :btcAddress", nativeQuery = true)
-    void deleteByBtcAddress(@Param(UserConstantes.BTCADDRESS) String btcAddress);
+    void deleteByBtcAddress(@Param(UserPunterConstantes.BTCADDRESS) String btcAddress);
     @Modifying
     @Query(value = "DELETE FROM user_punter WHERE status = :status", nativeQuery = true)
-    void deleteByStatus(@Param(UserConstantes.STATUS) String status);
+    void deleteByStatus(@Param(UserPunterConstantes.STATUS) String status);
     @Modifying
     @Query(value = "DELETE FROM user_punter WHERE date_created = :dateCreated", nativeQuery = true)
-    void deleteByDateCreated(@Param(UserConstantes.DATECREATED) Date dateCreated);
+    void deleteByDateCreated(@Param(UserPunterConstantes.DATECREATED) Date dateCreated);
     @Modifying
     @Query(value = "DELETE FROM user_punter WHERE date_updated = :dateUpdated", nativeQuery = true)
-    void deleteByDateUpdated(@Param(UserConstantes.DATEUPDATED) Date dateUpdated);
+    void deleteByDateUpdated(@Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated);
 
 }

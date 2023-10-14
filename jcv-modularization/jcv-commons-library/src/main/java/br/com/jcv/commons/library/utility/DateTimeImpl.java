@@ -1,10 +1,10 @@
 package br.com.jcv.commons.library.utility;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
+@Component
 public class DateTimeImpl implements DateTime {
     @Override
     public Date getToday() {

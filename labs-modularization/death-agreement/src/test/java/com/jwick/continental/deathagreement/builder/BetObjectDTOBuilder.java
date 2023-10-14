@@ -1,49 +1,84 @@
+/*
+Copyright <YEAR> <COPYRIGHT HOLDER>
+
+This software is Open Source and is under MIT license agreement
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the “Software”), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+
 package com.jwick.continental.deathagreement.builder;
 
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 public class BetObjectDTOBuilder {
-    private BetObjectDTO dto;
 
-    private BetObjectDTOBuilder() {}
+    private BetObjectDTO betobjectDTO;
 
+    private BetObjectDTOBuilder(){}
     public static BetObjectDTOBuilder newBetObjectDTOTestBuilder() {
         BetObjectDTOBuilder builder = new BetObjectDTOBuilder();
-        builder.dto = new BetObjectDTO();
-        builder.dto.setWho("Jane Doe");
-        builder.dto.setJackpotPending(0.0);
-        builder.dto.setJackpot(0.0);
+        builder.betobjectDTO = new BetObjectDTO();
+        builder.betobjectDTO.setId(1L);
+        builder.betobjectDTO.setWho("Will Smith");
+        builder.betobjectDTO.setJackpotPending(0.0);
+        builder.betobjectDTO.setJackpot(0.0);
+        builder.betobjectDTO.setStatus("P");
         return builder;
     }
 
-    public BetObjectDTOBuilder status(String status) {
-        this.dto.setStatus(status);
-        return this;
-    }
-
-    public BetObjectDTOBuilder jackpotPending(Double jackpotPending) {
-        this.dto.setJackpotPending(jackpotPending);
-        return this;
-    }
-    public BetObjectDTOBuilder jackpot(Double jackpot) {
-        this.dto.setJackpot(jackpot);
-        return this;
-    }
-
-    public BetObjectDTOBuilder who(String who) {
-        this.dto.setWho(who);
-        return this;
-    }
-
-    public BetObjectDTOBuilder externalUUID(UUID externalUUID) {
-        this.dto.setExternalUUID(externalUUID);
-        return this;
-    }
-
     public BetObjectDTO now() {
-        return this.dto;
+        return this.betobjectDTO;
     }
+
+    public BetObjectDTOBuilder id(Long id){
+        this.betobjectDTO.setId(id);
+        return this;
+    }
+    public BetObjectDTOBuilder who(String who){
+        this.betobjectDTO.setWho(who);
+        return this;
+    }
+    public BetObjectDTOBuilder externalUUID(UUID externalUUID){
+        this.betobjectDTO.setExternalUUID(externalUUID);
+        return this;
+    }
+    public BetObjectDTOBuilder jackpot(Double jackpot){
+        this.betobjectDTO.setJackpot(jackpot);
+        return this;
+    }
+    public BetObjectDTOBuilder jackpotPending(Double jackpotPending){
+        this.betobjectDTO.setJackpotPending(jackpotPending);
+        return this;
+    }
+    public BetObjectDTOBuilder status(String status){
+        this.betobjectDTO.setStatus(status);
+        return this;
+    }
+    public BetObjectDTOBuilder dateCreated(Date dateCreated){
+        this.betobjectDTO.setDateCreated(dateCreated);
+        return this;
+    }
+    public BetObjectDTOBuilder dateUpdated(Date dateUpdated){
+        this.betobjectDTO.setDateUpdated(dateUpdated);
+        return this;
+    }
+
 
 }

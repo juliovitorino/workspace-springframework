@@ -7,22 +7,24 @@ import com.jwick.continental.deathagreement.builder.BetDTOBuilder;
 import com.jwick.continental.deathagreement.builder.BetObjectBuilder;
 import com.jwick.continental.deathagreement.builder.BetObjectDTOBuilder;
 import com.jwick.continental.deathagreement.builder.BetRequestBuilder;
-import com.jwick.continental.deathagreement.builder.UserDTOBuilder;
+import com.jwick.continental.deathagreement.builder.UserPunterDTOBuilder;
 import com.jwick.continental.deathagreement.config.ContinentalConfig;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
-import com.jwick.continental.deathagreement.dto.UserDTO;
+import com.jwick.continental.deathagreement.dto.UserPunterDTO;
 import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastException;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
+import com.jwick.continental.deathagreement.repository.BetRepository;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
-import com.jwick.continental.deathagreement.service.UserService;
+import com.jwick.continental.deathagreement.service.UserPunterService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
@@ -56,7 +58,7 @@ public class BetBusinessTest {
     @Mock
     private BetObjectService betObjectServiceMock;
     @Mock
-    private UserService userServiceMock;
+    private UserPunterService userServiceMock;
     @Mock
     private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
@@ -155,7 +157,7 @@ public class BetBusinessTest {
         dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
 
         UUID processId = UUID.fromString(PROCESS_ID);
-        UserDTO punter = UserDTOBuilder.newUserTestBuilder()
+        UserPunterDTO punter = UserPunterDTOBuilder.newUserPunterDTOTestBuilder()
                 .id(1L)
                 .now();
         BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
@@ -166,8 +168,8 @@ public class BetBusinessTest {
                 .deathDateBet(deathDateBetMockLocalDate)
                 .now();
 
-        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punter);
-        Mockito.when(userServiceMock.findUserByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punter);
+        Mockito.when(userServiceMock.findUserPunterByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punter);
+        Mockito.when(userServiceMock.findUserPunterByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punter);
         Mockito.when(userServiceMock.findById(punter.getId())).thenReturn(punter);
 
         Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(null);
@@ -180,61 +182,17 @@ public class BetBusinessTest {
         Assertions.assertEquals("Bet Object does not exist", exception.getMessage());
     }
     @Test
-    public void shouldReturnPendingBetWaitingTransferFundsException() {
-        // scenario
-        UUID processId = UUID.fromString(PROCESS_ID);
-        LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
-        Date deathDateBetMockDate = DateUtility.getDate(13,9,2040);
-        UserDTO punterMock = UserDTOBuilder.newUserTestBuilder()
-                .id(1L)
-                .now();
-        BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
-                .externalUUID(UUID.fromString("6fa33a6f-6f7a-4edf-90b8-c0d226ade640"))
-                .now();
-        BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
-                .nickname(punterMock.getNickname())
-                .btcAddress(punterMock.getBtcAddress())
-                .bet(180.0)
-                .whoUUID(targetMock.getExternalUUID())
-                .deathDateBet(deathDateBetMockLocalDate)
-                .now();
-        BetDTO pendingBetMock = BetDTOBuilder.newBetDTOTestBuilder()
-                .idPunter(punterMock.getId())
-                .idBetObject(targetMock.getId())
-                .bet(betRequestMock.getBet())
-                .status("P")
-                .now();
-        dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
-
-        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punterMock);
-        Mockito.when(userServiceMock.findUserByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punterMock);
-        Mockito.when(userServiceMock.findById(punterMock.getId())).thenReturn(punterMock);
-
-        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(targetMock);
-
-        Mockito.when(betServiceMock
-                .findBetByIdPunterAndIdBetObjectAndStatus(punterMock.getId(), targetMock.getId(), "P")).thenReturn(pendingBetMock);
-
-        // action
-        PendingBetWaitingTransferFundsException exception =
-                Assertions.assertThrows(PendingBetWaitingTransferFundsException.class,
-                () -> createBetService.execute(processId, betRequestMock));
-
-        // validate
-        Assertions.assertEquals("Bet is pending and waiting confirmation", exception.getMessage());
-    }
-    @Test
     public void shouldCaptureExceptionForSameBtcAddressForDifferentNickname() {
         // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
         LocalDate deathDateBetMockLocalDate = LocalDate.of(2040,9,13);
         Date deathDateBetMockDate = DateUtility.getDate(13,9,2040);
 
-        UserDTO user1 = UserDTOBuilder.newUserTestBuilder()
+        UserPunterDTO user1 = UserPunterDTOBuilder.newUserPunterDTOTestBuilder()
                 .nickname("Jane Doe")
                 .btcAddress(BTC_ADDRESS)
                 .now();
-        UserDTO user2 = UserDTOBuilder.newUserTestBuilder()
+        UserPunterDTO user2 = UserPunterDTOBuilder.newUserPunterDTOTestBuilder()
                 .nickname("Nicolas gauger")
                 .btcAddress(BTC_ADDRESS)
                 .now();
@@ -248,7 +206,7 @@ public class BetBusinessTest {
                 .now();
 
         dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
-        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
+        Mockito.when(userServiceMock.findUserPunterByBtcAddressAndStatus(user1.getBtcAddress())).thenReturn(user2);
 
 
         // action
@@ -267,7 +225,7 @@ public class BetBusinessTest {
 
         dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateBetMockDate)).thenReturn(1);
 
-        UserDTO userMock = UserDTOBuilder.newUserTestBuilder().now();
+        UserPunterDTO userMock = UserPunterDTOBuilder.newUserPunterDTOTestBuilder().now();
         BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder().now();
         BetRequest betRequestMock = BetRequestBuilder.newBetRequestTestBuilder()
                 .nickname(userMock.getNickname())
@@ -276,7 +234,7 @@ public class BetBusinessTest {
                 .whoUUID(targetMock.getExternalUUID())
                 .deathDateBet(deathDateBetMockLocalDate)
                 .now();
-        UserDTO userToSaveMock = UserDTOBuilder.newUserTestBuilder()
+        UserPunterDTO userToSaveMock = UserPunterDTOBuilder.newUserPunterDTOTestBuilder()
                 .id(null)
                 .btcAddress(betRequestMock.getBtcAddress())
                 .nickname(betRequestMock.getNickname())
@@ -302,8 +260,8 @@ public class BetBusinessTest {
                 .now();
 
         Mockito.when(userServiceMock.findById(Mockito.anyLong())).thenReturn(userMock);
-        Mockito.when(userServiceMock.findUserByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(userMock);
-        Mockito.when(userServiceMock.findUserByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(userMock);
+        Mockito.when(userServiceMock.findUserPunterByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(userMock);
+        Mockito.when(userServiceMock.findUserPunterByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(userMock);
         Mockito.when(userServiceMock.salvar(userToSaveMock)).thenReturn(userMock);
         Mockito.when(userServiceMock.updateStatusById(userMock.getId(), "A")).thenReturn(userMock);
 

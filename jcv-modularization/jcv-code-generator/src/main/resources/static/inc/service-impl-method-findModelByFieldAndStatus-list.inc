@@ -12,9 +12,9 @@
             Optional.ofNullable( ${lclassebase}Repository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_{Udto} + ${dto},
+                    () -> new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_${Udto} + ${dto},
                         HttpStatus.NOT_FOUND,
-                        ${Uclassebase}_NOTFOUND_WITH_{Udto} + ${dto}))
+                        ${Uclassebase}_NOTFOUND_WITH_${Udto} + ${dto}))
                 );
         return ${lclassebase}Data.isPresent() ? this.toDTO(${lclassebase}Data.get()) : null ;
     }

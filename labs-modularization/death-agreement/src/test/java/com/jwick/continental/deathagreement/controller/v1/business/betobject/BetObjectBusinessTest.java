@@ -46,9 +46,12 @@ public class BetObjectBusinessTest {
 
         BetObjectRequest betObjectRequestMock = BetObjectRequestBuilder.newBetObjectRequestTestBuilder().now();
         BetObjectDTO betObjectToSave = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .id(null)
+                .who(betObjectRequestMock.getWho())
                 .externalUUID(uuidMock)
                 .now();
         BetObjectDTO betObjectSaved = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .id(5L)
                 .status("P")
                 .externalUUID(uuidMock)
                 .now();
