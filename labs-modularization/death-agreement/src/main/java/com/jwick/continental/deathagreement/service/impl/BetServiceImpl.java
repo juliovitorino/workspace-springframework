@@ -152,11 +152,11 @@ public class BetServiceImpl implements BetService
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bet.setBitcoinAddress((String)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) bet.setTicket((UUID)entry.getValue());
                 if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) bet.setDeathDate((LocalDate) entry.getValue());
+            }
+            if(updates.get(BetConstantes.DATEUPDATED) == null) bet.setDateUpdated(new Date());
+            betRepository.save(bet);
+            return true;
         }
-        if(updates.get(BetConstantes.DATEUPDATED) == null) bet.setDateUpdated(new Date());
-        betRepository.save(bet);
-        return true;
-    }
         return false;
     }
 

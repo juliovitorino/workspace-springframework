@@ -59,7 +59,36 @@ public class ${classebase}ServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+    @Test
+    public void shouldSearch${classebase}ByAnyNonExistenceIdAndReturn${classebase}NotFoundException() {
+        // scenario
+        Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()-> ${lclassebase}Service.findById(-1000L));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+    }
+    @Test
+    public void shouldSearch${classebase}ByIdAndReturnDTO() {
+        // scenario
+        Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-impl-test-shouldSearchModelByIdAndReturnDTO-fields.inc && excludeFields[status,dateCreated,dateUpdated]
+                .${dto}(${magic-content})
+                .status("A")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now());
+        Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(${lclassebase}ModelMock);
+
+        // action
+        ${classebase}DTO result = ${classebase}Service.findById(1L);
+
+        // validate
+        Assertions.assertInstanceOf(${classebase}DTO.class,result);
+    }
     @Test
     public void shouldDelete${classebase}ByIdWithSucess() {
         // scenario

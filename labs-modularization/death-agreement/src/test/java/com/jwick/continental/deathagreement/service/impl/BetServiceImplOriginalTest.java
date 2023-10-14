@@ -64,6 +64,41 @@ public class BetServiceImplOriginalTest {
         dateUtilityMockedStatic.close();
     }
     @Test
+    public void shouldSearchBetByIdAndReturnDTO() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder()
+                .id(501L)
+                .idBetObject(1L)
+                .idPunter(2L)
+                .deathDate(LocalDate.of(2025, 10, 12))
+                .bet(260.0)
+                .bitcoinAddress("546456grteyt90gh8fhdf098hfgh09dfg80fghdfgh")
+                .ticket(uuidMock)
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .status("A")
+                .now());
+        Mockito.when(betRepositoryMock.findById(Mockito.anyLong())).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findById(1L);
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldSearchBetByAnyNonExistenceIdAndReturnBetNotFoundException() {
+        // scenario
+        Mockito.when(betRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()-> betService.findById(-1000L));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
+    }
+    @Test
     public void shouldDeleteBetByIdWithSucess() {
         // scenario
         Optional<Bet> bet = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().id(1L).now());
