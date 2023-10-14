@@ -23,6 +23,7 @@ package com.jwick.continental.deathagreement.service.impl;
 
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.utility.DateTime;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
@@ -72,6 +73,7 @@ public class BetServiceImpl implements BetService
     public static final String BET_NOTFOUND_WITH_DATECREATED = "Bet não encontrada com dateCreated = ";
     public static final String BET_NOTFOUND_WITH_DATEUPDATED = "Bet não encontrada com dateUpdated = ";
     @Autowired private BetRepository betRepository;
+    @Autowired private DateTime dateTime;
 
     @Override
     @Transactional(transactionManager="transactionManager",
@@ -96,7 +98,7 @@ public class BetServiceImpl implements BetService
         noRollbackFor = BetNotFoundException.class
     )
     public BetDTO salvar(BetDTO betDTO) {
-        Date now = new Date();
+        Date now = dateTime.getToday();
         if(Objects.nonNull(betDTO.getId()) && betDTO.getId() != 0) {
             betDTO.setDateUpdated(now);
         } else {

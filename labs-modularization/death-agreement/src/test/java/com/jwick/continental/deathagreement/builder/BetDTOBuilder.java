@@ -24,6 +24,10 @@ public class BetDTOBuilder {
         this.betDTO.setDateCreated(dateCreated);
         return this;
     }
+    public BetDTOBuilder dateUpdated(Date dateUpdated){
+        this.betDTO.setDateUpdated(dateUpdated);
+        return this;
+    }
     public BetDTOBuilder idPunter(Long idPunter){
         this.betDTO.setIdPunter(idPunter);
         return this;

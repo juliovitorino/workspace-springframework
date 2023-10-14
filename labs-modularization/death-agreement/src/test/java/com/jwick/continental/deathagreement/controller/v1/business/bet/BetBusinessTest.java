@@ -1,6 +1,7 @@
 package com.jwick.continental.deathagreement.controller.v1.business.bet;
 
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.utility.DateTime;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.builder.BetDTOBuilder;
 import com.jwick.continental.deathagreement.builder.BetObjectBuilder;
@@ -18,7 +19,6 @@ import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUse
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
-import com.jwick.continental.deathagreement.service.DateTime;
 import com.jwick.continental.deathagreement.service.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

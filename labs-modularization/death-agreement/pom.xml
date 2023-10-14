@@ -17,7 +17,7 @@
 
 	<properties>
 		<jcv-code-generator.version>1.0.9-SNAPSHOT</jcv-code-generator.version>
-		<commons-library.version>1.0.8-SNAPSHOT</commons-library.version>
+		<commons-library.version>1.0.9-SNAPSHOT</commons-library.version>
 		<h2.version>1.4.185</h2.version>
 		<jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
 		<postgresql.version>42.6.0</postgresql.version>

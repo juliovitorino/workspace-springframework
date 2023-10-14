@@ -1,6 +1,5 @@
-package com.jwick.continental.deathagreement.service.impl;
+package br.com.jcv.commons.library.utility;
 
-import com.jwick.continental.deathagreement.service.DateTime;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
