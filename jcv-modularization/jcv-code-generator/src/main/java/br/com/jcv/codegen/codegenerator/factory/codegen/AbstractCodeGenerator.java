@@ -1,5 +1,6 @@
 package br.com.jcv.codegen.codegenerator.factory.codegen;
 
+import br.com.jcv.codegen.codegenerator.dto.WritableCode;
 import br.com.jcv.codegen.codegenerator.enums.CodeGeneratorTags;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
@@ -7,6 +8,7 @@ import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
 import br.com.jcv.codegen.codegenerator.enums.IncludeExtraCommandEnum;
 import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +21,21 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -466,4 +473,35 @@ public abstract class AbstractCodeGenerator {
         }
         return fieldDescriptor;
     }
+
+
+    protected void flushCode(List<WritableCode> codes) {
+        for(WritableCode writableCode: codes) {
+            log.info("flushCode :: is flushing source code -> {}.{}",
+                    writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                    writableCode.getTargetFileCodeInfo().getTargetExtension());
+
+            try {
+                writeCode(writableCode.getSourceCode(),
+                        writableCode.getCodeGenerator(),
+                        writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                        writableCode.getTargetFileCodeInfo().getTargetExtension());
+            } catch (IOException e) {
+                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        }
+
+    }
+
+    private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension) throws IOException {
+
+        String outputFileName = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
+        FileOutputStream fos = new FileOutputStream(outputFileName);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        try (fos; bos; DataOutputStream outStream = new DataOutputStream(bos)) {
+            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+
 }

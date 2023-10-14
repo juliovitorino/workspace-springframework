@@ -1,7 +1,7 @@
 package com.jwick.continental.deathagreement.controller.v1.business.betobject;
 
-import com.jwick.continental.deathagreement.bulder.BetObjectDTOBuilder;
-import com.jwick.continental.deathagreement.bulder.BetObjectRequestBuilder;
+import com.jwick.continental.deathagreement.builder.BetObjectDTOBuilder;
+import com.jwick.continental.deathagreement.builder.BetObjectRequestBuilder;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import org.junit.jupiter.api.AfterAll;

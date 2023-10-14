@@ -6,6 +6,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalys
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorApiControllerAdvice;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBuilder;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBuilderModel;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditieService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
@@ -47,6 +48,11 @@ public class CodeGeneratorFactory {
     public ICodeGeneratorIndividual codeGeneratorBuilderInstance() {
         log.info("CodeGeneratorBuilderInstance :: has started successfully");
         return new CodeGeneratorBuilder();
+    }
+    @Bean("CodeGeneratorBuilderModelInstance")
+    public ICodeGeneratorIndividual codeGeneratorBuilderModelInstance() {
+        log.info("CodeGeneratorBuilderModelInstance :: has started successfully");
+        return new CodeGeneratorBuilderModel();
     }
     @Bean("CodeGeneratorControllerInstance")
     public ICodeGeneratorIndividual codeGeneratorControllerInstance() {

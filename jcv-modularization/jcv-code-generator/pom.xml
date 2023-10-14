@@ -13,7 +13,7 @@
 
 	<groupId>br.com.jcv.codegen</groupId>
 	<artifactId>jcv-code-generator</artifactId>
-	<version>1.0.8-SNAPSHOT</version>
+	<version>1.0.9-SNAPSHOT</version>
 	<name>jcv-code-generator</name>
 	<description>Code Generator for Spring Boot</description>
 
@@ -24,9 +24,16 @@
 		<com.google.code.gson.version>2.10.1</com.google.code.gson.version>
 		<springdoc-openapi-ui.version>1.6.8</springdoc-openapi-ui.version>
 		<lombok.version>1.18.22</lombok.version>
+		<commons-library.version>1.0.8-SNAPSHOT</commons-library.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>br.com.jcv.commons</groupId>
+			<artifactId>commons-library</artifactId>
+			<version>${commons-library.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.bulder;
+package com.jwick.continental.deathagreement.builder;
 
 import com.jwick.continental.deathagreement.dto.BetDTO;
 
