@@ -43,6 +43,8 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -88,7 +90,42 @@ public class BetServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+    @Test
+    public void shouldSearchBetByAnyNonExistenceIdAndReturnBetNotFoundException() {
+        // scenario
+        Mockito.when(betRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()-> betService.findById(-1000L));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
+    }
+    @Test
+    public void shouldSearchBetByIdAndReturnDTO() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder()
+                .id(53200L)
+                .idPunter(37260L)
+                .idBetObject(74034L)
+                .bet(4802.0)
+                .bitcoinAddress("CcMkoyWO7uM3LItt1cO8A23DJHCKAmbXt9yyi2pw8wBQQ9rNr2")
+                .ticket(UUID.fromString("d4626746-6bdb-46d9-a0c7-3c187dba9b0e"))
+                .deathDate(LocalDate.of(3704,10,13))
+
+                .status("A")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now());
+        Mockito.when(betRepositoryMock.findById(Mockito.anyLong())).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findById(1L);
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
     @Test
     public void shouldDeleteBetByIdWithSucess() {
         // scenario
@@ -120,13 +157,13 @@ public class BetServiceImplTest {
     public void ShouldSaveUpdateExistingBetWithSucess() {
         // scenario
         BetDTO betDTOMock = BetDTOBuilder.newBetDTOTestBuilder()
-                .id(5264L)
-                .idPunter(33210L)
-                .idBetObject(45140L)
-                .bet(4018.0)
-                .bitcoinAddress("lxXeIhBmUAXL4BUPgdKwF0CFpE9VVl2qYSq7EsWevxK0DAhELK")
-                .ticket(UUID.fromString("8ea8d10e-7cdd-4dfe-b7d5-435aa035afcc"))
-                .deathDate(LocalDate.of(2806,12,9))
+                .id(32500L)
+                .idPunter(1060L)
+                .idBetObject(4660L)
+                .bet(648.0)
+                .bitcoinAddress("hUvyQwktrGH3DDsBgPoYawyOnWn20XF0HBDXOG0lkear0B98j3")
+                .ticket(UUID.fromString("270bf08d-1762-4d8e-8687-2d60580ce24f"))
+                .deathDate(LocalDate.of(2100,3,22))
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -174,12 +211,12 @@ public class BetServiceImplTest {
         // scenario
         BetDTO betDTOMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .id(null)
-                .idPunter(80787L)
-                .idBetObject(71468L)
-                .bet(1528.0)
-                .bitcoinAddress("ppdBtm0yu3dXHiSLxMuBImsHxbcbd9cAP2jsbOwzLP0G7waAaO")
-                .ticket(UUID.fromString("c0e0a557-94ff-444e-a2c1-e13c3c2aeb10"))
-                .deathDate(LocalDate.of(2025,12,28))
+                .idPunter(7726L)
+                .idBetObject(85471L)
+                .bet(8786.0)
+                .bitcoinAddress("QS24grzMGwtFKH1VmKrcE0UFk0pQJdG1aUkYLBnzm1OdyXSbm4")
+                .ticket(UUID.fromString("86104157-12e8-4f4b-98bc-d3d68c25726e"))
+                .deathDate(LocalDate.of(2025,11,19))
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -222,5 +259,133 @@ public class BetServiceImplTest {
         Assertions.assertNotNull(betSaved.getId());
         Assertions.assertEquals("P",betSaved.getStatus());
     }
+
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByIdAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByIdAndStatus(64463L, "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByIdAndStatus(64463L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByIdPunterAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByIdPunterAndStatus(65067L, "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByIdPunterAndStatus(65067L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByIdBetObjectAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByIdBetObjectAndStatus(70075L, "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByIdBetObjectAndStatus(70075L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByBetAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByBetAndStatus(7463.0, "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByBetAndStatus(7463.0, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByBitcoinAddressAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByBitcoinAddressAndStatus("QQ8CR290us07bTyzVph7vfuCDYeepfi91lRl0JOEkf9Wnw8dSz", "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByBitcoinAddressAndStatus("QQ8CR290us07bTyzVph7vfuCDYeepfi91lRl0JOEkf9Wnw8dSz", "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByTicketAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByTicketAndStatus(UUID.fromString("302ea6e8-3617-4121-8758-e55cd9c527e0"), "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByTicketAndStatus(UUID.fromString("302ea6e8-3617-4121-8758-e55cd9c527e0"), "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByDeathDateAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByDeathDateAndStatus(LocalDate.of(5068,10,26), "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByDeathDateAndStatus(LocalDate.of(5068,10,26), "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+
 }
 

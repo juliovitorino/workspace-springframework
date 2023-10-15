@@ -19,8 +19,12 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.OngoingStubbing;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,6 +66,24 @@ public class BetServiceImplOriginalTest {
     public void tearDown() {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
+    }
+    @Test
+    public void shouldReturnBetListWhenFindAllBetByIdAndStatus() {
+        // scenario
+        List<Bet> bets = Arrays.asList(
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now(),
+            BetModelBuilder.newBetModelTestBuilder().now()
+        );
+
+        Mockito.when(betRepositoryMock.findAllByIdAndStatus(520L, "A")).thenReturn(bets);
+
+        // action
+        List<BetDTO> result = betService.findAllBetByIdAndStatus(520L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
     }
     @Test
     public void shouldSearchBetByIdAndReturnDTO() {

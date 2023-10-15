@@ -24,6 +24,8 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -76,7 +78,6 @@ public class ${classebase}ServiceImplTest {
         // scenario
         Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
 #include static/inc/service-impl-test-shouldSearchModelByIdAndReturnDTO-fields.inc && excludeFields[status,dateCreated,dateUpdated]
-                .${dto}(${magic-content})
                 .status("A")
                 .dateCreated(dateTimeMock.getToday())
                 .dateUpdated(dateTimeMock.getToday())
@@ -84,7 +85,7 @@ public class ${classebase}ServiceImplTest {
         Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(${lclassebase}ModelMock);
 
         // action
-        ${classebase}DTO result = ${classebase}Service.findById(1L);
+        ${classebase}DTO result = ${lclassebase}Service.findById(1L);
 
         // validate
         Assertions.assertInstanceOf(${classebase}DTO.class,result);
@@ -183,5 +184,7 @@ public class ${classebase}ServiceImplTest {
         Assertions.assertNotNull(${lclassebase}Saved.getId());
         Assertions.assertEquals("P",${lclassebase}Saved.getStatus());
     }
+
+#include static/inc/service-imp-test-shouldReturnModelListWhenFindAllModelByFieldAndStatus.inc && excludeFields[status,dateCreated,dateUpdated]
 }
 

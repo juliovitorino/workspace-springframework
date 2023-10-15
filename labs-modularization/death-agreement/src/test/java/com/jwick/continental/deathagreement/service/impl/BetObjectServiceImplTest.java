@@ -43,6 +43,8 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -86,7 +88,40 @@ public class BetObjectServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+    @Test
+    public void shouldSearchBetObjectByAnyNonExistenceIdAndReturnBetObjectNotFoundException() {
+        // scenario
+        Mockito.when(betobjectRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
+        // action
+        BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
+                ()-> betobjectService.findById(-1000L));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_ID));
+    }
+    @Test
+    public void shouldSearchBetObjectByIdAndReturnDTO() {
+        // scenario
+        Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder()
+                .id(54740L)
+                .who("3v39dzSeH8DQIFSBL4fCnOq1vOYUyWT2YKHdaInHGpjdAD1mE8")
+                .externalUUID(UUID.fromString("9ee00433-1dbd-47e4-99db-54beb824da07"))
+                .jackpot(4000.0)
+                .jackpotPending(424.0)
+
+                .status("A")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now());
+        Mockito.when(betobjectRepositoryMock.findById(Mockito.anyLong())).thenReturn(betobjectModelMock);
+
+        // action
+        BetObjectDTO result = betobjectService.findById(1L);
+
+        // validate
+        Assertions.assertInstanceOf(BetObjectDTO.class,result);
+    }
     @Test
     public void shouldDeleteBetObjectByIdWithSucess() {
         // scenario
@@ -118,11 +153,11 @@ public class BetObjectServiceImplTest {
     public void ShouldSaveUpdateExistingBetObjectWithSucess() {
         // scenario
         BetObjectDTO betobjectDTOMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
-                .id(87600L)
-                .who("D9foLSoao7IJUt1F18O4Cph0r6fgFiU2cAmCaqhzy6LO49K2Yv")
-                .externalUUID(UUID.fromString("28c369c0-9e0d-483c-8b45-d91d3149f495"))
-                .jackpot(7034.0)
-                .jackpotPending(7010.0)
+                .id(82107L)
+                .who("R4oKwuDnk9OpSaKvU8T0g5aHePh3eXCNiy7j6b7n1uszp73Hk2")
+                .externalUUID(UUID.fromString("3ecda1ea-c696-452a-b51c-ff1e87e5f8f3"))
+                .jackpot(1285.0)
+                .jackpotPending(2571.0)
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -166,10 +201,10 @@ public class BetObjectServiceImplTest {
         // scenario
         BetObjectDTO betobjectDTOMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
                 .id(null)
-                .who("9odCAEvxiwzO20WvcG5Na7I0OpL18iCiHBLCKo7ztkQIwlV7lQ")
-                .externalUUID(UUID.fromString("93979b90-23ce-4a6e-808c-28b73f869b68"))
-                .jackpot(2015.0)
-                .jackpotPending(1036.0)
+                .who("kyKC0CuxdGBiMFAwquHE4LKDO0Ly7oa6cA9FaY6ACP7jMb3wcQ")
+                .externalUUID(UUID.fromString("9a6abd3a-e37a-4267-a93c-8fc9ae23a253"))
+                .jackpot(214.0)
+                .jackpotPending(45.0)
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -208,5 +243,62 @@ public class BetObjectServiceImplTest {
         Assertions.assertNotNull(betobjectSaved.getId());
         Assertions.assertEquals("P",betobjectSaved.getStatus());
     }
+
+    @Test
+    public void shouldReturnBetObjectListWhenFindAllBetObjectByIdAndStatus() {
+        // scenario
+        List<BetObject> betobjects = Arrays.asList(
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now(),
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now(),
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
+        );
+
+        Mockito.when(betobjectRepositoryMock.findAllByIdAndStatus(3305L, "A")).thenReturn(betobjects);
+
+        // action
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByIdAndStatus(3305L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetObjectListWhenFindAllBetObjectByWhoAndStatus() {
+        // scenario
+        List<BetObject> betobjects = Arrays.asList(
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now(),
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now(),
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
+        );
+
+        Mockito.when(betobjectRepositoryMock.findAllByWhoAndStatus("7pk3r39do9qKm04MtYrsPyc6Bgk9K9mgBybyzqHrGgODEW7iap", "A")).thenReturn(betobjects);
+
+        // action
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByWhoAndStatus("7pk3r39do9qKm04MtYrsPyc6Bgk9K9mgBybyzqHrGgODEW7iap", "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnBetObjectListWhenFindAllBetObjectByExternalUUIDAndStatus() {
+        // scenario
+        List<BetObject> betobjects = Arrays.asList(
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now(),
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now(),
+            BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
+        );
+
+        Mockito.when(betobjectRepositoryMock.findAllByExternalUUIDAndStatus(UUID.fromString("d035e7f1-8ae7-4176-adb1-b810dbae30ff"), "A")).thenReturn(betobjects);
+
+        // action
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByExternalUUIDAndStatus(UUID.fromString("d035e7f1-8ae7-4176-adb1-b810dbae30ff"), "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+
+
 }
 

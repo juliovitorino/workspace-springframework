@@ -35,6 +35,7 @@ public class BetModelBuilder {
     public static BetModelBuilder newBetModelTestBuilder() {
         BetModelBuilder builder = new BetModelBuilder();
         builder.bet = new Bet();
+        builder.bet.setDeathDate(LocalDate.of(2010,5,12));
         return builder;
     }
 

@@ -43,6 +43,8 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -84,7 +86,38 @@ public class UserPunterServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+    @Test
+    public void shouldSearchUserPunterByAnyNonExistenceIdAndReturnUserPunterNotFoundException() {
+        // scenario
+        Mockito.when(userpunterRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
+        // action
+        UserPunterNotFoundException exception = Assertions.assertThrows(UserPunterNotFoundException.class,
+                ()-> userpunterService.findById(-1000L));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(USERPUNTER_NOTFOUND_WITH_ID));
+    }
+    @Test
+    public void shouldSearchUserPunterByIdAndReturnDTO() {
+        // scenario
+        Optional<UserPunter> userpunterModelMock = Optional.ofNullable(UserPunterModelBuilder.newUserPunterModelTestBuilder()
+                .id(87230L)
+                .nickname("C05ii8zpD0MVfCX3Hzo00FxgtlABU3hJQDmVmv5gbc8666hKoL")
+                .btcAddress("5XpGf1gfGB2eIO4FFKxPkfliDLFbUWAEfpSWgDYcOk4AvEuSlQ")
+
+                .status("A")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now());
+        Mockito.when(userpunterRepositoryMock.findById(Mockito.anyLong())).thenReturn(userpunterModelMock);
+
+        // action
+        UserPunterDTO result = userpunterService.findById(1L);
+
+        // validate
+        Assertions.assertInstanceOf(UserPunterDTO.class,result);
+    }
     @Test
     public void shouldDeleteUserPunterByIdWithSucess() {
         // scenario
@@ -116,9 +149,9 @@ public class UserPunterServiceImplTest {
     public void ShouldSaveUpdateExistingUserPunterWithSucess() {
         // scenario
         UserPunterDTO userpunterDTOMock = UserPunterDTOBuilder.newUserPunterDTOTestBuilder()
-                .id(80050L)
-                .nickname("PErDMIOUHvvcFSHVntcVbby9gB6d4RYFHAsf9rknS9eQOviBuF")
-                .btcAddress("zweBBRm8n680IXY7zkqz4Ijv6He19vO0C63yrJYCFc4edS50Iy")
+                .id(22280L)
+                .nickname("WGK07yrEHj2isbIc5FQSHqr40mVAqsboiqv3sigfryosRAUQh8")
+                .btcAddress("yrBkUUIdHOq1u8ORqt6o1iXC38h30m4XdnqB8MMTI5HNFLchqJ")
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -158,8 +191,8 @@ public class UserPunterServiceImplTest {
         // scenario
         UserPunterDTO userpunterDTOMock = UserPunterDTOBuilder.newUserPunterDTOTestBuilder()
                 .id(null)
-                .nickname("3XeeuB0zM6y22KKfaUi5H8aEQOK6EWxHGUzYdKcK6SKTrhE2R6")
-                .btcAddress("bU55CAtbh8qk0DwJDO6apqClHD5U2pq74kfjEkjURp1HeXyo2k")
+                .nickname("V5h24qMxGTbsurKMmP54Dq3FA5d7QP1tcNCjqrd2Og5a1gO9yn")
+                .btcAddress("ObL8CeEzKRTTrJyHMLP2DfGi1152G0f90N61eoFlFY4eT2h47Y")
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -194,5 +227,61 @@ public class UserPunterServiceImplTest {
         Assertions.assertNotNull(userpunterSaved.getId());
         Assertions.assertEquals("P",userpunterSaved.getStatus());
     }
+
+    @Test
+    public void shouldReturnUserPunterListWhenFindAllUserPunterByIdAndStatus() {
+        // scenario
+        List<UserPunter> userpunters = Arrays.asList(
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now(),
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now(),
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now()
+        );
+
+        Mockito.when(userpunterRepositoryMock.findAllByIdAndStatus(28167L, "A")).thenReturn(userpunters);
+
+        // action
+        List<UserPunterDTO> result = userpunterService.findAllUserPunterByIdAndStatus(28167L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnUserPunterListWhenFindAllUserPunterByNicknameAndStatus() {
+        // scenario
+        List<UserPunter> userpunters = Arrays.asList(
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now(),
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now(),
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now()
+        );
+
+        Mockito.when(userpunterRepositoryMock.findAllByNicknameAndStatus("d9uvaHY7aM27xzSYJFv80pK72AbmJ5PSbdr0wjNyQOhSQSpUqG", "A")).thenReturn(userpunters);
+
+        // action
+        List<UserPunterDTO> result = userpunterService.findAllUserPunterByNicknameAndStatus("d9uvaHY7aM27xzSYJFv80pK72AbmJ5PSbdr0wjNyQOhSQSpUqG", "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+    @Test
+    public void shouldReturnUserPunterListWhenFindAllUserPunterByBtcAddressAndStatus() {
+        // scenario
+        List<UserPunter> userpunters = Arrays.asList(
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now(),
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now(),
+            UserPunterModelBuilder.newUserPunterModelTestBuilder().now()
+        );
+
+        Mockito.when(userpunterRepositoryMock.findAllByBtcAddressAndStatus("vPr00Eete3J7QBtUpfxh1Cl55NPuJCslKsubsre27hjiC1e29H", "A")).thenReturn(userpunters);
+
+        // action
+        List<UserPunterDTO> result = userpunterService.findAllUserPunterByBtcAddressAndStatus("vPr00Eete3J7QBtUpfxh1Cl55NPuJCslKsubsre27hjiC1e29H", "A");
+
+        // validate
+        Assertions.assertInstanceOf(List.class, result);
+        Assertions.assertEquals(3, result.size());
+    }
+
 }
 

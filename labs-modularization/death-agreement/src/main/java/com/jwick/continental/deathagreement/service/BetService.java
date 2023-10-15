@@ -25,6 +25,7 @@ import br.com.jcv.commons.library.commodities.service.CommoditieBaseService;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.model.Bet;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -64,7 +65,7 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     List<BetDTO> findAllBetByBetAndStatus(Double bet, String status);
     List<BetDTO> findAllBetByBitcoinAddressAndStatus(String bitcoinAddress, String status);
     List<BetDTO> findAllBetByTicketAndStatus(UUID ticket, String status);
-    List<BetDTO> findAllBetByDeathDateAndStatus(Date deathDate, String status);
+    List<BetDTO> findAllBetByDeathDateAndStatus(LocalDate deathDate, String status);
     List<BetDTO> findAllBetByDateCreatedAndStatus(Date dateCreated, String status);
     List<BetDTO> findAllBetByDateUpdatedAndStatus(Date dateUpdated, String status);
 

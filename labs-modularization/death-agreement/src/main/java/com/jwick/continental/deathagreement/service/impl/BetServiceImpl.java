@@ -359,7 +359,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
-    public List<BetDTO> findAllBetByDeathDateAndStatus(Date deathDate, String status) {
+    public List<BetDTO> findAllBetByDeathDateAndStatus(LocalDate deathDate, String status) {
         return betRepository.findAllByDeathDateAndStatus(deathDate, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
     @Override

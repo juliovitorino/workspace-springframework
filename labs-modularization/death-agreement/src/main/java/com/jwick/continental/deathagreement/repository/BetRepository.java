@@ -21,6 +21,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import com.jwick.continental.deathagreement.model.Bet;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
@@ -191,7 +192,7 @@ List<Bet> findBetByFilter(
      @Query(value = "SELECT * FROM Bet WHERE ticket = :ticket AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByTicketAndStatus(UUID ticket, String status);
      @Query(value = "SELECT * FROM Bet WHERE death_date = :deathDate AND  status = :status ", nativeQuery = true)
-     List<Bet> findAllByDeathDateAndStatus(Date deathDate, String status);
+     List<Bet> findAllByDeathDateAndStatus(LocalDate deathDate, String status);
      @Query(value = "SELECT * FROM Bet WHERE date_created = :dateCreated AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByDateCreatedAndStatus(Date dateCreated, String status);
      @Query(value = "SELECT * FROM Bet WHERE date_updated = :dateUpdated AND  status = :status ", nativeQuery = true)
@@ -218,7 +219,7 @@ List<Bet> findBetByFilter(
     void deleteByTicket(@Param(BetConstantes.TICKET) UUID ticket);
     @Modifying
     @Query(value = "DELETE FROM Bet WHERE death_date = :deathDate", nativeQuery = true)
-    void deleteByDeathDate(@Param(BetConstantes.DEATHDATE) Date deathDate);
+    void deleteByDeathDate(@Param(BetConstantes.DEATHDATE) LocalDate deathDate);
     @Modifying
     @Query(value = "DELETE FROM Bet WHERE status = :status", nativeQuery = true)
     void deleteByStatus(@Param(BetConstantes.STATUS) String status);
