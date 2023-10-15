@@ -19,8 +19,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.OngoingStubbing;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -66,6 +64,30 @@ public class BetServiceImplOriginalTest {
     public void tearDown() {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByIdAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByIdAndStatus(1L, "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByIdAndStatus(1L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetIdAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByIdAndStatus(420L, "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByIdAndStatus(420L, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
     }
     @Test
     public void shouldReturnBetListWhenFindAllBetByIdAndStatus() {

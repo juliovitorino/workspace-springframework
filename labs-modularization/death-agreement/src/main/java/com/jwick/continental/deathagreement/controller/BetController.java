@@ -41,6 +41,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -390,7 +391,7 @@ public class BetController
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "deathDate")
-    public ResponseEntity<BetDTO> findBetByDeathDate(@RequestParam(BetConstantes.DEATHDATE) Date deathDate) {
+    public ResponseEntity<BetDTO> findBetByDeathDate(@RequestParam(BetConstantes.DEATHDATE) LocalDate deathDate) {
         try{
             BetDTO betDTO = betService.findBetByDeathDateAndStatus(deathDate, GenericStatusEnums.ATIVO.getShortValue());
             return Objects.nonNull(betDTO)

@@ -96,6 +96,10 @@ List<BetObject> findBetObjectByFilter(
      Long loadMaxIdByIdAndStatus(Long id, String status);
      @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE who = :who AND status = :status ", nativeQuery = true)
      Long loadMaxIdByWhoAndStatus(String who, String status);
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE jackpot = :jackpot AND status = :status ", nativeQuery = true)
+     Long loadMaxIdByJackpotAndStatus(Double jackpot, String status);
+     @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE jackpot_pending = :jackpotPending AND status = :status ", nativeQuery = true)
+     Long loadMaxIdByJackpotPendingAndStatus(Double jackpotPending, String status);
      @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE externalUUID = :externalUUID AND status = :status ", nativeQuery = true)
      Long loadMaxIdByExternalUUIDAndStatus(UUID externalUUID, String status);
      @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE dateCreated = :dateCreated AND status = :status ", nativeQuery = true)
@@ -142,6 +146,11 @@ List<BetObject> findBetObjectByFilter(
      List<BetObject> findAllByDateCreatedAndStatus(Date dateCreated, String status);
      @Query(value = "SELECT * FROM BET_OBJECT WHERE dateUpdated = :dateUpdated AND  status = :status ", nativeQuery = true)
      List<BetObject> findAllByDateUpdatedAndStatus(Date dateUpdated, String status);
+     @Query(value = "SELECT * FROM BET_OBJECT WHERE jackpot_pending = :jackpotPending AND  status = :status ", nativeQuery = true)
+     List<BetObject> findAllByJackpotPendingAndStatus(Double jackpotPending, String status);
+     @Query(value = "SELECT * FROM BET_OBJECT WHERE jackpot = :jackpot AND  status = :status ", nativeQuery = true)
+     List<BetObject> findAllByJackpotAndStatus(Double jackpot, String status);
+
 
 
     @Modifying

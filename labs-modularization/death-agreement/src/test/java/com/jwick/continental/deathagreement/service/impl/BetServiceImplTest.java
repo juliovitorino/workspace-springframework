@@ -106,13 +106,13 @@ public class BetServiceImplTest {
     public void shouldSearchBetByIdAndReturnDTO() {
         // scenario
         Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder()
-                .id(53200L)
-                .idPunter(37260L)
-                .idBetObject(74034L)
-                .bet(4802.0)
-                .bitcoinAddress("CcMkoyWO7uM3LItt1cO8A23DJHCKAmbXt9yyi2pw8wBQQ9rNr2")
-                .ticket(UUID.fromString("d4626746-6bdb-46d9-a0c7-3c187dba9b0e"))
-                .deathDate(LocalDate.of(3704,10,13))
+                .id(735L)
+                .idPunter(7012L)
+                .idBetObject(77038L)
+                .bet(5117.0)
+                .bitcoinAddress("fThNVa11vDsUqdkwHbG8EL9GCfcfhssKJ0ebKbAwlgPQecA0Oz")
+                .ticket(UUID.fromString("2d5d4dbc-16a6-41de-8d4b-34ae69928326"))
+                .deathDate(LocalDate.of(2140,9,8))
 
                 .status("A")
                 .dateCreated(dateTimeMock.getToday())
@@ -157,13 +157,13 @@ public class BetServiceImplTest {
     public void ShouldSaveUpdateExistingBetWithSucess() {
         // scenario
         BetDTO betDTOMock = BetDTOBuilder.newBetDTOTestBuilder()
-                .id(32500L)
-                .idPunter(1060L)
-                .idBetObject(4660L)
-                .bet(648.0)
-                .bitcoinAddress("hUvyQwktrGH3DDsBgPoYawyOnWn20XF0HBDXOG0lkear0B98j3")
-                .ticket(UUID.fromString("270bf08d-1762-4d8e-8687-2d60580ce24f"))
-                .deathDate(LocalDate.of(2100,3,22))
+                .id(67813L)
+                .idPunter(65255L)
+                .idBetObject(58758L)
+                .bet(4213.0)
+                .bitcoinAddress("vNXev09dWHwqVwJ73cHLa3QGnnm4XRCQhCLj7a0UdJWVlH7271")
+                .ticket(UUID.fromString("a8389d28-5820-4284-a240-a200a1b08c0c"))
+                .deathDate(LocalDate.of(2058,10,25))
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -211,12 +211,12 @@ public class BetServiceImplTest {
         // scenario
         BetDTO betDTOMock = BetDTOBuilder.newBetDTOTestBuilder()
                 .id(null)
-                .idPunter(7726L)
-                .idBetObject(85471L)
-                .bet(8786.0)
-                .bitcoinAddress("QS24grzMGwtFKH1VmKrcE0UFk0pQJdG1aUkYLBnzm1OdyXSbm4")
-                .ticket(UUID.fromString("86104157-12e8-4f4b-98bc-d3d68c25726e"))
-                .deathDate(LocalDate.of(2025,11,19))
+                .idPunter(4010L)
+                .idBetObject(61582L)
+                .bet(3726.0)
+                .bitcoinAddress("hKilx1Id3WfBpazFdkMlwwths69Qj6wfLDfkWICNMV2c1xznsp")
+                .ticket(UUID.fromString("b4c29ae3-e8b3-47f6-91ca-ba9ca99ac7fd"))
+                .deathDate(LocalDate.of(2771,1,27))
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -269,10 +269,10 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByIdAndStatus(64463L, "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByIdAndStatus(574L, "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByIdAndStatus(64463L, "A");
+        List<BetDTO> result = betService.findAllBetByIdAndStatus(574L, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -287,10 +287,10 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByIdPunterAndStatus(65067L, "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByIdPunterAndStatus(4401L, "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByIdPunterAndStatus(65067L, "A");
+        List<BetDTO> result = betService.findAllBetByIdPunterAndStatus(4401L, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -305,10 +305,10 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByIdBetObjectAndStatus(70075L, "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByIdBetObjectAndStatus(60852L, "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByIdBetObjectAndStatus(70075L, "A");
+        List<BetDTO> result = betService.findAllBetByIdBetObjectAndStatus(60852L, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -323,10 +323,10 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByBetAndStatus(7463.0, "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByBetAndStatus(3510.0, "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByBetAndStatus(7463.0, "A");
+        List<BetDTO> result = betService.findAllBetByBetAndStatus(3510.0, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -341,10 +341,10 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByBitcoinAddressAndStatus("QQ8CR290us07bTyzVph7vfuCDYeepfi91lRl0JOEkf9Wnw8dSz", "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByBitcoinAddressAndStatus("DHCspBvHy8P0hBVo4kQ5i2eu8P1G0fyEIkBoWBJs0O80br6r72", "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByBitcoinAddressAndStatus("QQ8CR290us07bTyzVph7vfuCDYeepfi91lRl0JOEkf9Wnw8dSz", "A");
+        List<BetDTO> result = betService.findAllBetByBitcoinAddressAndStatus("DHCspBvHy8P0hBVo4kQ5i2eu8P1G0fyEIkBoWBJs0O80br6r72", "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -359,10 +359,10 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByTicketAndStatus(UUID.fromString("302ea6e8-3617-4121-8758-e55cd9c527e0"), "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByTicketAndStatus(UUID.fromString("a293e18d-0635-47f8-a162-64dfa94712f4"), "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByTicketAndStatus(UUID.fromString("302ea6e8-3617-4121-8758-e55cd9c527e0"), "A");
+        List<BetDTO> result = betService.findAllBetByTicketAndStatus(UUID.fromString("a293e18d-0635-47f8-a162-64dfa94712f4"), "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -377,14 +377,190 @@ public class BetServiceImplTest {
             BetModelBuilder.newBetModelTestBuilder().now()
         );
 
-        Mockito.when(betRepositoryMock.findAllByDeathDateAndStatus(LocalDate.of(5068,10,26), "A")).thenReturn(bets);
+        Mockito.when(betRepositoryMock.findAllByDeathDateAndStatus(LocalDate.of(864,8,9), "A")).thenReturn(bets);
 
         // action
-        List<BetDTO> result = betService.findAllBetByDeathDateAndStatus(LocalDate.of(5068,10,26), "A");
+        List<BetDTO> result = betService.findAllBetByDeathDateAndStatus(LocalDate.of(864,8,9), "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
         Assertions.assertEquals(3, result.size());
+    }
+
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByIdAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByIdAndStatus(2171L, "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByIdAndStatus(2171L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetIdAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByIdAndStatus(2171L, "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByIdAndStatus(2171L, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByIdPunterAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByIdPunterAndStatus(44826L, "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByIdPunterAndStatus(44826L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetIdPunterAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByIdPunterAndStatus(44826L, "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByIdPunterAndStatus(44826L, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_IDPUNTER));
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByIdBetObjectAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByIdBetObjectAndStatus(38211L, "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByIdBetObjectAndStatus(38211L, "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetIdBetObjectAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByIdBetObjectAndStatus(38211L, "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByIdBetObjectAndStatus(38211L, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_IDBETOBJECT));
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByBetAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByBetAndStatus(1763.0, "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByBetAndStatus(1763.0, "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetBetAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByBetAndStatus(1763.0, "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByBetAndStatus(1763.0, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_BET));
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByBitcoinAddressAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByBitcoinAddressAndStatus("l6d353jzd5oMjvblODmOvL7ML7d6TFWCGyOO7SVLvxlCJVFrzI", "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByBitcoinAddressAndStatus("l6d353jzd5oMjvblODmOvL7ML7d6TFWCGyOO7SVLvxlCJVFrzI", "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetBitcoinAddressAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByBitcoinAddressAndStatus("l6d353jzd5oMjvblODmOvL7ML7d6TFWCGyOO7SVLvxlCJVFrzI", "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByBitcoinAddressAndStatus("l6d353jzd5oMjvblODmOvL7ML7d6TFWCGyOO7SVLvxlCJVFrzI", "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_BITCOINADDRESS));
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByTicketAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByTicketAndStatus(UUID.fromString("40bc1797-afff-49be-bde4-d638bd485b4d"), "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByTicketAndStatus(UUID.fromString("40bc1797-afff-49be-bde4-d638bd485b4d"), "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetTicketAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByTicketAndStatus(UUID.fromString("40bc1797-afff-49be-bde4-d638bd485b4d"), "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByTicketAndStatus(UUID.fromString("40bc1797-afff-49be-bde4-d638bd485b4d"), "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_TICKET));
+    }
+    @Test
+    public void shouldReturnExistentBetDTOWhenFindBetByDeathDateAndStatus() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());
+        Mockito.when(betRepositoryMock.loadMaxIdByDeathDateAndStatus(LocalDate.of(2146,10,17), "A")).thenReturn(1L);
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByDeathDateAndStatus(LocalDate.of(2146,10,17), "A");
+
+        // validate
+        Assertions.assertInstanceOf(BetDTO.class,result);
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenNonExistenceBetDeathDateAndStatus() {
+        // scenario
+        Mockito.when(betRepositoryMock.loadMaxIdByDeathDateAndStatus(LocalDate.of(2146,10,17), "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(Optional.empty());
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByDeathDateAndStatus(LocalDate.of(2146,10,17), "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_DEATHDATE));
     }
 
 }

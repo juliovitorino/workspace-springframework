@@ -399,7 +399,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
                         HttpStatus.NOT_FOUND,
                         BET_NOTFOUND_WITH_ID + id))
                 );
-        return betData.isPresent() ? this.toDTO(betData.get()) : null ;
+        return betData.map(this::toDTO).orElse(null);
     }
 
     @Override
@@ -588,7 +588,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
-    public BetDTO findBetByDeathDateAndStatus(Date deathDate, String status) {
+    public BetDTO findBetByDeathDateAndStatus(LocalDate deathDate, String status) {
         Long maxId = betRepository.loadMaxIdByDeathDateAndStatus(deathDate, status);
         if(maxId == null) maxId = 0L;
         Optional<Bet> betData =
@@ -608,7 +608,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
-    public BetDTO findBetByDeathDateAndStatus(Date deathDate) {
+    public BetDTO findBetByDeathDateAndStatus(LocalDate deathDate) {
         return this.findBetByDeathDateAndStatus(deathDate, GenericStatusEnums.ATIVO.getShortValue());
     }
 

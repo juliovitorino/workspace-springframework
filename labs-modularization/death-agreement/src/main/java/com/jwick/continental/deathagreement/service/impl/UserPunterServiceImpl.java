@@ -362,9 +362,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userpunterRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserPunterNotFoundException(USERPUNTER_NOTFOUND_WITH_ID + nickname,
+                    () -> new UserPunterNotFoundException(USERPUNTER_NOTFOUND_WITH_NICKNAME + nickname,
                         HttpStatus.NOT_FOUND,
-                        USERPUNTER_NOTFOUND_WITH_ID + nickname))
+                            USERPUNTER_NOTFOUND_WITH_NICKNAME + nickname))
                 );
         return userpunterData.isPresent() ? this.toDTO(userpunterData.get()) : null ;
     }
@@ -392,9 +392,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
             Optional.ofNullable( userpunterRepository
                 .findById(maxId)
                 .orElseThrow(
-                    () -> new UserPunterNotFoundException(USERPUNTER_NOTFOUND_WITH_ID + btcAddress,
+                    () -> new UserPunterNotFoundException(USERPUNTER_NOTFOUND_WITH_BTCADDRESS + btcAddress,
                         HttpStatus.NOT_FOUND,
-                        USERPUNTER_NOTFOUND_WITH_ID + btcAddress))
+                            USERPUNTER_NOTFOUND_WITH_BTCADDRESS + btcAddress))
                 );
         return userpunterData.isPresent() ? this.toDTO(userpunterData.get()) : null ;
     }

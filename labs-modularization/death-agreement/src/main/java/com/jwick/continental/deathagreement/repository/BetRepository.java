@@ -124,7 +124,7 @@ List<Bet> findBetByFilter(
      @Query(value = "SELECT MAX(id_bet) AS maxid FROM Bet WHERE ticket = :ticket AND status = :status ", nativeQuery = true)
      Long loadMaxIdByTicketAndStatus(UUID ticket, String status);
      @Query(value = "SELECT MAX(id_bet) AS maxid FROM Bet WHERE death_date = :deathDate AND status = :status ", nativeQuery = true)
-     Long loadMaxIdByDeathDateAndStatus(Date deathDate, String status);
+     Long loadMaxIdByDeathDateAndStatus(LocalDate deathDate, String status);
      @Query(value = "SELECT MAX(id_bet) AS maxid FROM Bet WHERE date_created = :dateCreated AND status = :status ", nativeQuery = true)
      Long loadMaxIdByDateCreatedAndStatus(Date dateCreated, String status);
      @Query(value = "SELECT MAX(id_bet) AS maxid FROM Bet WHERE date_updated = :dateUpdated AND status = :status ", nativeQuery = true)
