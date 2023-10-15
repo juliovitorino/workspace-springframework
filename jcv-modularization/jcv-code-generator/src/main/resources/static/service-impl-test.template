@@ -187,5 +187,6 @@ public class ${classebase}ServiceImplTest {
 
 #include static/inc/service-imp-test-shouldReturnModelListWhenFindAllModelByFieldAndStatus.inc && excludeFields[status,dateCreated,dateUpdated]
 #include static/inc/service-imp-test-shouldReturnDTOWhenFindByFieldAndStatus.inc && excludeFields[status,dateCreated,dateUpdated]
+#include static/inc/service-imp-test-shouldReturnDTOWhenUpdateExistingFieldById.inc && excludeFields[id,status,dateCreated,dateUpdated]
 }
 

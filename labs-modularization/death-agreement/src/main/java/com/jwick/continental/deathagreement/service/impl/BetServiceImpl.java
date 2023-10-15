@@ -727,7 +727,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     transactionManager = "transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class)
-    public BetDTO updateDeathDateById(Long id, Date deathDate) {
+    public BetDTO updateDeathDateById(Long id, LocalDate deathDate) {
         findById(id);
         betRepository.updateDeathDateById(id, deathDate);
         return findById(id);

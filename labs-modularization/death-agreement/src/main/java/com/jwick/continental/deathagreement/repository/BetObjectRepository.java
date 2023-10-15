@@ -109,6 +109,12 @@ List<BetObject> findBetObjectByFilter(
 
 
      @Modifying
+     @Query(value = "UPDATE BET_OBJECT SET jackpot_pending = :jackpotPending, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
+     void updateJackpotPendingById(@Param("id") Long id, Double jackpotPending);
+     @Modifying
+     @Query(value = "UPDATE BET_OBJECT SET jackpot = :jackpot, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
+     void updateJackpotById(@Param("id") Long id, Double jackpot);
+     @Modifying
      @Query(value = "UPDATE BET_OBJECT SET who = :who, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateWhoById(@Param("id") Long id, @Param(BetObjectConstantes.WHO) String who);
      @Modifying

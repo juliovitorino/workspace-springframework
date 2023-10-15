@@ -66,6 +66,23 @@ public class BetServiceImplOriginalTest {
         dateUtilityMockedStatic.close();
     }
     @Test
+    public void shouldReturnBetDTOWhenUpdateExistingIdBetObjectById() {
+        // scenario
+        Long idBetObjectUpdateMock = 289L;
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder()
+                        .id(420L)
+                .now());
+        Mockito.when(betRepositoryMock.findById(420L)).thenReturn(betModelMock);
+        Mockito.doNothing().when(betRepositoryMock).updateIdBetObjectById(420L, idBetObjectUpdateMock);
+
+        // action
+        betService.updateIdBetObjectById(420L, idBetObjectUpdateMock);
+
+        // validate
+        Mockito.verify(betRepositoryMock,Mockito.times(1)).updateIdBetObjectById(420L, idBetObjectUpdateMock);
+
+    }
+    @Test
     public void shouldReturnExistentBetDTOWhenFindBetByIdAndStatus() {
         // scenario
         Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder().now());

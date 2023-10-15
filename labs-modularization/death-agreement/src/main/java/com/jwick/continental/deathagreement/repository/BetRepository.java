@@ -148,7 +148,7 @@ List<Bet> findBetByFilter(
      void updateTicketById(@Param("id") Long id, @Param(BetConstantes.TICKET) UUID ticket);
      @Modifying
      @Query(value = "UPDATE Bet SET death_date = :deathDate, dt_updated = current_timestamp  WHERE id_bet = :id", nativeQuery = true)
-     void updateDeathDateById(@Param("id") Long id, @Param(BetConstantes.DEATHDATE) Date deathDate);
+     void updateDeathDateById(@Param("id") Long id, @Param(BetConstantes.DEATHDATE) LocalDate deathDate);
      @Modifying
      @Query(value = "UPDATE Bet SET status = :status, dt_updated = current_timestamp  WHERE id_bet = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(BetConstantes.STATUS) String status);

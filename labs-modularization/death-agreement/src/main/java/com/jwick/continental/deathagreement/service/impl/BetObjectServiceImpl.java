@@ -532,6 +532,26 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     transactionManager = "transactionManager",
     propagation = Propagation.REQUIRED,
     rollbackFor = Throwable.class)
+    public BetObjectDTO updateJackpotById(Long id, Double jackpot) {
+        findById(id);
+        betobjectRepository.updateJackpotById(id, jackpot);
+        return findById(id);
+    }
+    @Override
+    @Transactional(
+    transactionManager = "transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class)
+    public BetObjectDTO updateJackpotPendingById(Long id, Double jackpotPending) {
+        findById(id);
+        betobjectRepository.updateJackpotPendingById(id, jackpotPending);
+        return findById(id);
+    }
+    @Override
+    @Transactional(
+    transactionManager = "transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class)
     public BetObjectDTO updateExternalUUIDById(Long id, UUID externalUUID) {
         findById(id);
         betobjectRepository.updateExternalUUIDById(id, externalUUID);

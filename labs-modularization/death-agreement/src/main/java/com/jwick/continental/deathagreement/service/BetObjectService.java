@@ -61,6 +61,8 @@ public interface BetObjectService extends CommoditieBaseService<BetObjectDTO,Bet
 
     BetObjectDTO updateWhoById(Long id, String who);
     BetObjectDTO updateExternalUUIDById(Long id, UUID externalUUID);
+    BetObjectDTO updateJackpotById(Long id, Double jackpot);
+    BetObjectDTO updateJackpotPendingById(Long id, Double jackpotPending);
     BetObjectDTO updateStatusById(Long id, String status);
     BetObjectDTO updateDateCreatedById(Long id, Date dateCreated);
     BetObjectDTO updateDateUpdatedById(Long id, Date dateUpdated);

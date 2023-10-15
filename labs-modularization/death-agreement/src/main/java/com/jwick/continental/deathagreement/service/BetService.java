@@ -75,7 +75,7 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     BetDTO updateBetById(Long id, Double bet);
     BetDTO updateBitcoinAddressById(Long id, String bitcoinAddress);
     BetDTO updateTicketById(Long id, UUID ticket);
-    BetDTO updateDeathDateById(Long id, Date deathDate);
+    BetDTO updateDeathDateById(Long id, LocalDate deathDate);
     BetDTO updateStatusById(Long id, String status);
     BetDTO updateDateCreatedById(Long id, Date dateCreated);
     BetDTO updateDateUpdatedById(Long id, Date dateUpdated);
