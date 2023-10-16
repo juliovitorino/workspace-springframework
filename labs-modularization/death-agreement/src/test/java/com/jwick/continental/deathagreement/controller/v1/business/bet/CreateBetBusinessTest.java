@@ -127,7 +127,7 @@ public class CreateBetBusinessTest {
                 ()->createBetService.execute(processId,betRequest));
 
         // validate
-        final String expected = "Maximum bets in the same month has been achieved. Your total bets is [0-9]+ and maximum allowed is [0-9+]";
+        final String expected = "Maximum bets in the same month has been achieved. Your total bets is [0-9]+ and maximum allowed is [0-9]+";
         Pattern pattern = Pattern.compile(expected);
         Matcher matcher = pattern.matcher(exception.getMessage());
         Assertions.assertTrue(matcher.matches());
