@@ -46,21 +46,11 @@ public class BetBusinessTryBetBeforeTest {
 
     private static final String PROCESS_ID = "a98de2c9-ea34-448c-9110-eafd93cc8d48";
     public static final String BTC_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
-    public static final String CONTINENTAL_BTC_ADDRESS = "bc1qupua5993486zf5g5g00e6nax4w5pd4p0ulx4v0";
     private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
     private static MockedStatic<UUID> uuidMockedStatic;
     private static MockedStatic<DateUtility> dateUtilityMockedStatic;
-    private final SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
-    @Mock
-    private BetService betServiceMock;
-    @Mock
-    private BetObjectService betObjectServiceMock;
-    @Mock
-    private UserPunterService userServiceMock;
-    @Mock
-    private ContinentalConfig configMock;
+
     @InjectMocks private CreateBetService createBetService;
-    @InjectMocks private ConfirmBetBusinessService confirmBetBusinessService;
     final DateTime dateTimeMock = Mockito.mock(DateTime.class);
     @BeforeAll
     public void setup() {
@@ -68,7 +58,6 @@ public class BetBusinessTryBetBeforeTest {
         Mockito.when(dateTimeMock.now()).thenReturn(DateUtility.getDate(12,10,2023));
 
         createBetService = new CreateBetServiceImpl();
-        confirmBetBusinessService = new ConfirmBetBusinessServiceImpl();
         MockitoAnnotations.initMocks(this);
 
         uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
