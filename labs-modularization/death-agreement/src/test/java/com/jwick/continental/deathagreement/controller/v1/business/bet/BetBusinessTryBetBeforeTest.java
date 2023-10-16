@@ -82,7 +82,7 @@ public class BetBusinessTryBetBeforeTest {
     }
 
     @Test
-    public void yourBetDateMustBeAfter30DaysFromNow() {
+    public void shouldReturnBetDeathDateInvalidExceptionWhenBetDateBefore30DaysFromNow() {
         // scenario
         UUID processId = UUID.fromString(PROCESS_ID);
         LocalDate deathLocalDateMock = LocalDate.of(2023,10,16);
