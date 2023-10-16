@@ -9,6 +9,7 @@ import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.dto.UserPunterDTO;
 import com.jwick.continental.deathagreement.enums.BetStatusEnum;
 import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastException;
+import com.jwick.continental.deathagreement.exception.BetDeathDateInvalidException;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
@@ -21,6 +22,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -34,8 +37,15 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
     public BetResponse execute(UUID processId, BetRequest request) {
 
         try {
-            if(DateUtility.compare(dateTime.getToday(), sdfYMD.parse(request.getDeathDateBet().toString())) == -1)
+            if(DateUtility.compare(dateTime.getToday(), sdfYMD.parse(request.getDeathDateBet().toString())) == -1) {
                 throw new BetCouldntMadeinThePastException("You must to do your bet to the future", HttpStatus.BAD_REQUEST);
+            } else {
+                Date allowBetDateFrom = DateUtility.addDays(dateTime.getToday(),30);
+                Date dateBet = DateUtility.getDate(request.getDeathDateBet());
+                if(DateUtility.compare(allowBetDateFrom, dateBet) == -1) {
+                    throw new BetDeathDateInvalidException("Your bet date must be after " + allowBetDateFrom, HttpStatus.BAD_REQUEST);
+                }
+            }
         } catch (ParseException e) {
             throw new CommoditieBaseException("Invalid Parse date => " + request.getDeathDateBet(), HttpStatus.BAD_REQUEST);
         }
