@@ -67,6 +67,7 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     List<BetDTO> findAllBetByBitcoinAddressAndStatus(String bitcoinAddress, String status);
     List<BetDTO> findAllBetByTicketAndStatus(UUID ticket, String status);
     List<BetDTO> findAllBetByDeathDateAndStatus(LocalDate deathDate, String status);
+    List<BetDTO> findAllBetByIdPunterAndIdBetObjectAndYearMonthAndStatus(Long idPunter, Long idBetObject, int yearBet, int monthBet, String status);
     List<BetDTO> findAllBetByDateCreatedAndStatus(Date dateCreated, String status);
     List<BetDTO> findAllBetByDateUpdatedAndStatus(Date dateUpdated, String status);
 

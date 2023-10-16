@@ -21,19 +21,20 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.jwick.continental.deathagreement.repository;
 
-import java.time.LocalDate;
-import java.util.List;
-import com.jwick.continental.deathagreement.model.Bet;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
+import com.jwick.continental.deathagreement.model.Bet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -191,6 +192,8 @@ List<Bet> findBetByFilter(
      List<Bet> findAllByBitcoinAddressAndStatus(String bitcoinAddress, String status);
      @Query(value = "SELECT * FROM Bet WHERE ticket = :ticket AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByTicketAndStatus(UUID ticket, String status);
+     @Query(value = "SELECT * FROM Bet WHERE id_punter = :idPunter AND id_bet_object = :idBetObject AND date_part('YEAR',death_date) = :yearBet AND date_part('MONTH',death_date) = :monthBet  AND  status = :status ORDER BY id_bet", nativeQuery = true)
+     List<Bet> findAllBetByIdPunterAndIdBetObjectAndYearMonthAndStatus(Long idPunter, Long idBetObject, int yearBet, int monthBet, String status);
      @Query(value = "SELECT * FROM Bet WHERE death_date = :deathDate AND  status = :status ", nativeQuery = true)
      List<Bet> findAllByDeathDateAndStatus(LocalDate deathDate, String status);
      @Query(value = "SELECT * FROM Bet WHERE date_created = :dateCreated AND  status = :status ", nativeQuery = true)

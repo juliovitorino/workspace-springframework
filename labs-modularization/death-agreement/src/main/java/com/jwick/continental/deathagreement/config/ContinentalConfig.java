@@ -27,4 +27,7 @@ public class ContinentalConfig {
 
     @Value("${continental.purge-pending-bet-in-days}")
     private long purgePendingBetInDays;
+
+    @Value("${continental.maximum-bets-in-month}")
+    private long maximumBetsInMonth;
 }

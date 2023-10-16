@@ -13,17 +13,20 @@ import com.jwick.continental.deathagreement.exception.BetDeathDateInvalidExcepti
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
+import com.jwick.continental.deathagreement.exception.NextBetMustBeDoubleValueOfPreviousBetException;
 import com.jwick.continental.deathagreement.exception.NicknameAlreadyInUseException;
+import com.jwick.continental.deathagreement.exception.NumberOfBetsAchieveMaximumException;
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
 import com.jwick.continental.deathagreement.exception.UserPunterNotFoundException;
 import com.jwick.continental.deathagreement.service.AbstractContinentalServices;
 import lombok.extern.slf4j.Slf4j;
+import org.h2.engine.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -57,6 +60,43 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
             }
         } catch (UserPunterNotFoundException ignored) {
             log.info("ignored UserNotFoundException");
+        }
+
+        log.info("execute :: is retrieving last bet for betObject => {}", request.getWhoUUID());
+        try {
+            UserPunterDTO userPunterDTO = userService.findUserPunterByBtcAddressAndStatus(request.getBtcAddress());
+            BetObjectDTO target = betObjectService.findBetObjectByExternalUUIDAndStatus(request.getWhoUUID());
+            int yearBet = request.getDeathDateBet().getYear();
+            int monthBet = request.getDeathDateBet().getMonthValue();
+            List<BetDTO> bets = betService.findAllBetByIdPunterAndIdBetObjectAndYearMonthAndStatus(
+                    userPunterDTO.getId(),
+                    target.getId(),
+                    yearBet,
+                    monthBet,
+                    GenericStatusEnums.ATIVO.getShortValue()
+                    );
+            if(bets != null){
+                if(!bets.isEmpty()) {
+                    if(bets.size() >= config.getMaximumBetsInMonth()) {
+                        throw new NumberOfBetsAchieveMaximumException(
+                                "Maximum bets in the same month has been achieved. Your total bets is " + bets.size()
+                                        + " and maximum allowed is " + config.getMaximumBetsInMonth(),
+                                HttpStatus.BAD_REQUEST);
+                    }
+                    BetDTO lastbet = bets.get(bets.size()-1);
+                    if(request.getBet() < lastbet.getBet() * 2) {
+                        throw new NextBetMustBeDoubleValueOfPreviousBetException(
+                                "Your bet must be double value from the previous bet in the same month.",
+                                HttpStatus.BAD_REQUEST
+                        );
+                    }
+                }
+            }
+
+        } catch (UserPunterNotFoundException ignored) {
+            log.info("execute :: punter will be created.");
+        } catch (BetObjectNotFoundException exception) {
+            throw new BetObjectNotFoundException("Bet Object does not exist", HttpStatus.BAD_REQUEST);
         }
 
         log.info("execute :: is checking user information => {}", request.getNickname());

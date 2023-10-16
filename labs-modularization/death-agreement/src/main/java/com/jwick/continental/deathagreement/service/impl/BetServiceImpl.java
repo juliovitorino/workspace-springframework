@@ -368,6 +368,16 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetNotFoundException.class
     )
+    public List<BetDTO> findAllBetByIdPunterAndIdBetObjectAndYearMonthAndStatus(Long idPunter, Long idBetObject, int yearBet, int monthBet, String status) {
+        return betRepository.findAllBetByIdPunterAndIdBetObjectAndYearMonthAndStatus(idPunter, idBetObject, yearBet,monthBet, status)
+                .stream().map(this::toDTO).collect(Collectors.toList());
+    }
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetNotFoundException.class
+    )
     public List<BetDTO> findAllBetByDateCreatedAndStatus(Date dateCreated, String status) {
         return betRepository.findAllByDateCreatedAndStatus(dateCreated, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
