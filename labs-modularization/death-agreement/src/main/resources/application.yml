@@ -21,3 +21,4 @@ continental:
   unit: satoshi
   btc-address: 3NcrStGE847jffhdfHDYWPLvyk64X7pEYq
   purge-pending-bet-in-days: -5
+  maximum-bets-in-month: 2
