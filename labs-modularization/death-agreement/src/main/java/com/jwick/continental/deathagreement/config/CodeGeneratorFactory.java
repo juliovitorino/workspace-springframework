@@ -6,6 +6,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalys
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAnalyserException;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorApiControllerAdvice;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBuilder;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBuilderModel;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorBusinessService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditieService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorCommoditiesBaseException;
@@ -27,6 +28,7 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorReposi
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorRequestFilter;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorService;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImpl;
+import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImplTest;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorTansactionJpaConfig;
 import com.jwick.continental.deathagreement.controller.v1.business.codegen.CodeGeneratorMainStream;
@@ -38,6 +40,16 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CodeGeneratorFactory {
 
+    @Bean("CodeGeneratorConstantesTest")
+    public ICodeGeneratorIndividual codeGeneratorConstantesTest() {
+        log.info("CodeGeneratorConstantesTest :: has started successfully");
+        return new CodeGeneratorConstantes();
+    }
+    @Bean("CodeGeneratorServiceImplTest")
+    public ICodeGeneratorIndividual codeGeneratorServiceImplTest() {
+        log.info("CodeGeneratorServiceImplTest :: has started successfully");
+        return new CodeGeneratorServiceImplTest();
+    }
     @Bean("CodeGeneratorTansactionJpaConfigInstance")
     public ICodeGeneratorIndividual codeGeneratorTansactionJpaConfigInstance() {
         log.info("CodeGeneratorTansactionJpaConfigInstance :: has started successfully");
@@ -47,6 +59,11 @@ public class CodeGeneratorFactory {
     public ICodeGeneratorIndividual codeGeneratorBuilderInstance() {
         log.info("CodeGeneratorBuilderInstance :: has started successfully");
         return new CodeGeneratorBuilder();
+    }
+    @Bean("CodeGeneratorBuilderModelInstance")
+    public ICodeGeneratorIndividual codeGeneratorBuilderModelInstance() {
+        log.info("CodeGeneratorBuilderModelInstance :: has started successfully");
+        return new CodeGeneratorBuilderModel();
     }
     @Bean("CodeGeneratorControllerInstance")
     public ICodeGeneratorIndividual codeGeneratorControllerInstance() {

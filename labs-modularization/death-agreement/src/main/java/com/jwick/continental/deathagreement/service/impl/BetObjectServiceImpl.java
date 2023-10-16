@@ -23,6 +23,7 @@ package com.jwick.continental.deathagreement.service.impl;
 
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.utility.DateTime;
 import com.jwick.continental.deathagreement.constantes.BetObjectConstantes;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
@@ -63,10 +64,13 @@ public class BetObjectServiceImpl implements BetObjectService
 {
     public static final String BET_OBJECT_NOTFOUND_WITH_ID = "BetObject não encontrada com id = ";
     public static final String BET_OBJECT_NOTFOUND_WITH_WHO = "BetObject não encontrada com who = ";
+    public static final String BET_OBJECT_NOTFOUND_WITH_JACKPOT = "BetObject não encontrada com jackpot = ";
+    public static final String BET_OBJECT_NOTFOUND_WITH_JACKPOTPENDING = "BetObject não encontrada com jackpotPending = ";
     public static final String BET_OBJECT_NOTFOUND_WITH_DATECREATED = "BetObject não encontrada com dateCreated = ";
     public static final String BET_OBJECT_NOTFOUND_WITH_DATEUPDATED = "BetObject não encontrada com dateUpdated = ";
     public static final String BET_OBJECT_NOTFOUND_WITH_EXTERNALUUID = "BetObject não encontrada com externalUUID = ";
     @Autowired private BetObjectRepository betobjectRepository;
+    @Autowired private DateTime dateTime;
 
     @Override
     @Transactional(transactionManager="transactionManager",
@@ -91,7 +95,7 @@ public class BetObjectServiceImpl implements BetObjectService
         noRollbackFor = BetObjectNotFoundException.class
     )
     public BetObjectDTO salvar(BetObjectDTO betobjectDTO) {
-        Date now = new Date();
+        Date now = dateTime.getToday();
         if(Objects.nonNull(betobjectDTO.getId()) && betobjectDTO.getId() != 0) {
             betobjectDTO.setDateUpdated(now);
         } else {
@@ -304,6 +308,24 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public List<BetObjectDTO> findAllBetObjectByDateUpdatedAndStatus(Date dateUpdated, String status) {
         return betobjectRepository.findAllByDateUpdatedAndStatus(dateUpdated, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetObjectNotFoundException.class
+    )
+    public List<BetObjectDTO> findAllBetObjectByJackpotPendingAndStatus(Double jackpotPending, String status) {
+        return betobjectRepository.findAllByJackpotPendingAndStatus(jackpotPending, status).stream().map(this::toDTO).collect(Collectors.toList());
+    }
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetObjectNotFoundException.class
+    )
+    public List<BetObjectDTO> findAllBetObjectByJackpotAndStatus(Double jackpot, String status) {
+        return betobjectRepository.findAllByJackpotAndStatus(jackpot, status).stream().map(this::toDTO).collect(Collectors.toList());
+    }
 
 
     @Override
@@ -392,6 +414,46 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     rollbackFor = Throwable.class,
     noRollbackFor = BetObjectNotFoundException.class
     )
+    public BetObjectDTO findBetObjectByJackpotAndStatus(Double jackpot, String status) {
+        Long maxId = betobjectRepository.loadMaxIdByJackpotAndStatus(jackpot, status);
+        if(maxId == null) maxId = 0L;
+        Optional<BetObject> betobjectData =
+            Optional.ofNullable( betobjectRepository
+                .findById(maxId)
+                .orElseThrow(
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_JACKPOT+ jackpot,
+                        HttpStatus.NOT_FOUND,
+                            BET_OBJECT_NOTFOUND_WITH_JACKPOT + jackpot))
+                );
+        return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetObjectNotFoundException.class
+    )
+    public BetObjectDTO findBetObjectByJackpotPendingAndStatus(Double jackpotPending, String status) {
+        Long maxId = betobjectRepository.loadMaxIdByJackpotPendingAndStatus(jackpotPending, status);
+        if(maxId == null) maxId = 0L;
+        Optional<BetObject> betobjectData =
+            Optional.ofNullable( betobjectRepository
+                .findById(maxId)
+                .orElseThrow(
+                    () -> new BetObjectNotFoundException(BET_OBJECT_NOTFOUND_WITH_JACKPOTPENDING+ jackpotPending,
+                        HttpStatus.NOT_FOUND,
+                            BET_OBJECT_NOTFOUND_WITH_JACKPOTPENDING + jackpotPending))
+                );
+        return betobjectData.isPresent() ? this.toDTO(betobjectData.get()) : null ;
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class,
+    noRollbackFor = BetObjectNotFoundException.class
+    )
     public BetObjectDTO findBetObjectByExternalUUIDAndStatus(UUID externalUUID) {
         return this.findBetObjectByExternalUUIDAndStatus(externalUUID, GenericStatusEnums.ATIVO.getShortValue());
     }
@@ -463,6 +525,26 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     public BetObjectDTO updateWhoById(Long id, String who) {
         findById(id);
         betobjectRepository.updateWhoById(id, who);
+        return findById(id);
+    }
+    @Override
+    @Transactional(
+    transactionManager = "transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class)
+    public BetObjectDTO updateJackpotById(Long id, Double jackpot) {
+        findById(id);
+        betobjectRepository.updateJackpotById(id, jackpot);
+        return findById(id);
+    }
+    @Override
+    @Transactional(
+    transactionManager = "transactionManager",
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Throwable.class)
+    public BetObjectDTO updateJackpotPendingById(Long id, Double jackpotPending) {
+        findById(id);
+        betobjectRepository.updateJackpotPendingById(id, jackpotPending);
         return findById(id);
     }
     @Override

@@ -1,0 +1,1 @@
+                .${dto}(${lclassebase}DTOMock.get${Adto}())

@@ -25,10 +25,10 @@ import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 
-import com.jwick.continental.deathagreement.dto.UserDTO;
-import com.jwick.continental.deathagreement.service.UserService;
-import com.jwick.continental.deathagreement.exception.UserNotFoundException;
-import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import com.jwick.continental.deathagreement.dto.UserPunterDTO;
+import com.jwick.continental.deathagreement.service.UserPunterService;
+import com.jwick.continental.deathagreement.exception.UserPunterNotFoundException;
+import com.jwick.continental.deathagreement.constantes.UserPunterConstantes;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -45,41 +45,42 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-* UserController - Controller for User API
+* UserPunterController - Controller for UserPunter API
 *
-* @author User
-* @since Fri Oct 06 15:06:16 BRT 2023
+* @author UserPunter
+* @since Sat Oct 14 15:03:48 BRT 2023
 */
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/api/user")
-public class UserController
+@RequestMapping("/v1/api/userpunter")
+public class UserPunterController
 {
-     @Autowired private UserService userService;
+     @Autowired private UserPunterService userpunterService;
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @GetMapping("/list")
-    public ResponseEntity<List<UserDTO>> findAllUser() {
+    public ResponseEntity<List<UserPunterDTO>> findAllUserPunter() {
         try {
-            List<UserDTO> users = userService.findAllByStatus(GenericStatusEnums.ATIVO.getShortValue());
+            List<UserPunterDTO> userpunters = userpunterService.findAllByStatus(GenericStatusEnums.ATIVO.getShortValue());
 
-            if (users.isEmpty()) {
+            if (userpunters.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(userpunters, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
@@ -88,21 +89,21 @@ public class UserController
     }
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @GetMapping("/list/{status}")
-    public ResponseEntity<List<UserDTO>> findAllUser(@PathVariable("status") String status) {
+    public ResponseEntity<List<UserPunterDTO>> findAllUserPunter(@PathVariable("status") String status) {
         try {
-            List<UserDTO> users = userService.findAllByStatus(status);
+            List<UserPunterDTO> userpunters = userpunterService.findAllByStatus(status);
 
-            if (users.isEmpty()) {
+            if (userpunters.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(userpunters, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
@@ -113,15 +114,15 @@ public class UserController
 
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @GetMapping("/pagefilter")
-    public ResponseEntity<Map<String,Object>> pageFilterUserDinamico(@RequestBody RequestFilter filtro) {
+    public ResponseEntity<Map<String,Object>> pageFilterUserPunterDinamico(@RequestBody RequestFilter filtro) {
         try{
-            Map<String,Object> responseFilter = userService.findPageByFilter(filtro);
+            Map<String,Object> responseFilter = userpunterService.findPageByFilter(filtro);
             return new ResponseEntity<>(responseFilter, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -130,17 +131,17 @@ public class UserController
 
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> deleteUserPunter(@PathVariable("id") long id) {
         try {
-            userService.delete(id);
+            userpunterService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch(UserNotFoundException ex) {
+        } catch(UserPunterNotFoundException ex) {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
@@ -150,19 +151,19 @@ public class UserController
     }
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @PostMapping
-    public ResponseEntity<Long> createUser(@RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<Long> createUserPunter(@RequestBody @Valid UserPunterDTO userpunterDTO) {
         try {
-            UserDTO userSaved = userService.salvar(userDTO);
+            UserPunterDTO userpunterSaved = userpunterService.salvar(userpunterDTO);
                 URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest()
                         .path("/{id}")
-                        .buildAndExpand(userSaved.getId())
+                        .buildAndExpand(userpunterSaved.getId())
                         .toUri();
                 return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).build();
         } catch(CommoditieBaseException e) {
@@ -174,18 +175,18 @@ public class UserController
 
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserPunterDTO> getUserPunterById(@PathVariable("id") Long id) {
       try {
-           UserDTO userDTO = userService.findById(id);
+           UserPunterDTO userpunterDTO = userpunterService.findById(id);
 
-           if (userDTO != null) {
-               return new ResponseEntity<>(userDTO, HttpStatus.OK);
+           if (userpunterDTO != null) {
+               return new ResponseEntity<>(userpunterDTO, HttpStatus.OK);
            } else {
                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
            }
@@ -197,24 +198,24 @@ public class UserController
     }
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") Long id, @RequestBody @Valid UserDTO userDTO) {
-        UserDTO userData = userService.findById(id);
+    public ResponseEntity<UserPunterDTO> updateUserPunter(@PathVariable("id") Long id, @RequestBody @Valid UserPunterDTO userpunterDTO) {
+        UserPunterDTO userpunterData = userpunterService.findById(id);
 
-        if(userData == null) {
+        if(userpunterData == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         try {
-            userDTO.setId(id);
-            userDTO.setDateUpdated(new Date());
-            UserDTO userSaved = userService.salvar(userDTO);
-            return new ResponseEntity<>(userSaved, HttpStatus.OK);
+            userpunterDTO.setId(id);
+            userpunterDTO.setDateUpdated(new Date());
+            UserPunterDTO userpunterSaved = userpunterService.salvar(userpunterDTO);
+            return new ResponseEntity<>(userpunterSaved, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
@@ -224,8 +225,8 @@ public class UserController
 
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
@@ -235,26 +236,26 @@ public class UserController
     public ResponseEntity partialUpdateGeneric(
             @RequestBody Map<String, Object> updates,
             @PathVariable("id") Long id) {
-        UserDTO userData = userService.findById(id);
-        if (userData == null || !userService.partialUpdate(id, updates)) {
+        UserPunterDTO userpunterData = userpunterService.findById(id);
+        if (userpunterData == null || !userpunterService.partialUpdate(id, updates)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok("User atualizada");
+        return ResponseEntity.ok("UserPunter atualizada");
     }
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
 
     @PatchMapping("/{id}/{status}")
-    public ResponseEntity<UserDTO> updateStatusById(
+    public ResponseEntity<UserPunterDTO> updateStatusById(
             @PathVariable("id") Long id, @PathVariable("status") String status) {
       try {
-        UserDTO userUpdated = userService.updateStatusById(id, status);
-        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
-      } catch(UserNotFoundException e) {
+        UserPunterDTO userpunterUpdated = userpunterService.updateStatusById(id, status);
+        return new ResponseEntity<>(userpunterUpdated, HttpStatus.OK);
+      } catch(UserPunterNotFoundException e) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       } catch(CommoditieBaseException e) {
         return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
@@ -264,18 +265,18 @@ public class UserController
     }
 
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "id")
-    public ResponseEntity<UserDTO> findUserById(@RequestParam(UserConstantes.ID) Long id) {
+    public ResponseEntity<UserPunterDTO> findUserPunterById(@RequestParam(UserPunterConstantes.ID) Long id) {
         try{
-            UserDTO userDTO = userService.findUserByIdAndStatus(id, GenericStatusEnums.ATIVO.getShortValue());
-            return Objects.nonNull(userDTO)
-                ? new ResponseEntity<>(userDTO, HttpStatus.OK)
+            UserPunterDTO userpunterDTO = userpunterService.findUserPunterByIdAndStatus(id, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(userpunterDTO)
+                ? new ResponseEntity<>(userpunterDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (UserNotFoundException ex) {
+        } catch (UserPunterNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
@@ -284,18 +285,18 @@ public class UserController
         }
     }
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "nickname")
-    public ResponseEntity<UserDTO> findUserByNickname(@RequestParam(UserConstantes.NICKNAME) String nickname) {
+    public ResponseEntity<UserPunterDTO> findUserPunterByNickname(@RequestParam(UserPunterConstantes.NICKNAME) String nickname) {
         try{
-            UserDTO userDTO = userService.findUserByNicknameAndStatus(nickname, GenericStatusEnums.ATIVO.getShortValue());
-            return Objects.nonNull(userDTO)
-                ? new ResponseEntity<>(userDTO, HttpStatus.OK)
+            UserPunterDTO userpunterDTO = userpunterService.findUserPunterByNicknameAndStatus(nickname, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(userpunterDTO)
+                ? new ResponseEntity<>(userpunterDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (UserNotFoundException ex) {
+        } catch (UserPunterNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
@@ -304,18 +305,18 @@ public class UserController
         }
     }
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "btcAddress")
-    public ResponseEntity<UserDTO> findUserByBtcAddress(@RequestParam(UserConstantes.BTCADDRESS) String btcAddress) {
+    public ResponseEntity<UserPunterDTO> findUserPunterByBtcAddress(@RequestParam(UserPunterConstantes.BTCADDRESS) String btcAddress) {
         try{
-            UserDTO userDTO = userService.findUserByBtcAddressAndStatus(btcAddress, GenericStatusEnums.ATIVO.getShortValue());
-            return Objects.nonNull(userDTO)
-                ? new ResponseEntity<>(userDTO, HttpStatus.OK)
+            UserPunterDTO userpunterDTO = userpunterService.findUserPunterByBtcAddressAndStatus(btcAddress, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(userpunterDTO)
+                ? new ResponseEntity<>(userpunterDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (UserNotFoundException ex) {
+        } catch (UserPunterNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
@@ -324,18 +325,18 @@ public class UserController
         }
     }
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "dateCreated")
-    public ResponseEntity<UserDTO> findUserByDateCreated(@RequestParam(UserConstantes.DATECREATED) Date dateCreated) {
+    public ResponseEntity<UserPunterDTO> findUserPunterByDateCreated(@RequestParam(UserPunterConstantes.DATECREATED) Date dateCreated) {
         try{
-            UserDTO userDTO = userService.findUserByDateCreatedAndStatus(dateCreated, GenericStatusEnums.ATIVO.getShortValue());
-            return Objects.nonNull(userDTO)
-                ? new ResponseEntity<>(userDTO, HttpStatus.OK)
+            UserPunterDTO userpunterDTO = userpunterService.findUserPunterByDateCreatedAndStatus(dateCreated, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(userpunterDTO)
+                ? new ResponseEntity<>(userpunterDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (UserNotFoundException ex) {
+        } catch (UserPunterNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
@@ -344,18 +345,18 @@ public class UserController
         }
     }
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Indica que o processo User foi executado com sucesso"),
-            @ApiResponse(code = 200, message = "Indica que o processo User foi executado com sucesso"),
+            @ApiResponse(code = 204, message = "Indica que o processo UserPunter foi executado com sucesso"),
+            @ApiResponse(code = 200, message = "Indica que o processo UserPunter foi executado com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
     })
     @GetMapping(params = "dateUpdated")
-    public ResponseEntity<UserDTO> findUserByDateUpdated(@RequestParam(UserConstantes.DATEUPDATED) Date dateUpdated) {
+    public ResponseEntity<UserPunterDTO> findUserPunterByDateUpdated(@RequestParam(UserPunterConstantes.DATEUPDATED) Date dateUpdated) {
         try{
-            UserDTO userDTO = userService.findUserByDateUpdatedAndStatus(dateUpdated, GenericStatusEnums.ATIVO.getShortValue());
-            return Objects.nonNull(userDTO)
-                ? new ResponseEntity<>(userDTO, HttpStatus.OK)
+            UserPunterDTO userpunterDTO = userpunterService.findUserPunterByDateUpdatedAndStatus(dateUpdated, GenericStatusEnums.ATIVO.getShortValue());
+            return Objects.nonNull(userpunterDTO)
+                ? new ResponseEntity<>(userpunterDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (UserNotFoundException ex) {
+        } catch (UserPunterNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());

@@ -26,7 +26,7 @@ import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
-import com.jwick.continental.deathagreement.constantes.UserConstantes;
+import com.jwick.continental.deathagreement.constantes.UserPunterConstantes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -38,10 +38,10 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
-* UserDTO - Data Transfer Object
+* UserPunterDTO - Data Transfer Object
 *
-* @author User
-* @since Fri Oct 06 15:06:15 BRT 2023
+* @author UserPunter
+* @since Sat Oct 14 15:03:48 BRT 2023
 */
 
 @NoArgsConstructor
@@ -49,18 +49,18 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO extends DTOPadrao implements Serializable
+public class UserPunterDTO extends DTOPadrao implements Serializable
 {
-
-    @SerializedName(UserConstantes.NICKNAME)
-    @JsonProperty(UserConstantes.NICKNAME)
+    
+    @SerializedName(UserPunterConstantes.NICKNAME)
+    @JsonProperty(UserPunterConstantes.NICKNAME)
     private String nickname;
-
-    @SerializedName(UserConstantes.BTCADDRESS)
-    @JsonProperty(UserConstantes.BTCADDRESS)
+    
+    @SerializedName(UserPunterConstantes.BTCADDRESS)
+    @JsonProperty(UserPunterConstantes.BTCADDRESS)
     private String btcAddress;
 
 

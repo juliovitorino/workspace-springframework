@@ -1,11 +1,10 @@
-package com.jwick.continental.deathagreement.service.impl;
+package br.com.jcv.commons.library.utility;
 
-import com.jwick.continental.deathagreement.service.DateTime;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
+@Component
 public class DateTimeImpl implements DateTime {
     @Override
     public Date getToday() {

@@ -1,12 +1,16 @@
 package br.com.jcv.codegen.codegenerator.factory.codegen;
 
+import br.com.jcv.codegen.codegenerator.dto.WritableCode;
 import br.com.jcv.codegen.codegenerator.enums.CodeGeneratorTags;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
+import br.com.jcv.codegen.codegenerator.enums.FieldTypeEnum;
 import br.com.jcv.codegen.codegenerator.enums.IncludeExtraCommandEnum;
 import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.utility.StringUtility;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +23,21 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,6 +47,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.UUID;
 
 @Slf4j
 public abstract class AbstractCodeGenerator {
@@ -328,7 +338,7 @@ public abstract class AbstractCodeGenerator {
         newContent = newContent.replaceAll(CodeGeneratorTags.PK.getTag(), fieldPK.getFieldTableName());
         newContent = newContent.replaceAll(CodeGeneratorTags.PKDTO.getTag(), fieldPK.getFieldReferenceInDto());
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
-        newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toLowerCase());
+        newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toUpperCase());
         if(field != null) {
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
             newContent = newContent.replaceAll(CodeGeneratorTags.REGEX_VALIDATION.getTag(), getRegexValidationAnnotation(field.getRegexValidation()));
@@ -352,6 +362,43 @@ public abstract class AbstractCodeGenerator {
             newContent = newContent.replaceAll(CodeGeneratorTags.UDTO.getTag(), field.getFieldReferenceInDto().toUpperCase());
             newContent = newContent.replaceAll(CodeGeneratorTags.CCDTO.getTag(), camelCase(field.getFieldReferenceInDto()));
             newContent = newContent.replaceAll(CodeGeneratorTags.DTO.getTag(), field.getFieldReferenceInDto());
+            switch (FieldTypeEnum.fromType(field.getFieldType())) {
+                case Long:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    break;
+
+                case Double:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    break;
+
+
+                case UUID:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                                    "UUID.fromString(" +
+                                    '"' + UUID.randomUUID().toString() + '"'+
+                            ")"
+                    );
+                    break;
+
+                case String:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            '"' +
+                            StringUtility.getRandomCodeNumberUpperLower(50)+
+                                    '"'
+                    );
+                    break;
+
+                case LocalDate:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
+                             + StringUtility.getRandomMonth() + ","
+                             + StringUtility.getRandomDay() + ")"
+                    );
+                    break;
+
+            }
         }
         return newContent;
     }
@@ -466,4 +513,35 @@ public abstract class AbstractCodeGenerator {
         }
         return fieldDescriptor;
     }
+
+
+    protected void flushCode(List<WritableCode> codes) {
+        for(WritableCode writableCode: codes) {
+            log.info("flushCode :: is flushing source code -> {}.{}",
+                    writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                    writableCode.getTargetFileCodeInfo().getTargetExtension());
+
+            try {
+                writeCode(writableCode.getSourceCode(),
+                        writableCode.getCodeGenerator(),
+                        writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                        writableCode.getTargetFileCodeInfo().getTargetExtension());
+            } catch (IOException e) {
+                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        }
+
+    }
+
+    private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension) throws IOException {
+
+        String outputFileName = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
+        FileOutputStream fos = new FileOutputStream(outputFileName);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        try (fos; bos; DataOutputStream outStream = new DataOutputStream(bos)) {
+            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+
 }

@@ -1,22 +1,14 @@
 package com.jwick.continental.deathagreement.controller.v1.business.codegen;
 
-import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.WritableCode;
 import br.com.jcv.codegen.codegenerator.factory.codegen.AbstractCodeGenerator;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorBatch;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual;
-import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +16,7 @@ import java.util.List;
 @Component
 public class CodeGeneratorMainStream extends AbstractCodeGenerator implements ICodeGeneratorBatch {
 
+    @Autowired private  @Qualifier("CodeGeneratorBuilderModelInstance") ICodeGeneratorIndividual generatorBuilderModel;
     @Autowired private  @Qualifier("CodeGeneratorBuilderInstance") ICodeGeneratorIndividual generatorBuilder;
     @Autowired private  @Qualifier("CodeGeneratorNotFoundExceptionInstance") ICodeGeneratorIndividual generatorNotFoundException;
     @Autowired private  @Qualifier("CodeGeneratorLogbackInstance") ICodeGeneratorIndividual generatorLogabck;
@@ -35,6 +28,8 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
     @Autowired private  @Qualifier("CodeGeneratorServiceImplInstance") ICodeGeneratorIndividual generatorServiceImpl;
     @Autowired private  @Qualifier("CodeGeneratorControllerInstance") ICodeGeneratorIndividual generatorController;
     @Autowired private  @Qualifier("CodeGeneratorTansactionJpaConfigInstance") ICodeGeneratorIndividual generatorTransactionJpaConfig;
+    @Autowired private  @Qualifier("CodeGeneratorServiceImplTest") ICodeGeneratorIndividual generatorServiceImplTest;
+    @Autowired private  @Qualifier("CodeGeneratorConstantesTest") ICodeGeneratorIndividual generatorConstantes;
 
     @Override
     public <T> List<WritableCode> generate(Class<T> inputClassModel) {
@@ -47,41 +42,20 @@ public class CodeGeneratorMainStream extends AbstractCodeGenerator implements IC
         codeInBatch.add(generatorService.generate(inputClassModel));
         codeInBatch.add(generatorRepository.generate(inputClassModel));
         codeInBatch.add(generatorServiceImpl.generate(inputClassModel));
+        codeInBatch.add(generatorServiceImplTest.generate(inputClassModel));
         codeInBatch.add(generatorSwaggerConfig.generate(inputClassModel));
         codeInBatch.add(generatorController.generate(inputClassModel));
+        codeInBatch.add(generatorBuilderModel.generate(inputClassModel));
         codeInBatch.add(generatorBuilder.generate(inputClassModel));
         codeInBatch.add(generatorTransactionJpaConfig.generate(inputClassModel));
+        codeInBatch.add(generatorConstantes.generate(inputClassModel));
         log.info("generate :: has been executed");
         return codeInBatch;
     }
 
     @Override
     public void flushCode(List<WritableCode> codes) {
-        for(WritableCode writableCode: codes) {
-            log.info("flushCode :: is flushing source code -> {}.{}",
-                    writableCode.getTargetFileCodeInfo().getTargetPathFile(),
-                    writableCode.getTargetFileCodeInfo().getTargetExtension());
-
-            try {
-                writeCode(writableCode.getSourceCode(),
-                        writableCode.getCodeGenerator(),
-                        writableCode.getTargetFileCodeInfo().getTargetPathFile(),
-                        writableCode.getTargetFileCodeInfo().getTargetExtension());
-            } catch (IOException e) {
-                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-            }
-        }
-
-    }
-
-    private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension) throws IOException {
-
-        String outputFileName = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
-        FileOutputStream fos = new FileOutputStream(outputFileName);
-        BufferedOutputStream bos = new BufferedOutputStream(fos);
-        try (fos; bos; DataOutputStream outStream = new DataOutputStream(bos)) {
-            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
-        }
+        super.flushCode(codes);
     }
 
 

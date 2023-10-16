@@ -6,7 +6,7 @@ import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.dto.BetObjectDTO;
-import com.jwick.continental.deathagreement.dto.UserDTO;
+import com.jwick.continental.deathagreement.dto.UserPunterDTO;
 import com.jwick.continental.deathagreement.enums.BetStatusEnum;
 import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastException;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
@@ -14,7 +14,7 @@ import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
 import com.jwick.continental.deathagreement.exception.NicknameAlreadyInUseException;
 import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
-import com.jwick.continental.deathagreement.exception.UserNotFoundException;
+import com.jwick.continental.deathagreement.exception.UserPunterNotFoundException;
 import com.jwick.continental.deathagreement.service.AbstractContinentalServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -41,16 +41,16 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         }
 
         try {
-            UserDTO btcAddressCheck = userService.findUserByBtcAddressAndStatus(request.getBtcAddress());
+            UserPunterDTO btcAddressCheck = userService.findUserPunterByBtcAddressAndStatus(request.getBtcAddress());
             if(! btcAddressCheck.getNickname().equals(request.getNickname())) {
                 throw new BtcAddressNotBelongThisUserException("Other user is using this btc address", HttpStatus.BAD_REQUEST);
             }
-        } catch (UserNotFoundException ignored) {
+        } catch (UserPunterNotFoundException ignored) {
             log.info("ignored UserNotFoundException");
         }
 
         log.info("execute :: is checking user information => {}", request.getNickname());
-        UserDTO userDTO = checkUserInformationOrCreateIfNew(request);
+        UserPunterDTO userDTO = checkUserInformationOrCreateIfNew(request);
         if(checkUserStatus(userDTO.getId(), GenericStatusEnums.PENDENTE)) {
             userService.updateStatusById(userDTO.getId(), GenericStatusEnums.ATIVO.getShortValue());
         }
@@ -95,7 +95,7 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         return betResponse;
     }
 
-    private void checkDuplicatedPendingBet(UserDTO userDTO, BetObjectDTO betObjectDTO) {
+    private void checkDuplicatedPendingBet(UserPunterDTO userDTO, BetObjectDTO betObjectDTO) {
         log.info("execute :: is checking for for repeated double bet");
         try {
             betService.findBetByIdPunterAndIdBetObjectAndStatus(userDTO.getId(), betObjectDTO.getId(),GenericStatusEnums.PENDENTE.getShortValue());
@@ -105,15 +105,15 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
         }
     }
 
-    private UserDTO checkUserInformationOrCreateIfNew(BetRequest request) {
-        UserDTO userDTO = null;
+    private UserPunterDTO checkUserInformationOrCreateIfNew(BetRequest request) {
+        UserPunterDTO userDTO = null;
         try {
-            userDTO = userService.findUserByNicknameAndStatus(request.getNickname());
+            userDTO = userService.findUserPunterByNicknameAndStatus(request.getNickname());
             if(! userDTO.getBtcAddress().equals(request.getBtcAddress())) {
                 throw new NicknameAlreadyInUseException("Nickname is already in use", HttpStatus.BAD_REQUEST);
             }
-        } catch (UserNotFoundException e) {
-            userDTO = new UserDTO();
+        } catch (UserPunterNotFoundException e) {
+            userDTO = new UserPunterDTO();
             userDTO.setNickname(request.getNickname());
             userDTO.setBtcAddress(request.getBtcAddress());
             return userService.salvar(userDTO);

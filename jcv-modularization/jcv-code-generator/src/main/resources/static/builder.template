@@ -2,7 +2,7 @@
 
 package ${package}.builder;
 
-import ${package}.dto.BetDTO;
+import ${package}.dto.${classebase}DTO;
 
 import java.time.LocalDate;
 import java.util.Date;

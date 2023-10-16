@@ -6,6 +6,7 @@ import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
 import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.utility.DateTime;
 
 import ${package}.dto.${classebase}DTO;
 import ${package}.model.${classebase};
@@ -47,6 +48,7 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
 #include static/inc/service-impl-static-message-notfound.inc
 
     @Autowired private ${classebase}Repository ${lclassebase}Repository;
+    @Autowired private DateTime dateTime;
 
     @Override
     @Transactional(transactionManager="${projeto}transactionManager",
@@ -71,7 +73,7 @@ public class ${classebase}ServiceImpl implements ${classebase}Service
         noRollbackFor = ${classebase}NotFoundException.class
     )
     public ${classebase}DTO salvar(${classebase}DTO ${lclassebase}DTO) {
-        Date now = new Date();
+        Date now = dateTime.getToday();
         if(Objects.nonNull(${lclassebase}DTO.getId()) && ${lclassebase}DTO.getId() != 0) {
             ${lclassebase}DTO.setDateUpdated(now);
         } else {

@@ -42,6 +42,8 @@ public interface BetObjectService extends CommoditieBaseService<BetObjectDTO,Bet
     BetObjectDTO findBetObjectByIdAndStatus(Long id, String status);
     BetObjectDTO findBetObjectByWhoAndStatus(String who);
     BetObjectDTO findBetObjectByWhoAndStatus(String who, String status);
+    BetObjectDTO findBetObjectByJackpotAndStatus(Double jackpot, String status);
+    BetObjectDTO findBetObjectByJackpotPendingAndStatus(Double jackpotPending, String status);
     BetObjectDTO findBetObjectByExternalUUIDAndStatus(UUID externalUUID);
     BetObjectDTO findBetObjectByExternalUUIDAndStatus(UUID externalUUID, String status);
     BetObjectDTO findBetObjectByDateCreatedAndStatus(Date dateCreated);
@@ -52,11 +54,15 @@ public interface BetObjectService extends CommoditieBaseService<BetObjectDTO,Bet
     List<BetObjectDTO> findAllBetObjectByIdAndStatus(Long id, String status);
     List<BetObjectDTO> findAllBetObjectByWhoAndStatus(String who, String status);
     List<BetObjectDTO> findAllBetObjectByExternalUUIDAndStatus(UUID externalUUID, String status);
+    List<BetObjectDTO> findAllBetObjectByJackpotPendingAndStatus(Double jackpotPending, String status);
+    List<BetObjectDTO> findAllBetObjectByJackpotAndStatus(Double jackpot, String status);
     List<BetObjectDTO> findAllBetObjectByDateCreatedAndStatus(Date dateCreated, String status);
     List<BetObjectDTO> findAllBetObjectByDateUpdatedAndStatus(Date dateUpdated, String status);
 
     BetObjectDTO updateWhoById(Long id, String who);
     BetObjectDTO updateExternalUUIDById(Long id, UUID externalUUID);
+    BetObjectDTO updateJackpotById(Long id, Double jackpot);
+    BetObjectDTO updateJackpotPendingById(Long id, Double jackpotPending);
     BetObjectDTO updateStatusById(Long id, String status);
     BetObjectDTO updateDateCreatedById(Long id, Date dateCreated);
     BetObjectDTO updateDateUpdatedById(Long id, Date dateUpdated);

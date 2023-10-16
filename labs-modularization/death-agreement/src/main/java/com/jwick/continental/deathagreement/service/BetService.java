@@ -24,7 +24,9 @@ package com.jwick.continental.deathagreement.service;
 import br.com.jcv.commons.library.commodities.service.CommoditieBaseService;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.model.Bet;
+import net.bytebuddy.asm.Advice;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -50,8 +52,8 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     BetDTO findBetByBitcoinAddressAndStatus(String bitcoinAddress, String status);
     BetDTO findBetByTicketAndStatus(UUID ticket);
     BetDTO findBetByTicketAndStatus(UUID ticket, String status);
-    BetDTO findBetByDeathDateAndStatus(Date deathDate);
-    BetDTO findBetByDeathDateAndStatus(Date deathDate, String status);
+    BetDTO findBetByDeathDateAndStatus(LocalDate deathDate);
+    BetDTO findBetByDeathDateAndStatus(LocalDate deathDate, String status);
     BetDTO findBetByDateCreatedAndStatus(Date dateCreated);
     BetDTO findBetByDateCreatedAndStatus(Date dateCreated, String status);
     BetDTO findBetByDateUpdatedAndStatus(Date dateUpdated);
@@ -64,7 +66,7 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     List<BetDTO> findAllBetByBetAndStatus(Double bet, String status);
     List<BetDTO> findAllBetByBitcoinAddressAndStatus(String bitcoinAddress, String status);
     List<BetDTO> findAllBetByTicketAndStatus(UUID ticket, String status);
-    List<BetDTO> findAllBetByDeathDateAndStatus(Date deathDate, String status);
+    List<BetDTO> findAllBetByDeathDateAndStatus(LocalDate deathDate, String status);
     List<BetDTO> findAllBetByDateCreatedAndStatus(Date dateCreated, String status);
     List<BetDTO> findAllBetByDateUpdatedAndStatus(Date dateUpdated, String status);
 
@@ -73,7 +75,7 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     BetDTO updateBetById(Long id, Double bet);
     BetDTO updateBitcoinAddressById(Long id, String bitcoinAddress);
     BetDTO updateTicketById(Long id, UUID ticket);
-    BetDTO updateDeathDateById(Long id, Date deathDate);
+    BetDTO updateDeathDateById(Long id, LocalDate deathDate);
     BetDTO updateStatusById(Long id, String status);
     BetDTO updateDateCreatedById(Long id, Date dateCreated);
     BetDTO updateDateUpdatedById(Long id, Date dateUpdated);

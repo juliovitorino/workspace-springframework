@@ -1,0 +1,28 @@
+#include_once static/inc/open-source-copyright-mit.inc
+
+package ${package}.builder;
+
+import ${package}.model.${classebase};
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
+
+public class ${classebase}ModelBuilder {
+
+    private ${classebase} ${lclassebase};
+
+    private ${classebase}ModelBuilder(){}
+    public static ${classebase}ModelBuilder new${classebase}ModelTestBuilder() {
+        ${classebase}ModelBuilder builder = new ${classebase}ModelBuilder();
+        builder.${lclassebase} = new ${classebase}();
+        return builder;
+    }
+
+    public ${classebase} now() {
+        return this.${lclassebase};
+    }
+
+#include static/inc/builder-declared-fields-model.inc
+
+}

@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.service;
+package br.com.jcv.commons.library.utility;
 
 import java.util.Date;
 

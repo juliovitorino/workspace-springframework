@@ -5,6 +5,7 @@ import br.com.jcv.commons.library.commodities.exception.InvalidRegexException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,7 @@ public class RegexValidator {
     private RegexValidator() {}
 
     public static <T> Boolean execute(Class<T> inspectClass, String field, String content) {
+        if(Objects.isNull(content)) return false;
         try {
             RegexValidation exp = inspectClass.getDeclaredField(field).getAnnotation(RegexValidation.class);
             if(execute(exp.regex(), content)) {
