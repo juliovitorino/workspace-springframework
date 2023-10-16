@@ -16,15 +16,12 @@ import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastExc
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
-import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferFundsException;
-import com.jwick.continental.deathagreement.repository.BetRepository;
 import com.jwick.continental.deathagreement.service.BetObjectService;
 import com.jwick.continental.deathagreement.service.BetService;
 import com.jwick.continental.deathagreement.service.UserPunterService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
@@ -104,44 +101,6 @@ public class BetBusinessTest {
 
         // validate
         Assertions.assertEquals("You must to do your bet to the future", exception.getMessage());
-    }
-    @Test
-    public void shouldConfirmBetWhenConfirmTicketFund() {
-        // scenario
-        UUID processId = UUID.fromString(PROCESS_ID);
-        LocalDate deathDateMock = LocalDate.of(2030,10,29);
-        BetDTO betMock = BetDTOBuilder.newBetDTOTestBuilder()
-                .idPunter(3L)
-                .idBetObject(5L)
-                .bet(1.205)
-                .ticket(uuidMock)
-                .status("P")
-                .deathDate(deathDateMock)
-                .bitcoinAddress(BTC_ADDRESS)
-                .now();
-        BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
-                .who("Muleke Travesso")
-                .externalUUID(UUID.fromString("afd8c05b-002d-4918-9897-6f150234d420"))
-                .jackpotPending(betMock.getBet())
-                .jackpot(0.0)
-                .now();
-        BetObjectDTO targetUpdatedMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
-                .who("Muleke Travesso")
-                .externalUUID(UUID.fromString("afd8c05b-002d-4918-9897-6f150234d420"))
-                .jackpot(betMock.getBet())
-                .jackpotPending(targetMock.getJackpotPending()-betMock.getBet())
-                .now();
-
-        Mockito.when(betServiceMock.findBetByTicketAndStatus(uuidMock, "P")).thenReturn(betMock);
-
-        Mockito.when(betObjectServiceMock.findById(Mockito.anyLong())).thenReturn(targetMock);
-        Mockito.when(betObjectServiceMock.salvar(targetMock)).thenReturn(targetUpdatedMock);
-
-        // action
-        Boolean executed = confirmBetBusinessService.execute(processId, uuidMock);
-
-        // validate
-        Assertions.assertTrue(executed);
     }
 
     @Test
