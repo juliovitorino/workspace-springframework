@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -64,6 +65,66 @@ public class ${classebase}ServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+
+    @Test
+    public void shouldReturn${classebase}NotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Long idMock = ${magic-content-long};
+        Optional<${classebase}> ${lclassebase}NonExistentMock = Optional.empty();
+        Mockito.when(${lclassebase}RepositoryMock.findById(idMock)).thenReturn(${lclassebase}NonExistentMock);
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()->${lclassebase}Service.updateStatusById(idMock, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldThrow${classebase}NotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Long idMock = ${magic-content-long};
+        Mockito.when(${lclassebase}RepositoryMock.findById(idMock))
+                .thenThrow(new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID,
+                HttpStatus.NOT_FOUND,
+                ${Uclassebase}_NOTFOUND_WITH_ID ));
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()->${lclassebase}Service.updateStatusById(idMock, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldReturn${classebase}DTOAfterUpdateStatusById() {
+        // scenario
+        Long idMock = ${magic-content-long};
+        Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(
+                ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+                        .id(idMock)
+#include static/inc/service-impl-test-shouldReturnModelDTOAfterUpdateStatusById-part1.inc && excludeFields[id,status,dateCreated,dateUpdated]
+                        .status("X")
+                        .now()
+        );
+        ${classebase} ${lclassebase}ToSaveMock = ${lclassebase}ModelMock.orElse(null);
+        ${classebase} ${lclassebase}SavedMck = ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-impl-test-shouldReturnModelDTOAfterUpdateStatusById-part2.inc && excludeFields[status,dateCreated,dateUpdated]
+                        .status("A")
+                        .now();
+        Mockito.when(${lclassebase}RepositoryMock.findById(idMock)).thenReturn(${lclassebase}ModelMock);
+        Mockito.when(${lclassebase}RepositoryMock.save(${lclassebase}ToSaveMock)).thenReturn(${lclassebase}SavedMck);
+
+        // action
+        ${classebase}DTO result = ${lclassebase}Service.updateStatusById(idMock, "A");
+
+        // validate
+        Assertions.assertEquals("A",result.getStatus());
+
+    }
+
     @Test
     public void shouldSearch${classebase}ByAnyNonExistenceIdAndReturn${classebase}NotFoundException() {
         // scenario

@@ -40,6 +40,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -91,6 +92,76 @@ public class BetObjectServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+
+    @Test
+    public void shouldReturnBetObjectNotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Long idMock = 18330L;
+        Optional<BetObject> betobjectNonExistentMock = Optional.empty();
+        Mockito.when(betobjectRepositoryMock.findById(idMock)).thenReturn(betobjectNonExistentMock);
+
+        // action
+        BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
+                ()->betobjectService.updateStatusById(idMock, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldThrowBetObjectNotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Long idMock = 7152L;
+        Mockito.when(betobjectRepositoryMock.findById(idMock))
+                .thenThrow(new BetObjectNotFoundException(BETOBJECT_NOTFOUND_WITH_ID,
+                HttpStatus.NOT_FOUND,
+                BETOBJECT_NOTFOUND_WITH_ID ));
+
+        // action
+        BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
+                ()->betobjectService.updateStatusById(idMock, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldReturnBetObjectDTOAfterUpdateStatusById() {
+        // scenario
+        Long idMock = 36302L;
+        Optional<BetObject> betobjectModelMock = Optional.ofNullable(
+                BetObjectModelBuilder.newBetObjectModelTestBuilder()
+
+                        .id(86248L)
+                        .who("03kdJ9Buo4d0XQG6z02CY9pYN56RFB9n7OBaAnQgLBJArON9TT")
+                        .externalUUID(UUID.fromString("760a0498-610b-4314-a753-efc82225d56a"))
+                        .jackpot(4517.0)
+                        .jackpotPending(2016.0)
+
+                        .status("X")
+                        .now()
+        );
+        BetObject betobjectToSaveMock = betobjectModelMock.orElse(null);
+        BetObject betobjectSavedMck = BetObjectModelBuilder.newBetObjectModelTestBuilder()
+                        .id(10500L)
+                        .who("CVyNvpH2MwVNMhbn66REfw6lW06Os81WAWXHJkYs2jN0g2PkjA")
+                        .externalUUID(UUID.fromString("2a0c1e1b-e4d1-4c8e-a239-41c58995a61d"))
+                        .jackpot(184.0)
+                        .jackpotPending(7522.0)
+
+                        .status("A")
+                        .now();
+        Mockito.when(betobjectRepositoryMock.findById(idMock)).thenReturn(betobjectModelMock);
+        Mockito.when(betobjectRepositoryMock.save(betobjectToSaveMock)).thenReturn(betobjectSavedMck);
+
+        // action
+        BetObjectDTO result = betobjectService.updateStatusById(idMock, "A");
+
+        // validate
+        Assertions.assertEquals("A",result.getStatus());
+
+    }
+
     @Test
     public void shouldSearchBetObjectByAnyNonExistenceIdAndReturnBetObjectNotFoundException() {
         // scenario
@@ -107,11 +178,11 @@ public class BetObjectServiceImplTest {
     public void shouldSearchBetObjectByIdAndReturnDTO() {
         // scenario
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder()
-                .id(20788L)
-                .who("YewviL8074pO87snKIasFX9yl9s1C8PRwKn5zyWOTcg5jcQ6uj")
-                .externalUUID(UUID.fromString("f4f0ee59-825e-4452-a96f-fe7a3f59db25"))
-                .jackpot(2508.0)
-                .jackpotPending(550.0)
+                .id(54541L)
+                .who("0t06kKRS0cVPHMBxmkHfbokSJzNW0fThY8vWsuOmgyem6MQ1Ow")
+                .externalUUID(UUID.fromString("a7433551-4823-4437-b11f-552b2e173afe"))
+                .jackpot(1544.0)
+                .jackpotPending(725.0)
 
                 .status("A")
                 .dateCreated(dateTimeMock.getToday())
@@ -156,11 +227,11 @@ public class BetObjectServiceImplTest {
     public void ShouldSaveUpdateExistingBetObjectWithSucess() {
         // scenario
         BetObjectDTO betobjectDTOMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
-                .id(10873L)
-                .who("boU7IJpqavTHCQlAoa0Qn5rTTIU1rnTQ3iYxGON2Nqpy5KWsUW")
-                .externalUUID(UUID.fromString("fd7373b2-681d-40d5-a75d-4026744adeec"))
-                .jackpot(4066.0)
-                .jackpotPending(4801.0)
+                .id(85567L)
+                .who("PNHGcaY0U4WM4YrcuEUTz7dVJiGEVWtaJbqy9H0cCDOuia4GWT")
+                .externalUUID(UUID.fromString("84cfceb8-3219-4d9d-bd84-39960528290a"))
+                .jackpot(7850.0)
+                .jackpotPending(1680.0)
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -204,10 +275,10 @@ public class BetObjectServiceImplTest {
         // scenario
         BetObjectDTO betobjectDTOMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
                 .id(null)
-                .who("VFMrnuuzPhUW3EInG7vhwRePqjXU42Sc4aR5cmBJ9X8PSHct3w")
-                .externalUUID(UUID.fromString("9305a03b-0f23-4881-8381-d2d24f241cb5"))
-                .jackpot(5652.0)
-                .jackpotPending(7002.0)
+                .who("GWBIvycfDEK6SlxKLTk90mc1HOxXPYd3z0h0lMxUEFw7uxognq")
+                .externalUUID(UUID.fromString("f8a05d84-eff5-4a83-a888-260e5f3a63e2"))
+                .jackpot(2805.0)
+                .jackpotPending(5376.0)
 
                 .status("P")
                 .dateCreated(dateTimeMock.getToday())
@@ -251,21 +322,21 @@ public class BetObjectServiceImplTest {
     public void shouldExecutePartialUpdateWithSucess() {
         // scenario
         Map<String, Object> mapBetObjectDTOMock = new HashMap<>();
-        mapBetObjectDTOMock.put(BetObjectConstantes.WHO,"1NATDYmXdeYRdpuvHrXpDdCKqOt5qqHRTS4nlpxQOKctYOfNKE");
-        mapBetObjectDTOMock.put(BetObjectConstantes.EXTERNALUUID,UUID.fromString("e8c042c6-ba7b-4ce6-9f28-e8ff00bd1757"));
-        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOT,8350.0);
-        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOTPENDING,7024.0);
-        mapBetObjectDTOMock.put(BetObjectConstantes.STATUS,"sXXWwLQAW4kf9h55WOMbULCCQH05Vo7mg2DTqpqlnpD64E8EQc");
+        mapBetObjectDTOMock.put(BetObjectConstantes.WHO,"9BC4fAtkU2UwQdB02zxugJcPBY1EhGX11hoOX5l5CmKoywY7J1");
+        mapBetObjectDTOMock.put(BetObjectConstantes.EXTERNALUUID,UUID.fromString("2bbdb871-f416-4f21-8207-5edbec295579"));
+        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOT,1170.0);
+        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOTPENDING,6300.0);
+        mapBetObjectDTOMock.put(BetObjectConstantes.STATUS,"VWidxlb1RM8vJKwCv7WuO8BkaujmFsxFdDokyIT4zbLf0Mlf34");
 
 
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(
                 BetObjectModelBuilder.newBetObjectModelTestBuilder()
-                        .id(41788L)
-                        .who("sG5rfPLLA0OBuKPgocB0C4Er8DCNxuCCtCuHtyiGdoewTKj0bH")
-                        .externalUUID(UUID.fromString("e18304f8-842e-428d-8f33-5431d3a05ad4"))
-                        .jackpot(3624.0)
-                        .jackpotPending(8703.0)
-                        .status("QeGs0Xk2lfDp5My9xcoMdaGTUKjiKXGs8Y7H7T8VO6r35HQnUR")
+                        .id(65123L)
+                        .who("hp5CEl4KQM0bkw2MIdR4EsadQ5z4Qi0Lo0we9JAP9wSwuWM4Hq")
+                        .externalUUID(UUID.fromString("6758e9f4-f4d0-4380-b979-feb542c634f0"))
+                        .jackpot(222.0)
+                        .jackpotPending(7233.0)
+                        .status("eS0HmD34OA6t2u77VePNCoWaTrCCxuRLminjVbXPwslN6pBbuW")
 
                         .now()
         );
@@ -283,11 +354,11 @@ public class BetObjectServiceImplTest {
     public void shouldReturnBetObjectNotFoundExceptionWhenTrySearchNotExistentId() {
         // scenario
         Map<String, Object> mapBetObjectDTOMock = new HashMap<>();
-        mapBetObjectDTOMock.put(BetObjectConstantes.WHO,"GyzXUx1ndwwo6pM6HtbHR0c5CgLSYctzMI4twD0L3lUuaEahLW");
-        mapBetObjectDTOMock.put(BetObjectConstantes.EXTERNALUUID,UUID.fromString("cb8ba028-2c73-4bb3-abbf-f41c7a2d5e25"));
-        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOT,3333.0);
-        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOTPENDING,7118.0);
-        mapBetObjectDTOMock.put(BetObjectConstantes.STATUS,"OsEdtnh5MLqzx7CmqpQovJlmoAKe0lt3z0w8DdhH0mFHKhgxpb");
+        mapBetObjectDTOMock.put(BetObjectConstantes.WHO,"e1L6hFxQxeg9Bjr1XWmdqNo73Vrs0x3dqWB0AvSI0pb31hoNQy");
+        mapBetObjectDTOMock.put(BetObjectConstantes.EXTERNALUUID,UUID.fromString("d098219e-5d15-4f8d-86b8-de3862159314"));
+        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOT,6443.0);
+        mapBetObjectDTOMock.put(BetObjectConstantes.JACKPOTPENDING,7175.0);
+        mapBetObjectDTOMock.put(BetObjectConstantes.STATUS,"9R4rhoMIhhsYVLynGoC0mfediK0b3VsgoXSeezzC8AkfVSyfj0");
 
 
         Mockito.when(betobjectRepositoryMock.findById(1L)).thenReturn(Optional.empty());
@@ -311,10 +382,10 @@ public class BetObjectServiceImplTest {
             BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
         );
 
-        Mockito.when(betobjectRepositoryMock.findAllByIdAndStatus(65358L, "A")).thenReturn(betobjects);
+        Mockito.when(betobjectRepositoryMock.findAllByIdAndStatus(26500L, "A")).thenReturn(betobjects);
 
         // action
-        List<BetObjectDTO> result = betobjectService.findAllBetObjectByIdAndStatus(65358L, "A");
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByIdAndStatus(26500L, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -329,10 +400,10 @@ public class BetObjectServiceImplTest {
             BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
         );
 
-        Mockito.when(betobjectRepositoryMock.findAllByWhoAndStatus("UQQNxUmAEpii62MkptVfAgTDRprITtKDm5WxL3YO6eVPmtBiDJ", "A")).thenReturn(betobjects);
+        Mockito.when(betobjectRepositoryMock.findAllByWhoAndStatus("mKOdIWtqwl91IWKek1mKnGXoTGE0AfcNCDLewmOTBtOoqDByLK", "A")).thenReturn(betobjects);
 
         // action
-        List<BetObjectDTO> result = betobjectService.findAllBetObjectByWhoAndStatus("UQQNxUmAEpii62MkptVfAgTDRprITtKDm5WxL3YO6eVPmtBiDJ", "A");
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByWhoAndStatus("mKOdIWtqwl91IWKek1mKnGXoTGE0AfcNCDLewmOTBtOoqDByLK", "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -347,10 +418,10 @@ public class BetObjectServiceImplTest {
             BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
         );
 
-        Mockito.when(betobjectRepositoryMock.findAllByExternalUUIDAndStatus(UUID.fromString("759c49d7-d141-4dcc-8c18-69c53d9ee792"), "A")).thenReturn(betobjects);
+        Mockito.when(betobjectRepositoryMock.findAllByExternalUUIDAndStatus(UUID.fromString("820a87b3-5e36-4bc4-b10d-187617d6af84"), "A")).thenReturn(betobjects);
 
         // action
-        List<BetObjectDTO> result = betobjectService.findAllBetObjectByExternalUUIDAndStatus(UUID.fromString("759c49d7-d141-4dcc-8c18-69c53d9ee792"), "A");
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByExternalUUIDAndStatus(UUID.fromString("820a87b3-5e36-4bc4-b10d-187617d6af84"), "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -365,10 +436,10 @@ public class BetObjectServiceImplTest {
             BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
         );
 
-        Mockito.when(betobjectRepositoryMock.findAllByJackpotAndStatus(651.0, "A")).thenReturn(betobjects);
+        Mockito.when(betobjectRepositoryMock.findAllByJackpotAndStatus(522.0, "A")).thenReturn(betobjects);
 
         // action
-        List<BetObjectDTO> result = betobjectService.findAllBetObjectByJackpotAndStatus(651.0, "A");
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByJackpotAndStatus(522.0, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -383,10 +454,10 @@ public class BetObjectServiceImplTest {
             BetObjectModelBuilder.newBetObjectModelTestBuilder().now()
         );
 
-        Mockito.when(betobjectRepositoryMock.findAllByJackpotPendingAndStatus(1307.0, "A")).thenReturn(betobjects);
+        Mockito.when(betobjectRepositoryMock.findAllByJackpotPendingAndStatus(5177.0, "A")).thenReturn(betobjects);
 
         // action
-        List<BetObjectDTO> result = betobjectService.findAllBetObjectByJackpotPendingAndStatus(1307.0, "A");
+        List<BetObjectDTO> result = betobjectService.findAllBetObjectByJackpotPendingAndStatus(5177.0, "A");
 
         // validate
         Assertions.assertInstanceOf(List.class, result);
@@ -397,11 +468,11 @@ public class BetObjectServiceImplTest {
     public void shouldReturnExistentBetObjectDTOWhenFindBetObjectByIdAndStatus() {
         // scenario
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder().now());
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByIdAndStatus(15630L, "A")).thenReturn(1L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByIdAndStatus(40413L, "A")).thenReturn(1L);
         Mockito.when(betobjectRepositoryMock.findById(1L)).thenReturn(betobjectModelMock);
 
         // action
-        BetObjectDTO result = betobjectService.findBetObjectByIdAndStatus(15630L, "A");
+        BetObjectDTO result = betobjectService.findBetObjectByIdAndStatus(40413L, "A");
 
         // validate
         Assertions.assertInstanceOf(BetObjectDTO.class,result);
@@ -409,11 +480,11 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectNotFoundExceptionWhenNonExistenceBetObjectIdAndStatus() {
         // scenario
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByIdAndStatus(15630L, "A")).thenReturn(0L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByIdAndStatus(40413L, "A")).thenReturn(0L);
         Mockito.when(betobjectRepositoryMock.findById(0L)).thenReturn(Optional.empty());
         // action
         BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
-                ()->betobjectService.findBetObjectByIdAndStatus(15630L, "A"));
+                ()->betobjectService.findBetObjectByIdAndStatus(40413L, "A"));
 
         // validate
         Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_ID));
@@ -422,11 +493,11 @@ public class BetObjectServiceImplTest {
     public void shouldReturnExistentBetObjectDTOWhenFindBetObjectByWhoAndStatus() {
         // scenario
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder().now());
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByWhoAndStatus("VIK2tkUqkLsN1seVfuClveB4eK9XOHIjzRiSxuL6SVRmdBCVgS", "A")).thenReturn(1L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByWhoAndStatus("6I64rAl0dslEXUoXBHr7FzcMf0JLTUtAVe0zFCx0cbSq0TExD5", "A")).thenReturn(1L);
         Mockito.when(betobjectRepositoryMock.findById(1L)).thenReturn(betobjectModelMock);
 
         // action
-        BetObjectDTO result = betobjectService.findBetObjectByWhoAndStatus("VIK2tkUqkLsN1seVfuClveB4eK9XOHIjzRiSxuL6SVRmdBCVgS", "A");
+        BetObjectDTO result = betobjectService.findBetObjectByWhoAndStatus("6I64rAl0dslEXUoXBHr7FzcMf0JLTUtAVe0zFCx0cbSq0TExD5", "A");
 
         // validate
         Assertions.assertInstanceOf(BetObjectDTO.class,result);
@@ -434,11 +505,11 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectNotFoundExceptionWhenNonExistenceBetObjectWhoAndStatus() {
         // scenario
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByWhoAndStatus("VIK2tkUqkLsN1seVfuClveB4eK9XOHIjzRiSxuL6SVRmdBCVgS", "A")).thenReturn(0L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByWhoAndStatus("6I64rAl0dslEXUoXBHr7FzcMf0JLTUtAVe0zFCx0cbSq0TExD5", "A")).thenReturn(0L);
         Mockito.when(betobjectRepositoryMock.findById(0L)).thenReturn(Optional.empty());
         // action
         BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
-                ()->betobjectService.findBetObjectByWhoAndStatus("VIK2tkUqkLsN1seVfuClveB4eK9XOHIjzRiSxuL6SVRmdBCVgS", "A"));
+                ()->betobjectService.findBetObjectByWhoAndStatus("6I64rAl0dslEXUoXBHr7FzcMf0JLTUtAVe0zFCx0cbSq0TExD5", "A"));
 
         // validate
         Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_WHO));
@@ -447,11 +518,11 @@ public class BetObjectServiceImplTest {
     public void shouldReturnExistentBetObjectDTOWhenFindBetObjectByExternalUUIDAndStatus() {
         // scenario
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder().now());
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByExternalUUIDAndStatus(UUID.fromString("2f0e5709-a625-464f-9270-3b597c8bd426"), "A")).thenReturn(1L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByExternalUUIDAndStatus(UUID.fromString("5a402419-8c55-4b4a-8ba0-81d95d6d89bb"), "A")).thenReturn(1L);
         Mockito.when(betobjectRepositoryMock.findById(1L)).thenReturn(betobjectModelMock);
 
         // action
-        BetObjectDTO result = betobjectService.findBetObjectByExternalUUIDAndStatus(UUID.fromString("2f0e5709-a625-464f-9270-3b597c8bd426"), "A");
+        BetObjectDTO result = betobjectService.findBetObjectByExternalUUIDAndStatus(UUID.fromString("5a402419-8c55-4b4a-8ba0-81d95d6d89bb"), "A");
 
         // validate
         Assertions.assertInstanceOf(BetObjectDTO.class,result);
@@ -459,11 +530,11 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectNotFoundExceptionWhenNonExistenceBetObjectExternalUUIDAndStatus() {
         // scenario
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByExternalUUIDAndStatus(UUID.fromString("2f0e5709-a625-464f-9270-3b597c8bd426"), "A")).thenReturn(0L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByExternalUUIDAndStatus(UUID.fromString("5a402419-8c55-4b4a-8ba0-81d95d6d89bb"), "A")).thenReturn(0L);
         Mockito.when(betobjectRepositoryMock.findById(0L)).thenReturn(Optional.empty());
         // action
         BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
-                ()->betobjectService.findBetObjectByExternalUUIDAndStatus(UUID.fromString("2f0e5709-a625-464f-9270-3b597c8bd426"), "A"));
+                ()->betobjectService.findBetObjectByExternalUUIDAndStatus(UUID.fromString("5a402419-8c55-4b4a-8ba0-81d95d6d89bb"), "A"));
 
         // validate
         Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_EXTERNALUUID));
@@ -472,11 +543,11 @@ public class BetObjectServiceImplTest {
     public void shouldReturnExistentBetObjectDTOWhenFindBetObjectByJackpotAndStatus() {
         // scenario
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder().now());
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotAndStatus(0.0, "A")).thenReturn(1L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotAndStatus(1630.0, "A")).thenReturn(1L);
         Mockito.when(betobjectRepositoryMock.findById(1L)).thenReturn(betobjectModelMock);
 
         // action
-        BetObjectDTO result = betobjectService.findBetObjectByJackpotAndStatus(0.0, "A");
+        BetObjectDTO result = betobjectService.findBetObjectByJackpotAndStatus(1630.0, "A");
 
         // validate
         Assertions.assertInstanceOf(BetObjectDTO.class,result);
@@ -484,11 +555,11 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectNotFoundExceptionWhenNonExistenceBetObjectJackpotAndStatus() {
         // scenario
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotAndStatus(0.0, "A")).thenReturn(0L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotAndStatus(1630.0, "A")).thenReturn(0L);
         Mockito.when(betobjectRepositoryMock.findById(0L)).thenReturn(Optional.empty());
         // action
         BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
-                ()->betobjectService.findBetObjectByJackpotAndStatus(0.0, "A"));
+                ()->betobjectService.findBetObjectByJackpotAndStatus(1630.0, "A"));
 
         // validate
         Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_JACKPOT));
@@ -497,11 +568,11 @@ public class BetObjectServiceImplTest {
     public void shouldReturnExistentBetObjectDTOWhenFindBetObjectByJackpotPendingAndStatus() {
         // scenario
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder().now());
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotPendingAndStatus(8748.0, "A")).thenReturn(1L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotPendingAndStatus(6046.0, "A")).thenReturn(1L);
         Mockito.when(betobjectRepositoryMock.findById(1L)).thenReturn(betobjectModelMock);
 
         // action
-        BetObjectDTO result = betobjectService.findBetObjectByJackpotPendingAndStatus(8748.0, "A");
+        BetObjectDTO result = betobjectService.findBetObjectByJackpotPendingAndStatus(6046.0, "A");
 
         // validate
         Assertions.assertInstanceOf(BetObjectDTO.class,result);
@@ -509,11 +580,11 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectNotFoundExceptionWhenNonExistenceBetObjectJackpotPendingAndStatus() {
         // scenario
-        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotPendingAndStatus(8748.0, "A")).thenReturn(0L);
+        Mockito.when(betobjectRepositoryMock.loadMaxIdByJackpotPendingAndStatus(6046.0, "A")).thenReturn(0L);
         Mockito.when(betobjectRepositoryMock.findById(0L)).thenReturn(Optional.empty());
         // action
         BetObjectNotFoundException exception = Assertions.assertThrows(BetObjectNotFoundException.class,
-                ()->betobjectService.findBetObjectByJackpotPendingAndStatus(8748.0, "A"));
+                ()->betobjectService.findBetObjectByJackpotPendingAndStatus(6046.0, "A"));
 
         // validate
         Assertions.assertTrue(exception.getMessage().contains(BETOBJECT_NOTFOUND_WITH_JACKPOTPENDING));
@@ -522,7 +593,7 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectDTOWhenUpdateExistingWhoById() {
         // scenario
-        String whoUpdateMock = "T0geTu6iYs6FolBbvtDvS7CdJUwb8yOrpr7PmvUELTMLFUuDf6";
+        String whoUpdateMock = "3fJfW6JLHq33EeXkq6DnkjJgXKdzWVufazehvPjrSWjcmPypse";
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder()
                         .id(420L)
                 .now());
@@ -538,7 +609,7 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectDTOWhenUpdateExistingExternalUUIDById() {
         // scenario
-        UUID externalUUIDUpdateMock = UUID.fromString("361699b3-4129-4565-9152-cf50365cad95");
+        UUID externalUUIDUpdateMock = UUID.fromString("40269733-6850-4b5e-ab8a-28669d276e35");
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder()
                         .id(420L)
                 .now());
@@ -554,7 +625,7 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectDTOWhenUpdateExistingJackpotById() {
         // scenario
-        Double jackpotUpdateMock = 408.0;
+        Double jackpotUpdateMock = 6008.0;
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder()
                         .id(420L)
                 .now());
@@ -570,7 +641,7 @@ public class BetObjectServiceImplTest {
     @Test
     public void shouldReturnBetObjectDTOWhenUpdateExistingJackpotPendingById() {
         // scenario
-        Double jackpotPendingUpdateMock = 2788.0;
+        Double jackpotPendingUpdateMock = 5080.0;
         Optional<BetObject> betobjectModelMock = Optional.ofNullable(BetObjectModelBuilder.newBetObjectModelTestBuilder()
                         .id(420L)
                 .now());
