@@ -4,6 +4,7 @@ import br.com.jcv.commons.library.utility.DateTime;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.builder.BetDTOBuilder;
 import com.jwick.continental.deathagreement.builder.BetModelBuilder;
+import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.jwick.continental.deathagreement.dto.BetDTO;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.model.Bet;
@@ -22,7 +23,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -64,6 +67,60 @@ public class BetServiceImplOriginalTest {
     public void tearDown() {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
+    }
+
+    @Test
+    public void shouldExecutePartialUpdateWithSucess() {
+        // scenario
+        Map<String, Object> mapBetDTOMock = new HashMap<>();
+        mapBetDTOMock.put(BetConstantes.IDPUNTER,5L);
+        mapBetDTOMock.put(BetConstantes.IDBETOBJECT,10L);
+        mapBetDTOMock.put(BetConstantes.BET,52.3);
+        mapBetDTOMock.put(BetConstantes.BITCOINADDRESS,"9626ghdfgh92578hsdfkghdfksgh");
+        mapBetDTOMock.put(BetConstantes.TICKET,uuidMock);
+        mapBetDTOMock.put(BetConstantes.DEATHDATE,LocalDate.of(2020,5,10));
+
+        Optional<Bet> betModelMock = Optional.ofNullable(
+                BetModelBuilder.newBetModelTestBuilder()
+                        .id(1L)
+                        .ticket(uuidMock)
+                        .bitcoinAddress("udjdki")
+                        .bet(26.0)
+                        .idBetObject(20L)
+                        .idPunter(34L)
+                        .now()
+        );
+
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(betModelMock);
+
+        // action
+        boolean executed = betService.partialUpdate(1L, mapBetDTOMock);
+
+        // validate
+        Assertions.assertTrue(executed);
+
+    }
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenTrySearchNotExistentId() {
+        // scenario
+        Map<String, Object> mapBetDTOMock = new HashMap<>();
+        mapBetDTOMock.put(BetConstantes.IDPUNTER,5L);
+        mapBetDTOMock.put(BetConstantes.IDBETOBJECT,10L);
+        mapBetDTOMock.put(BetConstantes.BET,52.3);
+        mapBetDTOMock.put(BetConstantes.BITCOINADDRESS,"9626ghdfgh92578hsdfkghdfksgh");
+        mapBetDTOMock.put(BetConstantes.TICKET,uuidMock);
+        mapBetDTOMock.put(BetConstantes.DEATHDATE,LocalDate.of(2020,5,10));
+
+        Mockito.when(betRepositoryMock.findById(1L)).thenReturn(Optional.empty());
+
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.partialUpdate(1L, mapBetDTOMock));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains("Bet não encontrada com id = "));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+
     }
     @Test
     public void shouldReturnBetDTOWhenUpdateExistingIdBetObjectById() {

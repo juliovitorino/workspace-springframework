@@ -10,6 +10,7 @@ import ${package}.exception.${classebase}NotFoundException;
 import ${package}.model.${classebase};
 import ${package}.repository.${classebase}Repository;
 import ${package}.service.${classebase}Service;
+import ${package}.constantes.${classebase}Constantes;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,6 +27,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -183,6 +186,45 @@ public class ${classebase}ServiceImplTest {
         Assertions.assertInstanceOf(${classebase}DTO.class, ${lclassebase}Saved);
         Assertions.assertNotNull(${lclassebase}Saved.getId());
         Assertions.assertEquals("P",${lclassebase}Saved.getStatus());
+    }
+
+    @Test
+    public void shouldExecutePartialUpdateWithSucess() {
+        // scenario
+        Map<String, Object> map${classebase}DTOMock = new HashMap<>();
+#include static/inc/service-iml-test-shouldExecutePartialUpdateWithSucess-part1.inc && excludeFields[id,dateCreated,dateUpdated]
+
+        Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(
+                ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-iml-test-shouldExecutePartialUpdateWithSucess-part2.inc && excludeFields[dateCreated,dateUpdated]
+                        .now()
+        );
+
+        Mockito.when(${lclassebase}RepositoryMock.findById(1L)).thenReturn(${lclassebase}ModelMock);
+
+        // action
+        boolean executed = ${lclassebase}Service.partialUpdate(1L, map${classebase}DTOMock);
+
+        // validate
+        Assertions.assertTrue(executed);
+
+    }
+    @Test
+    public void shouldReturn${classebase}NotFoundExceptionWhenTrySearchNotExistentId() {
+        // scenario
+        Map<String, Object> map${classebase}DTOMock = new HashMap<>();
+#include static/inc/service-iml-test-shouldReturnModelNotFoundExceptionWhenTrySearchNotExistentId-part1.inc && excludeFields[id,dateCreated,dateUpdated]
+
+        Mockito.when(${lclassebase}RepositoryMock.findById(1L)).thenReturn(Optional.empty());
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()->${lclassebase}Service.partialUpdate(1L, map${classebase}DTOMock));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains("${classebase} não encontrada com id = "));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+
     }
 
 #include static/inc/service-imp-test-shouldReturnModelListWhenFindAllModelByFieldAndStatus.inc && excludeFields[status,dateCreated,dateUpdated]
