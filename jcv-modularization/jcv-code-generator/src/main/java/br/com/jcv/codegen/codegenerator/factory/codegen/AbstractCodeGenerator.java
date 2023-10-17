@@ -366,16 +366,25 @@ public abstract class AbstractCodeGenerator {
                 case Long:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
                     break;
 
                 case Double:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
                     break;
 
 
                 case UUID:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                                    "UUID.fromString(" +
+                                    '"' + UUID.randomUUID().toString() + '"'+
+                            ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                                     "UUID.fromString(" +
                                     '"' + UUID.randomUUID().toString() + '"'+
                             ")"
@@ -388,10 +397,20 @@ public abstract class AbstractCodeGenerator {
                             StringUtility.getRandomCodeNumberUpperLower(50)+
                                     '"'
                     );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            '"' +
+                            StringUtility.getRandomCodeNumberUpperLower(50)+
+                                    '"'
+                    );
                     break;
 
                 case LocalDate:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
+                             + StringUtility.getRandomMonth() + ","
+                             + StringUtility.getRandomDay() + ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
                              + StringUtility.getRandomMonth() + ","
                              + StringUtility.getRandomDay() + ")"

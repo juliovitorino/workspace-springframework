@@ -34,6 +34,8 @@ public class BetObjectConstantes
     public static final String ID = "id";
     public static final String WHO = "who";
     public static final String EXTERNALUUID = "externalUUID";
+    public static final String JACKPOT = "jackpot";
+    public static final String JACKPOTPENDING = "jackpotPending";
     public static final String STATUS = "status";
     public static final String DATECREATED = "dateCreated";
     public static final String DATEUPDATED = "dateUpdated";
