@@ -339,6 +339,8 @@ public abstract class AbstractCodeGenerator {
         newContent = newContent.replaceAll(CodeGeneratorTags.PKDTO.getTag(), fieldPK.getFieldReferenceInDto());
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toUpperCase());
+        newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_LONG.getTag(),
+                Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
         if(field != null) {
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
             newContent = newContent.replaceAll(CodeGeneratorTags.REGEX_VALIDATION.getTag(), getRegexValidationAnnotation(field.getRegexValidation()));

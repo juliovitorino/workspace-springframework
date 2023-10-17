@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -69,6 +70,72 @@ public class BetServiceImplOriginalTest {
         dateUtilityMockedStatic.close();
     }
 
+    @Test
+    public void shouldReturnBetNotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Optional<Bet> betNonExistentMock = Optional.empty();
+        Mockito.when(betRepositoryMock.findById(255L)).thenReturn(betNonExistentMock);
+
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.updateStatusById(255L, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldThrowBetNotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Mockito.when(betRepositoryMock.findById(255L))
+                .thenThrow(new BetNotFoundException(BET_NOTFOUND_WITH_ID,
+                HttpStatus.NOT_FOUND,
+                BET_NOTFOUND_WITH_ID ));
+
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.updateStatusById(255L, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldReturnBetDTOAfterUpdateStatusById() {
+        // scenario
+        Optional<Bet> betModelMock = Optional.ofNullable(
+                BetModelBuilder.newBetModelTestBuilder()
+                        .id(255L)
+                        .idPunter(1L)
+                        .idBetObject(1L)
+                        .status("X")
+                        .bitcoinAddress("7d8dej39dldekd9dldkd")
+                        .bet(20.0)
+                        .ticket(uuidMock)
+                        .deathDate(LocalDate.of(2025,9,16))
+                        .now()
+        );
+        Bet betToSaveMock = betModelMock.orElse(null);
+        Bet betSavedMck = BetModelBuilder.newBetModelTestBuilder()
+                        .id(255L)
+                        .idPunter(1L)
+                        .idBetObject(1L)
+                        .status("A")
+                        .bitcoinAddress("7d8dej39dldekd9dldkd")
+                        .bet(20.0)
+                        .ticket(uuidMock)
+                        .deathDate(LocalDate.of(2025,9,16))
+                        .now();
+        Mockito.when(betRepositoryMock.findById(255L)).thenReturn(betModelMock);
+        Mockito.when(betRepositoryMock.save(betToSaveMock)).thenReturn(betSavedMck);
+
+        // action
+        BetDTO result = betService.updateStatusById(255L, "A");
+
+        // validate
+        Assertions.assertEquals("A",result.getStatus());
+
+    }
     @Test
     public void shouldExecutePartialUpdateWithSucess() {
         // scenario
