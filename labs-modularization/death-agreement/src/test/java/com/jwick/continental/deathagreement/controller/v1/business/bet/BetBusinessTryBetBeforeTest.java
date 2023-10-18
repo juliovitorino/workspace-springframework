@@ -50,6 +50,9 @@ public class BetBusinessTryBetBeforeTest {
     private static MockedStatic<UUID> uuidMockedStatic;
     private static MockedStatic<DateUtility> dateUtilityMockedStatic;
 
+    @Mock private BetService betServiceMock;
+    @Mock private BetObjectService betObjectServiceMock;
+    @Mock private ContinentalConfig configMock;
     @InjectMocks private CreateBetService createBetService;
     final DateTime dateTimeMock = Mockito.mock(DateTime.class);
     @BeforeAll
@@ -83,6 +86,16 @@ public class BetBusinessTryBetBeforeTest {
                 .whoUUID(uuidMock)
                 .deathDateBet(deathLocalDateMock)
                 .now();
+        BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder()
+                .id(520L)
+                .now();
+
+        Mockito.when(betServiceMock.countBetsAtDayForBetObject(
+                betRequestMock.getDeathDateBet().toString(),
+                BetObjectBuilder.newBetObjectTestBuilder().id(targetMock.getId()).now().getId()
+        )).thenReturn(0L);
+        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(targetMock);
+        Mockito.when(configMock.getMaximumGamblerAtDay()).thenReturn(1000L);
 
         dateUtilityMockedStatic.when(() -> DateUtility.addDays(dateTimeMock.getToday(), 30)).thenReturn(allowBetDateFromMock);
         dateUtilityMockedStatic.when(() -> DateUtility.getDate(deathLocalDateMock)).thenReturn(deathDateMock);

@@ -233,4 +233,8 @@ List<Bet> findBetByFilter(
     @Query(value = "DELETE FROM Bet WHERE date_updated = :dateUpdated", nativeQuery = true)
     void deleteByDateUpdated(@Param(BetConstantes.DATEUPDATED) Date dateUpdated);
 
+    @Query(value = "select count(*) from bet b where to_char(b.death_date, 'YYYY-MM-DD') = :deathDateBet " +
+            "and b.id_bet_object = :idBetObject " +
+            "and b.status = 'A'", nativeQuery = true)
+    Long countBetsAtDayForBetObject(String deathDateBet, Long idBetObject);
 }
