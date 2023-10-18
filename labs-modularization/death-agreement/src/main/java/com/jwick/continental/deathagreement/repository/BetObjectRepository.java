@@ -123,12 +123,6 @@ List<BetObject> findBetObjectByFilter(
      @Modifying
      @Query(value = "UPDATE BET_OBJECT SET status = :status, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(BetObjectConstantes.STATUS) String status);
-     @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET dateCreated = :dateCreated, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
-     void updateDateCreatedById(@Param("id") Long id, @Param(BetObjectConstantes.DATECREATED) Date dateCreated);
-     @Modifying
-     @Query(value = "UPDATE BET_OBJECT SET dateUpdated = :dateUpdated, dt_updated = current_timestamp  WHERE id_bet_object = :id", nativeQuery = true)
-     void updateDateUpdatedById(@Param("id") Long id, @Param(BetObjectConstantes.DATEUPDATED) Date dateUpdated);
 
     @Query(value = "SELECT * FROM BET_OBJECT WHERE id_bet_object = (SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE id_bet_object = :id AND  status = :status) ", nativeQuery = true)
     Optional<BetObject> findByIdAndStatus(Long id, String status);

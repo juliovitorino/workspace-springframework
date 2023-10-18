@@ -112,12 +112,6 @@ List<UserPunter> findUserPunterByFilter(
      @Modifying
      @Query(value = "UPDATE user_punter SET status = :status, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
      void updateStatusById(@Param("id") Long id, @Param(UserPunterConstantes.STATUS) String status);
-     @Modifying
-     @Query(value = "UPDATE user_punter SET date_created = :dateCreated, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateDateCreatedById(@Param("id") Long id, @Param(UserPunterConstantes.DATECREATED) Date dateCreated);
-     @Modifying
-     @Query(value = "UPDATE user_punter SET date_updated = :dateUpdated, dt_updated = current_timestamp  WHERE id_user_punter = :id", nativeQuery = true)
-     void updateDateUpdatedById(@Param("id") Long id, @Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated);
 
     @Query(value = "SELECT * FROM user_punter WHERE id_user_punter = (SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE id_user_punter = :id AND  status = :status) ", nativeQuery = true)
     Optional<UserPunter> findByIdAndStatus(Long id, String status);

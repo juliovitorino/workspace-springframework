@@ -557,27 +557,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         betobjectRepository.updateExternalUUIDById(id, externalUUID);
         return findById(id);
     }
-    @Override
-    @Transactional(
-    transactionManager = "transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class)
-    public BetObjectDTO updateDateCreatedById(Long id, Date dateCreated) {
-        findById(id);
-        betobjectRepository.updateDateCreatedById(id, dateCreated);
-        return findById(id);
-    }
-    @Override
-    @Transactional(
-    transactionManager = "transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class)
-    public BetObjectDTO updateDateUpdatedById(Long id, Date dateUpdated) {
-        findById(id);
-        betobjectRepository.updateDateUpdatedById(id, dateUpdated);
-        return findById(id);
-    }
-
 
     public BetObjectDTO toDTO(BetObject betobject) {
         BetObjectDTO betobjectDTO = new BetObjectDTO();

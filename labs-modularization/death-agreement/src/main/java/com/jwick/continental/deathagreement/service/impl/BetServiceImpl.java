@@ -742,27 +742,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         betRepository.updateDeathDateById(id, deathDate);
         return findById(id);
     }
-    @Override
-    @Transactional(
-    transactionManager = "transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class)
-    public BetDTO updateDateCreatedById(Long id, Date dateCreated) {
-        findById(id);
-        betRepository.updateDateCreatedById(id, dateCreated);
-        return findById(id);
-    }
-    @Override
-    @Transactional(
-    transactionManager = "transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class)
-    public BetDTO updateDateUpdatedById(Long id, Date dateUpdated) {
-        findById(id);
-        betRepository.updateDateUpdatedById(id, dateUpdated);
-        return findById(id);
-    }
-
 
     public BetDTO toDTO(Bet bet) {
         BetDTO betDTO = new BetDTO();

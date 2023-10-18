@@ -25,6 +25,6 @@ public interface ${classebase}Service extends CommoditieBaseService<${classebase
 {
 #include static/inc/service-find-by-field-and-status.inc && excludeFields[status]
 #include static/inc/service-all-find-by-field-and-status.inc && excludeFields[status]
-#include static/inc/service-update-field-by-id.inc && excludeFields[id]
+#include static/inc/service-update-field-by-id.inc && excludeFields[id,dateCreated,dateUpdated]
 
 }
