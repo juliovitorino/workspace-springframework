@@ -5,6 +5,7 @@ import br.com.jcv.commons.library.utility.DateTime;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.builder.BetDTOBuilder;
 import com.jwick.continental.deathagreement.builder.BetObjectBuilder;
+import com.jwick.continental.deathagreement.builder.BetObjectDTOBuilder;
 import com.jwick.continental.deathagreement.builder.BetRequestBuilder;
 import com.jwick.continental.deathagreement.builder.UserPunterDTOBuilder;
 import com.jwick.continental.deathagreement.config.ContinentalConfig;
@@ -15,6 +16,7 @@ import com.jwick.continental.deathagreement.exception.BetCouldntMadeinThePastExc
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
+import com.jwick.continental.deathagreement.exception.MaximumBetAtDayExceedException;
 import com.jwick.continental.deathagreement.exception.NextBetMustBeDoubleValueOfPreviousBetException;
 import com.jwick.continental.deathagreement.exception.NumberOfBetsAchieveMaximumException;
 import com.jwick.continental.deathagreement.service.BetObjectService;
@@ -86,6 +88,39 @@ public class CreateBetBusinessTest {
         dateUtilityMockedStatic.close();
     }
 
+    @Test
+    public void shouldReturnMaximumBetAtDayExceedExceptionWhenExceedDayParameter() {
+        // scenario
+        UUID processId = UUID.fromString(PROCESS_ID);
+
+        LocalDate deathDateBetMock = LocalDate.of(2023,5,15);
+        BetRequest betRequest = BetRequestBuilder.newBetRequestTestBuilder()
+                .bet(1.0)
+                .nickname("Fulano de tal 1")
+                .btcAddress("5526245hdfh346456ghdf4654646")
+                .whoUUID(uuidMock)
+                .deathDateBet(deathDateBetMock)
+                .now();
+        BetObjectDTO targetMock = BetObjectDTOBuilder.newBetObjectDTOTestBuilder()
+                .id(1115L)
+                .now();
+        Mockito.when(betServiceMock.countBetsAtDayForBetObject(
+                deathDateBetMock.toString(),
+                targetMock.getId()
+        )). thenReturn(1000L);
+        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequest.getWhoUUID())).thenReturn(targetMock);
+        Mockito.when(configMock.getMaximumGamblerAtDay()).thenReturn(500L);
+
+        // action
+        MaximumBetAtDayExceedException exception = Assertions.assertThrows(MaximumBetAtDayExceedException.class,
+                ()->createBetService.execute(processId,betRequest));
+
+        // validate
+        Assertions.assertEquals(400, exception.getHttpStatus().value());
+        Assertions.assertEquals(
+                "Bet denied because maximum bets for this day exceeded. Choose another day.",
+                exception.getMessage());
+    }
     @Test
     public void shouldReturnNumberOfBetsAchieveMaximumExceptionWhenNewBetExceed() {
         // scenario
