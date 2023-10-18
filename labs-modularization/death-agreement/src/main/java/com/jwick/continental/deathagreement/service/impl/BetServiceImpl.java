@@ -743,6 +743,11 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         return findById(id);
     }
 
+    @Override
+    public Long countBetsAtDayForBetObject(String deathDateBet, Long idBetObject) {
+        return betRepository.countBetsAtDayForBetObject(deathDateBet, idBetObject);
+    }
+
     public BetDTO toDTO(Bet bet) {
         BetDTO betDTO = new BetDTO();
                 betDTO.setId(bet.getId());
