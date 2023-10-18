@@ -71,6 +71,41 @@ public class BetServiceImplOriginalTest {
     }
 
     @Test
+    public void showReturnExistingBetDTOWhenFindBetByIdAndStatusActiveAnonimous() {
+        // scenario
+        Long idMock = 321L;
+        Optional<Bet> betModelMock = Optional.ofNullable(BetModelBuilder.newBetModelTestBuilder()
+                .id(idMock)
+                .now()
+        );
+        Mockito.when(betRepositoryMock.loadMaxIdByIdAndStatus(idMock, "A")).thenReturn(899L);
+        Mockito.when(betRepositoryMock.findById(899L)).thenReturn(betModelMock);
+
+        // action
+        BetDTO result = betService.findBetByIdAndStatus(idMock);
+
+        // validate
+        Assertions.assertEquals(idMock, result.getId());
+
+    }
+    @Test
+    public void showReturnBetNotFoundExceptionWhenNonExistenceFindBetByIdAndStatusActiveAnonimous() {
+        // scenario
+        Long idMock = 321L;
+        Optional<Bet> betModelMock = Optional.empty();
+        Mockito.when(betRepositoryMock.loadMaxIdByIdAndStatus(idMock, "A")).thenReturn(0L);
+        Mockito.when(betRepositoryMock.findById(0L)).thenReturn(betModelMock);
+
+        // action
+        BetNotFoundException exception = Assertions.assertThrows(BetNotFoundException.class,
+                ()->betService.findBetByIdAndStatus(idMock));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(BET_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404, exception.getHttpStatus().value());
+
+    }
+    @Test
     public void shouldReturnBetNotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
         // scenario
         Optional<Bet> betNonExistentMock = Optional.empty();
