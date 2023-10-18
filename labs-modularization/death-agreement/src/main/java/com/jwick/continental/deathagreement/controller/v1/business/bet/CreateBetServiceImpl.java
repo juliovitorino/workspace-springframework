@@ -13,6 +13,7 @@ import com.jwick.continental.deathagreement.exception.BetDeathDateInvalidExcepti
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.exception.BetObjectNotFoundException;
 import com.jwick.continental.deathagreement.exception.BtcAddressNotBelongThisUserException;
+import com.jwick.continental.deathagreement.exception.MaximumBetAtDayExceedException;
 import com.jwick.continental.deathagreement.exception.NextBetMustBeDoubleValueOfPreviousBetException;
 import com.jwick.continental.deathagreement.exception.NicknameAlreadyInUseException;
 import com.jwick.continental.deathagreement.exception.NumberOfBetsAchieveMaximumException;
@@ -20,7 +21,6 @@ import com.jwick.continental.deathagreement.exception.PendingBetWaitingTransferF
 import com.jwick.continental.deathagreement.exception.UserPunterNotFoundException;
 import com.jwick.continental.deathagreement.service.AbstractContinentalServices;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.engine.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +38,15 @@ public class CreateBetServiceImpl extends AbstractContinentalServices implements
 
     @Override
     public BetResponse execute(UUID processId, BetRequest request) {
+
+        log.info("execute :: Checking for total bets in {}",request.getDeathDateBet());
+        Long counterBetsAtDay = betService.countBetsAtDayForBetObject(
+                request.getDeathDateBet().toString(),
+                betObjectService.findBetObjectByExternalUUIDAndStatus(request.getWhoUUID()).getId()
+        );
+        if(counterBetsAtDay >= config.getMaximumGamblerAtDay()) {
+            throw new MaximumBetAtDayExceedException("Bet denied because maximum bets for this day exceeded. Choose another day.", HttpStatus.BAD_REQUEST);
+        }
 
         try {
             if(DateUtility.compare(dateTime.getToday(), sdfYMD.parse(request.getDeathDateBet().toString())) == -1) {

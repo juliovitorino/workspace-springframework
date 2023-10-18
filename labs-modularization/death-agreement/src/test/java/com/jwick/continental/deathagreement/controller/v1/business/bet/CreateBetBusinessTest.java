@@ -151,7 +151,9 @@ public class CreateBetBusinessTest {
                 .whoUUID(uuidMock)
                 .deathDateBet(deathDateBetMockLocalDate)
                 .now();
-        BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder().now();
+        BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder()
+                .id(525L)
+                .now();
         List<BetDTO> betsMock = new ArrayList<>();
         betsMock.add(BetDTOBuilder.newBetDTOTestBuilder().bet(5000.0).now());
 
@@ -163,6 +165,11 @@ public class CreateBetBusinessTest {
         Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequest.getWhoUUID())).thenReturn(targetMock);
 
         Mockito.when(configMock.getMaximumBetsInMonth()).thenReturn(20L);
+        Mockito.when(betServiceMock.countBetsAtDayForBetObject(
+                betRequest.getDeathDateBet().toString(),
+                BetObjectBuilder.newBetObjectTestBuilder().id(targetMock.getId()).now().getId()
+                )).thenReturn(0L);
+        Mockito.when(configMock.getMaximumGamblerAtDay()).thenReturn(1000L);
         Mockito.when(betServiceMock.findAllBetByIdPunterAndIdBetObjectAndYearMonthAndStatus(
                 existingPunter.getId(),
                 targetMock.getId(),
@@ -191,7 +198,15 @@ public class CreateBetBusinessTest {
                 .whoUUID(UUID.fromString("7bed3f75-ff6a-4f87-901a-2c300469165a"))
                 .deathDateBet(pastLocalDate)
                 .now();
-
+        BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder()
+                .id(520L)
+                .now();
+        Mockito.when(betServiceMock.countBetsAtDayForBetObject(
+                betRequestMock.getDeathDateBet().toString(),
+                BetObjectBuilder.newBetObjectTestBuilder().id(targetMock.getId()).now().getId()
+        )).thenReturn(0L);
+        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(targetMock);
+        Mockito.when(configMock.getMaximumGamblerAtDay()).thenReturn(1000L);
         dateUtilityMockedStatic.when(() -> DateUtility.compare(dateTimeMock.getToday(), deathDateMock)).thenReturn(-1);
         // action
         BetCouldntMadeinThePastException exception = Assertions.assertThrows(BetCouldntMadeinThePastException.class,
@@ -221,13 +236,21 @@ public class CreateBetBusinessTest {
                 .whoUUID(UUID.fromString("7bed3f75-ff6a-4f87-901a-2c300469165a"))
                 .deathDateBet(deathDateBetMockLocalDate)
                 .now();
-
+        BetObjectDTO targetMock = BetObjectBuilder.newBetObjectTestBuilder()
+                .id(520L)
+                .now();
+        Mockito.when(betServiceMock.countBetsAtDayForBetObject(
+                betRequestMock.getDeathDateBet().toString(),
+                BetObjectBuilder.newBetObjectTestBuilder().id(targetMock.getId()).now().getId()
+        )).thenReturn(0L);
+        Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenReturn(targetMock);
+        Mockito.when(configMock.getMaximumGamblerAtDay()).thenReturn(1000L);
         Mockito.when(userServiceMock.findUserPunterByBtcAddressAndStatus(betRequestMock.getBtcAddress())).thenReturn(punter);
         Mockito.when(userServiceMock.findUserPunterByNicknameAndStatus(betRequestMock.getNickname())).thenReturn(punter);
         Mockito.when(userServiceMock.findById(punter.getId())).thenReturn(punter);
 
         Mockito.when(betObjectServiceMock.findBetObjectByExternalUUIDAndStatus(betRequestMock.getWhoUUID())).thenThrow(
-                new BetObjectNotFoundException("BetObject not found", HttpStatus.BAD_REQUEST)
+                new BetObjectNotFoundException("Bet Object does not exist", HttpStatus.BAD_REQUEST)
         );
 
         // action

@@ -30,4 +30,7 @@ public class ContinentalConfig {
 
     @Value("${continental.maximum-bets-in-month}")
     private long maximumBetsInMonth;
+
+    @Value("${continental.maximum-gambler-at-day}")
+    private long maximumGamblerAtDay;
 }
