@@ -489,27 +489,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
         userpunterRepository.updateBtcAddressById(id, btcAddress);
         return findById(id);
     }
-    @Override
-    @Transactional(
-    transactionManager = "transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class)
-    public UserPunterDTO updateDateCreatedById(Long id, Date dateCreated) {
-        findById(id);
-        userpunterRepository.updateDateCreatedById(id, dateCreated);
-        return findById(id);
-    }
-    @Override
-    @Transactional(
-    transactionManager = "transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class)
-    public UserPunterDTO updateDateUpdatedById(Long id, Date dateUpdated) {
-        findById(id);
-        userpunterRepository.updateDateUpdatedById(id, dateUpdated);
-        return findById(id);
-    }
-
 
     public UserPunterDTO toDTO(UserPunter userpunter) {
         UserPunterDTO userpunterDTO = new UserPunterDTO();

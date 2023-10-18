@@ -62,8 +62,4 @@ public interface UserPunterService extends CommoditieBaseService<UserPunterDTO,U
     UserPunterDTO updateNicknameById(Long id, String nickname);
     UserPunterDTO updateBtcAddressById(Long id, String btcAddress);
     UserPunterDTO updateStatusById(Long id, String status);
-    UserPunterDTO updateDateCreatedById(Long id, Date dateCreated);
-    UserPunterDTO updateDateUpdatedById(Long id, Date dateUpdated);
-
-
 }

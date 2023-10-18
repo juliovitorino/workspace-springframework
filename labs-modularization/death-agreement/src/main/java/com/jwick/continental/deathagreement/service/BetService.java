@@ -81,6 +81,5 @@ public interface BetService extends CommoditieBaseService<BetDTO,Bet>
     BetDTO updateDateCreatedById(Long id, Date dateCreated);
     BetDTO updateDateUpdatedById(Long id, Date dateUpdated);
 
-
     Long countBetsAtDayForBetObject(String deathDateBet, Long idBetObject);
 }

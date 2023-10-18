@@ -211,7 +211,7 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
 
 #include static/inc/service-impl-method-findAllModelByFieldAndStatus-list.inc && excludeFields[status]
 #include static/inc/service-impl-method-findModelByFieldAndStatus-list.inc && excludeFields[status]
-#include static/inc/service-impl-method-updateFieldById.inc && excludeFields[id,status]
+#include static/inc/service-impl-method-updateFieldById.inc && excludeFields[id,status,dateCreated,dateUpdated]
 
     public ${classebase}DTO toDTO(${classebase} ${lclassebase}) {
         ${classebase}DTO ${lclassebase}DTO = new ${classebase}DTO();
