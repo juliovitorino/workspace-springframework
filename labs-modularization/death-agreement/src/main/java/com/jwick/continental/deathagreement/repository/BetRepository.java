@@ -23,6 +23,7 @@ package com.jwick.continental.deathagreement.repository;
 
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.jwick.continental.deathagreement.model.Bet;
+import org.hibernate.jpa.TypedParameterValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -57,43 +58,42 @@ public interface BetRepository extends JpaRepository<Bet, Long>
     List<Bet> findAllByStatus(@Param(BetConstantes.STATUS) String status);
 
 @Query(value = "SELECT * FROM Bet WHERE 1=1 " +
-        "AND (:id = '' OR id_bet = :id) " +
-        "AND (:idPunter = '' OR id_punter = :idPunter) " +
-        "AND (:idBetObject = '' OR id_bet_object = :idBetObject) " +
-        "AND (:bet = '' OR bet = :bet) " +
-        "AND (:bitcoinAddress = '' OR btc_address = :bitcoinAddress) " +
-        "AND (:ticket = '' OR ticket = :ticket) " +
-        "AND (:deathDate = '' OR death_date = :deathDate) " +
-        "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR date_created = :dateCreated) " +
-        "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
+        "AND (cast(:id as BIGINT) IS NULL OR id_bet = :id) " +
+        "AND (cast(:idPunter as BIGINT) IS NULL OR id_punter = :idPunter) " +
+        "AND (cast(:idBetObject as BIGINT) IS NULL OR id_bet_object = :idBetObject) " +
+        "AND (cast(:bet as FLOAT) IS NULL OR bet = :bet) " +
+        "AND (cast(:bitcoinAddress as TEXT) IS NULL OR btc_address = :bitcoinAddress) " +
+        "AND (cast(:ticket as TEXT) IS NULL OR ticket = :ticket) " +
+        "AND (cast(:deathDate as DATE) IS NULL OR to_char(death_date,'YYYY-MM-DD') = :deathDate) " +
+        "AND (cast(:status as TEXT) IS NULL OR status = :status) " +
+        "AND (cast(:dateCreated as date) IS NULL OR to_char(date_created,'YYYY-MM-DD') = :dateCreated) " +
+        "AND (cast(:dateUpdated as date) IS NULL OR to_char(date_updated,'YYYY-MM-DD') = :dateUpdated) "
 
         , nativeQuery = true)
 Page<Bet> findBetByFilter(Pageable pageable,
-        @Param(BetConstantes.ID) Long id,
-        @Param(BetConstantes.IDPUNTER) Long idPunter,
-        @Param(BetConstantes.IDBETOBJECT) Long idBetObject,
-        @Param(BetConstantes.BET) Double bet,
-        @Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress,
-        @Param(BetConstantes.TICKET) UUID ticket,
-        @Param(BetConstantes.DEATHDATE) Date deathDate,
-        @Param(BetConstantes.STATUS) String status,
-        @Param(BetConstantes.DATECREATED) Date dateCreated,
-        @Param(BetConstantes.DATEUPDATED) Date dateUpdated
-
+                          @Param(BetConstantes.ID) Long id,
+                          @Param(BetConstantes.IDPUNTER) Long idPunter,
+                          @Param(BetConstantes.IDBETOBJECT) Long idBetObject,
+                          @Param(BetConstantes.BET) Double bet,
+                          @Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress,
+                          @Param(BetConstantes.TICKET) UUID ticket,
+                          @Param(BetConstantes.DEATHDATE) String deathDate,
+                          @Param(BetConstantes.STATUS) String status,
+                          @Param(BetConstantes.DATECREATED) String dateCreated,
+                          @Param(BetConstantes.DATEUPDATED) String dateUpdated
         );
 
 @Query(value = "SELECT * FROM Bet WHERE 1=1 " +
-        "AND (:id = '' OR id_bet = :id) " +
-        "AND (:idPunter = '' OR id_punter = :idPunter) " +
-        "AND (:idBetObject = '' OR id_bet_object = :idBetObject) " +
-        "AND (:bet = '' OR bet = :bet) " +
-        "AND (:bitcoinAddress = '' OR btc_address = :bitcoinAddress) " +
-        "AND (:ticket = '' OR ticket = :ticket) " +
-        "AND (:deathDate = '' OR death_date = :deathDate) " +
-        "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR date_created = :dateCreated) " +
-        "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
+        "AND (cast(:id as BIGINT) IS NULL OR id_bet = :id) " +
+        "AND (cast(:idPunter as BIGINT) IS NULL OR id_punter = :idPunter) " +
+        "AND (cast(:idBetObject as BIGINT) IS NULL OR id_bet_object = :idBetObject) " +
+        "AND (cast(:bet as FLOAT) IS NULL OR bet = :bet) " +
+        "AND (cast(:bitcoinAddress as TEXT) IS NULL OR btc_address = :bitcoinAddress) " +
+        "AND (cast(:ticket as TEXT) IS NULL OR ticket = :ticket) " +
+        "AND (cast(:deathDate as DATE) IS NULL OR to_char(death_date,'YYYY-MM-DD') = :deathDate) " +
+        "AND (cast(:status as TEXT) IS NULL OR status = :status) " +
+        "AND (cast(:dateCreated as date) IS NULL OR to_char(date_created,'YYYY-MM-DD') = :dateCreated) " +
+        "AND (cast(:dateUpdated as date) IS NULL OR to_char(date_updated,'YYYY-MM-DD') = :dateUpdated) "
 
         , nativeQuery = true)
 List<Bet> findBetByFilter(
@@ -103,10 +103,10 @@ List<Bet> findBetByFilter(
         @Param(BetConstantes.BET) Double bet,
         @Param(BetConstantes.BITCOINADDRESS) String bitcoinAddress,
         @Param(BetConstantes.TICKET) UUID ticket,
-        @Param(BetConstantes.DEATHDATE) Date deathDate,
+        @Param(BetConstantes.DEATHDATE) String deathDate,
         @Param(BetConstantes.STATUS) String status,
-        @Param(BetConstantes.DATECREATED) Date dateCreated,
-        @Param(BetConstantes.DATEUPDATED) Date dateUpdated
+        @Param(BetConstantes.DATECREATED) String dateCreated,
+        @Param(BetConstantes.DATEUPDATED) String dateUpdated
 
 );
 

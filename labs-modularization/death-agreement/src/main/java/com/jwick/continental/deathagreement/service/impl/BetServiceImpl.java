@@ -23,6 +23,7 @@ package com.jwick.continental.deathagreement.service.impl;
 
 import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import br.com.jcv.commons.library.utility.DateTime;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
 import com.jwick.continental.deathagreement.dto.BetDTO;
@@ -31,6 +32,7 @@ import com.jwick.continental.deathagreement.model.Bet;
 import com.jwick.continental.deathagreement.repository.BetRepository;
 import com.jwick.continental.deathagreement.service.BetService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.jpa.TypedParameterValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +42,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -205,23 +209,24 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     Double bet = null;
     String bitcoinAddress = null;
     UUID ticket = null;
-    Date deathDate = null;
+    String deathDate = null;
     String status = null;
-    Date dateCreated = null;
-    Date dateUpdated = null;
+    String dateCreated = null;
+    String dateUpdated = null;
+    SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
 
 
     for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.IDPUNTER)) idPunter = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) idBetObject = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = (Double) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bitcoinAddress = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) ticket = (UUID) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) deathDate = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.IDPUNTER)) idPunter = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) idBetObject = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = Objects.isNull(entry.getValue()) ? null : Double.valueOf(entry.getValue().toString()) ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bitcoinAddress = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) ticket = Objects.isNull(entry.getValue()) ? null : UUID.fromString(entry.getValue().toString()) ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString() ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) deathDate = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString()  ;
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+        if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
 
     }
 
@@ -257,29 +262,28 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     noRollbackFor = BetNotFoundException.class
 )
     public List<BetDTO> findAllByFilter(RequestFilter filtro) {
-    Long id = null;
-    Long idPunter = null;
-    Long idBetObject = null;
-    Double bet = null;
-    String bitcoinAddress = null;
-    UUID ticket = null;
-    Date deathDate = null;
-    String status = null;
-    Date dateCreated = null;
-    Date dateUpdated = null;
+        Long id = null;
+        Long idPunter = null;
+        Long idBetObject = null;
+        Double bet = null;
+        String bitcoinAddress = null;
+        UUID ticket = null;
+        String deathDate = null;
+        String status = null;
+        String dateCreated = null;
+        String dateUpdated = null;
 
         for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.IDPUNTER)) idPunter = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) idBetObject = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = (Double) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bitcoinAddress = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) ticket = (UUID) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) deathDate = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
-
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.IDPUNTER)) idPunter = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.IDBETOBJECT)) idBetObject = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.BET)) bet = Objects.isNull(entry.getValue()) ? null : Double.valueOf(entry.getValue().toString()) ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.BITCOINADDRESS)) bitcoinAddress = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString() ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.TICKET)) ticket = Objects.isNull(entry.getValue()) ? null : UUID.fromString(entry.getValue().toString()) ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.STATUS)) status = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString() ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.DEATHDATE)) deathDate = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString()  ;
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.DATECREATED)) dateCreated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetConstantes.DATEUPDATED)) dateUpdated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
         }
 
         List<Bet> lstBet = betRepository.findBetByFilter(
