@@ -65,7 +65,22 @@ public class ${classebase}ServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+    @Test
+    public void showReturnListOf${classebase}WhenAskedForFindAllByStatus() {
+        // scenario
+        List<${classebase}> listOf${classebase}ModelMock = new ArrayList<>();
+        listOf${classebase}ModelMock.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        listOf${classebase}ModelMock.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
 
+        Mockito.when(${lclassebase}RepositoryMock.findAllByStatus("A")).thenReturn(listOf${classebase}ModelMock);
+
+        // action
+        List<${classebase}DTO> listOf${classebase}s = ${lclassebase}Service.findAllByStatus("A");
+
+        // validate
+        Assertions.assertTrue(!listOf${classebase}s.isEmpty());
+        Assertions.assertEquals(2, listOf${classebase}s.size());
+    }
     @Test
     public void shouldReturn${classebase}NotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
         // scenario
