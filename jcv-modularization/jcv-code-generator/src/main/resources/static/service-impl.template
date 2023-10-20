@@ -197,9 +197,9 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     noRollbackFor = ${classebase}NotFoundException.class
 )
     public List<${classebase}DTO> findAllByFilter(RequestFilter filtro) {
-#include static/inc/service-impl-method-findAllByFilter.inc
+#include static/inc/service-impl-method-findPageByFilter.inc
         for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-#include static/inc/service-impl-method-findAllByFilter-for.inc
+#include static/inc/service-impl-method-findPageByFilter-for.inc
         }
 
         List<${classebase}> lst${classebase} = ${lclassebase}Repository.find${classebase}ByFilter(

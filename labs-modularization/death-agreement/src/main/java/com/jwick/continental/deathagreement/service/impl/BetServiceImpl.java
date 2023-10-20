@@ -213,8 +213,6 @@ public Map<String, Object> findPageByFilter(RequestFilter filtro) {
     String status = null;
     String dateCreated = null;
     String dateUpdated = null;
-    SimpleDateFormat sdfYMD = new SimpleDateFormat("yyyy-MM-dd");
-
 
     for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
         if(entry.getKey().equalsIgnoreCase(BetConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString()) ;

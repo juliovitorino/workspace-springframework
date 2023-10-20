@@ -53,44 +53,49 @@ public interface BetObjectRepository extends JpaRepository<BetObject, Long>
 {
     @Query(value = "SELECT * FROM BET_OBJECT WHERE  status = :status", nativeQuery = true)
     List<BetObject> findAllByStatus(@Param(BetObjectConstantes.STATUS) String status);
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE 1=1 " +
+            "AND (cast(:id as BIGINT) IS NULL OR id_bet_object = :id) " +
+            "AND (cast(:who as TEXT) IS NULL OR who = :who) " +
+            "AND (cast(:externalUUID as TEXT) IS NULL OR externalUUID = :externalUUID) " +
+            "AND (cast(:jackpot as FLOAT) IS NULL OR jackpot = :jackpot) " +
+            "AND (cast(:jackpotPending as FLOAT) IS NULL OR jackpot_pending = :jackpotPending) " +
+            "AND (cast(:status as TEXT) IS NULL OR status = :status) " +
+            "AND (cast(:dateCreated as DATE) IS NULL OR to_char(date_created, 'YYYY-MM-DD') = :dateCreated) " +
+            "AND (cast(:dateUpdated as DATE) IS NULL OR to_char(date_updated, 'YYYY-MM-DD') = :dateUpdated) "
+            , nativeQuery = true)
+    Page<BetObject> findBetObjectByFilter(Pageable pageable,
+                                          @Param(BetObjectConstantes.ID) Long id,
+                                          @Param(BetObjectConstantes.WHO) String who,
+                                          @Param(BetObjectConstantes.EXTERNALUUID) UUID externalUUID,
+                                          @Param(BetObjectConstantes.JACKPOT) Double jackpot,
+                                          @Param(BetObjectConstantes.JACKPOTPENDING) Double jackpotPending,
+                                          @Param(BetObjectConstantes.STATUS) String status,
+                                          @Param(BetObjectConstantes.DATECREATED) String dateCreated,
+                                          @Param(BetObjectConstantes.DATEUPDATED) String dateUpdated
 
-@Query(value = "SELECT * FROM BET_OBJECT WHERE 1=1 " +
-        "AND (:id = '' OR id_bet_object = :id) " +
-        "AND (:who = '' OR who = :who) " +
-        "AND (:externalUUID = '' OR externalUUID = :externalUUID) " +
-        "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
+    );
 
-        , nativeQuery = true)
-Page<BetObject> findBetObjectByFilter(Pageable pageable,
-        @Param(BetObjectConstantes.ID) Long id,
-        @Param(BetObjectConstantes.WHO) String who,
-        @Param(BetObjectConstantes.EXTERNALUUID) UUID externalUUID,
-        @Param(BetObjectConstantes.STATUS) String status,
-        @Param(BetObjectConstantes.DATECREATED) Date dateCreated,
-        @Param(BetObjectConstantes.DATEUPDATED) Date dateUpdated
+    @Query(value = "SELECT * FROM BET_OBJECT WHERE 1=1 " +
+            "AND (cast(:id as BIGINT) IS NULL OR id_bet_object = :id) " +
+            "AND (cast(:who as TEXT) IS NULL OR who = :who) " +
+            "AND (cast(:externalUUID as TEXT) IS NULL OR externalUUID = :externalUUID) " +
+            "AND (cast(:jackpot as FLOAT) IS NULL OR jackpot = :jackpot) " +
+            "AND (cast(:jackpotPending as FLOAT) IS NULL OR jackpot_pending = :jackpotPending) " +
+            "AND (cast(:status as TEXT) IS NULL OR status = :status) " +
+            "AND (cast(:dateCreated as DATE) IS NULL OR to_char(date_created, 'YYYY-MM-DD') = :dateCreated) " +
+            "AND (cast(:dateUpdated as DATE) IS NULL OR to_char(date_updated, 'YYYY-MM-DD') = :dateUpdated) "
+            , nativeQuery = true)
+    List<BetObject> findBetObjectByFilter(
+            @Param(BetObjectConstantes.ID) Long id,
+            @Param(BetObjectConstantes.WHO) String who,
+            @Param(BetObjectConstantes.EXTERNALUUID) UUID externalUUID,
+            @Param(BetObjectConstantes.JACKPOT) Double jackpot,
+            @Param(BetObjectConstantes.JACKPOTPENDING) Double jackpotPending,
+            @Param(BetObjectConstantes.STATUS) String status,
+            @Param(BetObjectConstantes.DATECREATED) String dateCreated,
+            @Param(BetObjectConstantes.DATEUPDATED) String dateUpdated
 
-        );
-
-@Query(value = "SELECT * FROM BET_OBJECT WHERE 1=1 " +
-        "AND (:id = '' OR id_bet_object = :id) " +
-        "AND (:who = '' OR who = :who) " +
-        "AND (:externalUUID = '' OR externalUUID = :externalUUID) " +
-        "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR dateCreated = :dateCreated) " +
-        "AND (:dateUpdated = '' OR dateUpdated = :dateUpdated) " 
-
-        , nativeQuery = true)
-List<BetObject> findBetObjectByFilter(
-        @Param(BetObjectConstantes.ID) Long id,
-        @Param(BetObjectConstantes.WHO) String who,
-        @Param(BetObjectConstantes.EXTERNALUUID) UUID externalUUID,
-        @Param(BetObjectConstantes.STATUS) String status,
-        @Param(BetObjectConstantes.DATECREATED) Date dateCreated,
-        @Param(BetObjectConstantes.DATEUPDATED) Date dateUpdated
-
-);
+    );
 
      @Query(value = "SELECT MAX(id_bet_object) AS maxid FROM BET_OBJECT WHERE id_bet_object = :id AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdAndStatus(Long id, String status);

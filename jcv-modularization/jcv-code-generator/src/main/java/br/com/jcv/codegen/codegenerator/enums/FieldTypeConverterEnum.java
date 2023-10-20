@@ -8,25 +8,27 @@ import java.util.Arrays;
 
 @Getter
 public enum FieldTypeConverterEnum {
-    Long("Long", "Long", "BIGINT"),
-    String("String","String", "TEXT"),
-    Double("Double","Double","FLOAT"),
-    Integer("Integer", "Integer","BIGINT"),
-    LocalDate("LocalDate","String", "DATE"),
-    LocalDateTime("LocalDateTime","String","DATE"),
-    Date("Date","String", "DATE"),
-    UUID("UUID","UUID", "TEXT");
+    Long("Long", "Long", "BIGINT","Long.valueOf(entry.getValue().toString())"),
+    String("String","String", "TEXT","entry.getValue().toString()"),
+    Double("Double","Double","FLOAT","Double.valueOf(entry.getValue().toString())"),
+    Integer("Integer", "Integer","BIGINT","Integer.valueOf(entry.getValue().toString())"),
+    LocalDate("LocalDate","String", "DATE","entry.getValue().toString()"),
+    LocalDateTime("LocalDateTime","String","DATE","entry.getValue().toString()"),
+    Date("Date","String", "DATE","entry.getValue().toString()"),
+    UUID("UUID","UUID", "TEXT","UUID.fromString(entry.getValue().toString())");
 
     private final String fieldType;
     private final String findByFilterType;
     private final String castType;
+    private final String valueOf;
 
     private static FieldTypeConverterEnum[] VALUES = values();
 
-    FieldTypeConverterEnum(String fieldType, String findByFilterType, String castType) {
+    FieldTypeConverterEnum(String fieldType, String findByFilterType, String castType, String valueOf) {
         this.fieldType = fieldType;
         this.findByFilterType = findByFilterType;
         this.castType = castType;
+        this.valueOf = valueOf;
     }
 
     public static FieldTypeConverterEnum fromFieldType(String fieldType) {

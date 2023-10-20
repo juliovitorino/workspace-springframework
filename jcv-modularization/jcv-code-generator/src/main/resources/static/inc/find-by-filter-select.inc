@@ -1,1 +1,1 @@
-        "AND (:${dto} = '' OR ${campo} = :${dto}) " +
+        "AND (cast(:${dto} as ${cast-value}) IS NULL OR ${campo-date-fix} = :${dto}) " +
