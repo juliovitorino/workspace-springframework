@@ -53,45 +53,47 @@ public interface UserPunterRepository extends JpaRepository<UserPunter, Long>
     @Query(value = "SELECT * FROM user_punter WHERE  status = :status", nativeQuery = true)
     List<UserPunter> findAllByStatus(@Param(UserPunterConstantes.STATUS) String status);
 
-@Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
-        "AND (:id = '' OR id_user_punter = :id) " +
-        "AND (:nickname = '' OR nickname = :nickname) " +
-        "AND (:btcAddress = '' OR btc_address = :btcAddress) " +
-        "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR date_created = :dateCreated) " +
-        "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
 
-        , nativeQuery = true)
-Page<UserPunter> findUserPunterByFilter(Pageable pageable,
-        @Param(UserPunterConstantes.ID) Long id,
-        @Param(UserPunterConstantes.NICKNAME) String nickname,
-        @Param(UserPunterConstantes.BTCADDRESS) String btcAddress,
-        @Param(UserPunterConstantes.STATUS) String status,
-        @Param(UserPunterConstantes.DATECREATED) Date dateCreated,
-        @Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated
+    @Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
+            "AND (cast(:id as BIGINT) IS NULL OR id_user_punter = :id) " +
+            "AND (cast(:nickname as TEXT) IS NULL OR nickname = :nickname) " +
+            "AND (cast(:btcAddress as TEXT) IS NULL OR btc_address = :btcAddress) " +
+            "AND (cast(:status as TEXT) IS NULL OR status = :status) " +
+            "AND (cast(:dateCreated as DATE) IS NULL OR to_char(date_created, 'YYYY-MM-DD') = :dateCreated) " +
+            "AND (cast(:dateUpdated as DATE) IS NULL OR to_char(date_updated, 'YYYY-MM-DD') = :dateUpdated) "
 
-        );
+            , nativeQuery = true)
+    Page<UserPunter> findUserPunterByFilter(Pageable pageable,
+                                            @Param(UserPunterConstantes.ID) Long id,
+                                            @Param(UserPunterConstantes.NICKNAME) String nickname,
+                                            @Param(UserPunterConstantes.BTCADDRESS) String btcAddress,
+                                            @Param(UserPunterConstantes.STATUS) String status,
+                                            @Param(UserPunterConstantes.DATECREATED) String dateCreated,
+                                            @Param(UserPunterConstantes.DATEUPDATED) String dateUpdated
 
-@Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
-        "AND (:id = '' OR id_user_punter = :id) " +
-        "AND (:nickname = '' OR nickname = :nickname) " +
-        "AND (:btcAddress = '' OR btc_address = :btcAddress) " +
-        "AND (:status = '' OR status = :status) " +
-        "AND (:dateCreated = '' OR date_created = :dateCreated) " +
-        "AND (:dateUpdated = '' OR date_updated = :dateUpdated) " 
+    );
 
-        , nativeQuery = true)
-List<UserPunter> findUserPunterByFilter(
-        @Param(UserPunterConstantes.ID) Long id,
-        @Param(UserPunterConstantes.NICKNAME) String nickname,
-        @Param(UserPunterConstantes.BTCADDRESS) String btcAddress,
-        @Param(UserPunterConstantes.STATUS) String status,
-        @Param(UserPunterConstantes.DATECREATED) Date dateCreated,
-        @Param(UserPunterConstantes.DATEUPDATED) Date dateUpdated
+    @Query(value = "SELECT * FROM user_punter WHERE 1=1 " +
+            "AND (cast(:id as BIGINT) IS NULL OR id_user_punter = :id) " +
+            "AND (cast(:nickname as TEXT) IS NULL OR nickname = :nickname) " +
+            "AND (cast(:btcAddress as TEXT) IS NULL OR btc_address = :btcAddress) " +
+            "AND (cast(:status as TEXT) IS NULL OR status = :status) " +
+            "AND (cast(:dateCreated as DATE) IS NULL OR to_char(date_created, 'YYYY-MM-DD') = :dateCreated) " +
+            "AND (cast(:dateUpdated as DATE) IS NULL OR to_char(date_updated, 'YYYY-MM-DD') = :dateUpdated) "
 
-);
+            , nativeQuery = true)
+    List<UserPunter> findUserPunterByFilter(
+            @Param(UserPunterConstantes.ID) Long id,
+            @Param(UserPunterConstantes.NICKNAME) String nickname,
+            @Param(UserPunterConstantes.BTCADDRESS) String btcAddress,
+            @Param(UserPunterConstantes.STATUS) String status,
+            @Param(UserPunterConstantes.DATECREATED) String dateCreated,
+            @Param(UserPunterConstantes.DATEUPDATED) String dateUpdated
 
-     @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE id_user_punter = :id AND status = :status ", nativeQuery = true)
+    );
+
+
+    @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE id_user_punter = :id AND status = :status ", nativeQuery = true)
      Long loadMaxIdByIdAndStatus(Long id, String status);
      @Query(value = "SELECT MAX(id_user_punter) AS maxid FROM user_punter WHERE nickname = :nickname AND status = :status ", nativeQuery = true)
      Long loadMaxIdByNicknameAndStatus(String nickname, String status);

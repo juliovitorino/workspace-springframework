@@ -187,90 +187,91 @@ public class UserPunterServiceImpl implements UserPunterService
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
+    @Override
+    @Transactional(transactionManager="transactionManager",
+            propagation = Propagation.REQUIRED,
+            rollbackFor = Throwable.class,
+            noRollbackFor = UserPunterNotFoundException.class
+    )
+    public Map<String, Object> findPageByFilter(RequestFilter filtro) {
+        List<UserPunter> lstUserPunter;
+        Long id = null;
+        String nickname = null;
+        String btcAddress = null;
+        String status = null;
+        String dateCreated = null;
+        String dateUpdated = null;
 
-@Override
-@Transactional(transactionManager="transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class,
-    noRollbackFor = UserPunterNotFoundException.class
-)
-public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<UserPunter> lstUserPunter;
-    Long id = null;
-    String nickname = null;
-    String btcAddress = null;
-    String status = null;
-    Date dateCreated = null;
-    Date dateUpdated = null;
 
+        for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.NICKNAME)) nickname = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.BTCADDRESS)) btcAddress = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.STATUS)) status = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATECREATED)) dateCreated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATEUPDATED)) dateUpdated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
 
-    for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.NICKNAME)) nickname = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.BTCADDRESS)) btcAddress = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.STATUS)) status = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
+        }
 
+        Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
+        Page<UserPunter> paginaUserPunter = userpunterRepository.findUserPunterByFilter(paging,
+                id
+                ,nickname
+                ,btcAddress
+                ,status
+                ,dateCreated
+                ,dateUpdated
+
+        );
+
+        lstUserPunter = paginaUserPunter.getContent();
+        Map<String,Object> response = new HashMap<>();
+        response.put("currentPage", paginaUserPunter.getNumber());
+        response.put("totalItems", paginaUserPunter.getTotalElements());
+        response.put("totalPages", paginaUserPunter.getTotalPages());
+        response.put("pageUserPunterItems", lstUserPunter.stream().map(this::toDTO).collect(Collectors.toList()));
+        return response;
     }
-
-    Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
-    Page<UserPunter> paginaUserPunter = userpunterRepository.findUserPunterByFilter(paging,
-        id
-        ,nickname
-        ,btcAddress
-        ,status
-        ,dateCreated
-        ,dateUpdated
-
-    );
-
-    lstUserPunter = paginaUserPunter.getContent();
-    Map<String,Object> response = new HashMap<>();
-    response.put("currentPage", paginaUserPunter.getNumber());
-    response.put("totalItems", paginaUserPunter.getTotalElements());
-    response.put("totalPages", paginaUserPunter.getTotalPages());
-    response.put("pageUserPunterItems", lstUserPunter.stream().map(this::toDTO).collect(Collectors.toList()));
-    return response;
-}
 
 
     @Override
-@Transactional(transactionManager="transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class,
-    noRollbackFor = UserPunterNotFoundException.class
-)
+    @Transactional(transactionManager="transactionManager",
+            propagation = Propagation.REQUIRED,
+            rollbackFor = Throwable.class,
+            noRollbackFor = UserPunterNotFoundException.class
+    )
     public List<UserPunterDTO> findAllByFilter(RequestFilter filtro) {
-    Long id = null;
-    String nickname = null;
-    String btcAddress = null;
-    String status = null;
-    Date dateCreated = null;
-    Date dateUpdated = null;
+        Long id = null;
+        String nickname = null;
+        String btcAddress = null;
+        String status = null;
+        String dateCreated = null;
+        String dateUpdated = null;
 
         for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.NICKNAME)) nickname = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.BTCADDRESS)) btcAddress = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.STATUS)) status = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.NICKNAME)) nickname = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.BTCADDRESS)) btcAddress = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.STATUS)) status = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATECREATED)) dateCreated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(UserPunterConstantes.DATEUPDATED)) dateUpdated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+
 
         }
 
         List<UserPunter> lstUserPunter = userpunterRepository.findUserPunterByFilter(
-            id
-            ,nickname
-            ,btcAddress
-            ,status
-            ,dateCreated
-            ,dateUpdated
+                id
+                ,nickname
+                ,btcAddress
+                ,status
+                ,dateCreated
+                ,dateUpdated
 
         );
 
         return lstUserPunter.stream().map(this::toDTO).collect(Collectors.toList());
     }
+
 
     @Override
     @Transactional(transactionManager="transactionManager",

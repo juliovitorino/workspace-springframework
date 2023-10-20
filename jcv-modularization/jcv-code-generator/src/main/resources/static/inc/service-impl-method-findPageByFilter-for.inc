@@ -1,1 +1,1 @@
-        if(entry.getKey().equalsIgnoreCase(${classebase}Constantes.${CCdto})) ${dto} = (${tipodart}) entry.getValue() ;
+        if(entry.getKey().equalsIgnoreCase(${classebase}Constantes.${CCdto})) ${dto} = Objects.isNull(entry.getValue()) ? null : ${value-of};

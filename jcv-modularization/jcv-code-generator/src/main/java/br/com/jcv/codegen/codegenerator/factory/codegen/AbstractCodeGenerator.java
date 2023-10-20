@@ -6,6 +6,7 @@ import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
+import br.com.jcv.codegen.codegenerator.enums.FieldTypeConverterEnum;
 import br.com.jcv.codegen.codegenerator.enums.FieldTypeEnum;
 import br.com.jcv.codegen.codegenerator.enums.IncludeExtraCommandEnum;
 import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
@@ -367,12 +368,20 @@ public abstract class AbstractCodeGenerator {
             newContent = newContent.replaceAll(CodeGeneratorTags.UDTO.getTag(), field.getFieldReferenceInDto().toUpperCase());
             newContent = newContent.replaceAll(CodeGeneratorTags.CCDTO.getTag(), camelCase(field.getFieldReferenceInDto()));
             newContent = newContent.replaceAll(CodeGeneratorTags.DTO.getTag(), field.getFieldReferenceInDto());
+            newContent = newContent.replaceAll(CodeGeneratorTags.CONVERT_FROM_FIELDTYPE_TO_FINDBYFILTERTYPE.getTag(),
+                    (FieldTypeConverterEnum.fromFieldType(field.getFieldType())).getFindByFilterType());
+            newContent = newContent.replaceAll(CodeGeneratorTags.CONVERT_FROM_FIELDTYPE_TO_VALUEOF.getTag(),
+                    (FieldTypeConverterEnum.fromFieldType(field.getFieldType())).getValueOf());
+            newContent = newContent.replaceAll(CodeGeneratorTags.CONVERT_FROM_FIELDTYPE_TO_CASTVALUE.getTag(),
+                    (FieldTypeConverterEnum.fromFieldType(field.getFieldType())).getCastType());
             switch (FieldTypeEnum.fromType(field.getFieldType())) {
                 case Long:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
                     break;
 
                 case Date:
@@ -380,6 +389,8 @@ public abstract class AbstractCodeGenerator {
                             "Date.from(LocalDate.of(2025,10,7).atStartOfDay(ZoneId.systemDefault()).toInstant())");
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             "Date.from(LocalDate.of(2027,7,25).atStartOfDay(ZoneId.systemDefault()).toInstant())");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            "to_char(" + field.getFieldTableName() + ", 'YYYY-MM-DD')");
                     break;
 
 
@@ -388,6 +399,8 @@ public abstract class AbstractCodeGenerator {
                             Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
                     break;
 
 
@@ -402,6 +415,8 @@ public abstract class AbstractCodeGenerator {
                                     '"' + UUID.randomUUID().toString() + '"'+
                             ")"
                     );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
                     break;
 
                 case String:
@@ -415,6 +430,8 @@ public abstract class AbstractCodeGenerator {
                             StringUtility.getRandomCodeNumberUpperLower(50)+
                                     '"'
                     );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
                     break;
 
                 case LocalDate:
@@ -428,6 +445,8 @@ public abstract class AbstractCodeGenerator {
                              + StringUtility.getRandomMonth() + ","
                              + StringUtility.getRandomDay() + ")"
                     );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            "to_char(" + field.getFieldTableName() + ", 'YYYY-MM-DD')");
                     break;
 
             }

@@ -180,83 +180,98 @@ public class BetObjectServiceImpl implements BetObjectService
                 .collect(Collectors.toList());
     }
 
-@Override
-@Transactional(transactionManager="transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class,
-    noRollbackFor = BetObjectNotFoundException.class
-)
-public Map<String, Object> findPageByFilter(RequestFilter filtro) {
-    List<BetObject> lstBetObject;
-    Long id = null;
-    String who = null;
-    UUID externalUUID = null;
-    String status = null;
-    Date dateCreated = null;
-    Date dateUpdated = null;
 
-    for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.WHO)) who = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.EXTERNALUUID)) externalUUID = (UUID) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.STATUS)) status = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
+    @Override
+    @Transactional(transactionManager="transactionManager",
+            propagation = Propagation.REQUIRED,
+            rollbackFor = Throwable.class,
+            noRollbackFor = BetObjectNotFoundException.class
+    )
+    public Map<String, Object> findPageByFilter(RequestFilter filtro) {
+        List<BetObject> lstBetObject;
+        Long id = null;
+        String who = null;
+        UUID externalUUID = null;
+        Double jackpot = null;
+        Double jackpotPending = null;
+        String status = null;
+        String dateCreated = null;
+        String dateUpdated = null;
 
+
+        for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.WHO)) who = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.EXTERNALUUID)) externalUUID = Objects.isNull(entry.getValue()) ? null : UUID.fromString(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.JACKPOT)) jackpot = Objects.isNull(entry.getValue()) ? null : Double.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.JACKPOTPENDING)) jackpotPending = Objects.isNull(entry.getValue()) ? null : Double.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.STATUS)) status = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATECREATED)) dateCreated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATEUPDATED)) dateUpdated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+
+        }
+
+        Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
+        Page<BetObject> paginaBetObject = betobjectRepository.findBetObjectByFilter(paging,
+                id
+                ,who
+                ,externalUUID
+                ,jackpot
+                ,jackpotPending
+                ,status
+                ,dateCreated
+                ,dateUpdated
+
+        );
+
+        lstBetObject = paginaBetObject.getContent();
+        Map<String,Object> response = new HashMap<>();
+        response.put("currentPage", paginaBetObject.getNumber());
+        response.put("totalItems", paginaBetObject.getTotalElements());
+        response.put("totalPages", paginaBetObject.getTotalPages());
+        response.put("pageBetObjectItems", lstBetObject.stream().map(this::toDTO).collect(Collectors.toList()));
+        return response;
     }
-
-    Pageable paging = PageRequest.of(filtro.getPagina(), filtro.getQtdeRegistrosPorPagina());
-    Page<BetObject> paginaBetObject = betobjectRepository.findBetObjectByFilter(paging,
-        id
-        ,who
-        ,externalUUID
-        ,status
-        ,dateCreated
-        ,dateUpdated
-
-    );
-
-    lstBetObject = paginaBetObject.getContent();
-    Map<String,Object> response = new HashMap<>();
-    response.put("currentPage", paginaBetObject.getNumber());
-    response.put("totalItems", paginaBetObject.getTotalElements());
-    response.put("totalPages", paginaBetObject.getTotalPages());
-    response.put("pageBetObjectItems", lstBetObject.stream().map(this::toDTO).collect(Collectors.toList()));
-    return response;
-}
 
 
     @Override
-@Transactional(transactionManager="transactionManager",
-    propagation = Propagation.REQUIRED,
-    rollbackFor = Throwable.class,
-    noRollbackFor = BetObjectNotFoundException.class
-)
+    @Transactional(transactionManager="transactionManager",
+            propagation = Propagation.REQUIRED,
+            rollbackFor = Throwable.class,
+            noRollbackFor = BetObjectNotFoundException.class
+    )
     public List<BetObjectDTO> findAllByFilter(RequestFilter filtro) {
-    Long id = null;
-    String who = null;
-    UUID externalUUID = null;
-    String status = null;
-    Date dateCreated = null;
-    Date dateUpdated = null;
+        Long id = null;
+        String who = null;
+        UUID externalUUID = null;
+        Double jackpot = null;
+        Double jackpotPending = null;
+        String status = null;
+        String dateCreated = null;
+        String dateUpdated = null;
 
         for (Map.Entry<String,Object> entry : filtro.getCamposFiltro().entrySet()) {
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.ID)) id = (Long) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.WHO)) who = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.EXTERNALUUID)) externalUUID = (UUID) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.STATUS)) status = (String) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATECREATED)) dateCreated = (Date) entry.getValue() ;
-        if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATEUPDATED)) dateUpdated = (Date) entry.getValue() ;
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.ID)) id = Objects.isNull(entry.getValue()) ? null : Long.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.WHO)) who = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.EXTERNALUUID)) externalUUID = Objects.isNull(entry.getValue()) ? null : UUID.fromString(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.JACKPOT)) jackpot = Objects.isNull(entry.getValue()) ? null : Double.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.JACKPOTPENDING)) jackpotPending = Objects.isNull(entry.getValue()) ? null : Double.valueOf(entry.getValue().toString());
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.STATUS)) status = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATECREATED)) dateCreated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+            if(entry.getKey().equalsIgnoreCase(BetObjectConstantes.DATEUPDATED)) dateUpdated = Objects.isNull(entry.getValue()) ? null : entry.getValue().toString();
+
 
         }
 
         List<BetObject> lstBetObject = betobjectRepository.findBetObjectByFilter(
-            id
-            ,who
-            ,externalUUID
-            ,status
-            ,dateCreated
-            ,dateUpdated
+                id
+                ,who
+                ,externalUUID
+                ,jackpot
+                ,jackpotPending
+                ,status
+                ,dateCreated
+                ,dateUpdated
 
         );
 
