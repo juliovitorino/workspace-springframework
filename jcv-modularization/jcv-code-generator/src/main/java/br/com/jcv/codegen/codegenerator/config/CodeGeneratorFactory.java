@@ -1,4 +1,5 @@
-package com.jwick.continental.deathagreement.config;
+package br.com.jcv.codegen.codegenerator.config;
+import br.com.jcv.codegen.codegenerator.component.CodeGeneratorMainStream;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorBatch;
 import br.com.jcv.codegen.codegenerator.factory.codegen.ICodeGeneratorIndividual;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorAbstractAnalyser;
@@ -31,7 +32,6 @@ import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServic
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorServiceImplTest;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorSwaggerConfig;
 import br.com.jcv.codegen.codegenerator.factory.codegen.java.CodeGeneratorTansactionJpaConfig;
-import com.jwick.continental.deathagreement.controller.v1.business.codegen.CodeGeneratorMainStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

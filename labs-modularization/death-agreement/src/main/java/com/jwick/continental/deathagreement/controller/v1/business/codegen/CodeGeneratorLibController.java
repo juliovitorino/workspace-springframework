@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/death-agreement")
-public class CodeGeneratorController {
+public class CodeGeneratorLibController {
 
     @Autowired
     private @Qualifier("CodeGeneratorMainStreamInstance") ICodeGeneratorBatch generatorMainStream;

@@ -7,7 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
 		"com.jwick.continental.deathagreement",
-		"br.com.jcv.commons.library"
+		"br.com.jcv.commons.library",
+		"br.com.jcv.codegen.codegenerator"
 })
 public class DeathAgreementApplication {
 
