@@ -1,4 +1,4 @@
-package com.jwick.continental.deathagreement.controller.v1.business.codegen;
+package br.com.jcv.codegen.codegenerator.component;
 
 import br.com.jcv.codegen.codegenerator.dto.WritableCode;
 import br.com.jcv.codegen.codegenerator.factory.codegen.AbstractCodeGenerator;
