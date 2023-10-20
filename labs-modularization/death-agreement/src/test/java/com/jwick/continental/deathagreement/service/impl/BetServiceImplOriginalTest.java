@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,26 @@ public class BetServiceImplOriginalTest {
         dateUtilityMockedStatic.close();
     }
 
+    @Test
+    public void showReturnListOfBetWhenAskedForFindAllByStatus() {
+        // scenario
+        List<Bet> listOfBetModelMock = new ArrayList<>();
+        listOfBetModelMock.add(BetModelBuilder.newBetModelTestBuilder()
+                .idBetObject(1L)
+                .now());
+        listOfBetModelMock.add(BetModelBuilder.newBetModelTestBuilder()
+                .idBetObject(2L)
+                .now());
+
+        Mockito.when(betRepositoryMock.findAllByStatus("A")).thenReturn(listOfBetModelMock);
+
+        // action
+        List<BetDTO> listOfBets = betService.findAllByStatus("A");
+
+        // validate
+        Assertions.assertTrue(!listOfBets.isEmpty());
+        Assertions.assertEquals(2, listOfBets.size());
+    }
     @Test
     public void showReturnExistingBetDTOWhenFindBetByIdAndStatusActiveAnonimous() {
         // scenario

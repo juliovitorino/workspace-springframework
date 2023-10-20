@@ -41,9 +41,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -371,6 +374,14 @@ public abstract class AbstractCodeGenerator {
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
                     break;
+
+                case Date:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            "Date.from(LocalDate.of(2025,10,7).atStartOfDay(ZoneId.systemDefault()).toInstant())");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            "Date.from(LocalDate.of(2027,7,25).atStartOfDay(ZoneId.systemDefault()).toInstant())");
+                    break;
+
 
                 case Double:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),

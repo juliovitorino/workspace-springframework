@@ -24,10 +24,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -65,7 +68,22 @@ public class ${classebase}ServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+    @Test
+    public void showReturnListOf${classebase}WhenAskedForFindAllByStatus() {
+        // scenario
+        List<${classebase}> listOf${classebase}ModelMock = new ArrayList<>();
+        listOf${classebase}ModelMock.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        listOf${classebase}ModelMock.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
 
+        Mockito.when(${lclassebase}RepositoryMock.findAllByStatus("A")).thenReturn(listOf${classebase}ModelMock);
+
+        // action
+        List<${classebase}DTO> listOf${classebase}s = ${lclassebase}Service.findAllByStatus("A");
+
+        // validate
+        Assertions.assertTrue(!listOf${classebase}s.isEmpty());
+        Assertions.assertEquals(2, listOf${classebase}s.size());
+    }
     @Test
     public void shouldReturn${classebase}NotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
         // scenario
