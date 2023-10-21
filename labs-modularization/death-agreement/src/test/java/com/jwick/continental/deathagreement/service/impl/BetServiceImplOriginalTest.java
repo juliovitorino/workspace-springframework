@@ -1,5 +1,6 @@
 package com.jwick.continental.deathagreement.service.impl;
 
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.utility.DateTime;
 import br.com.jcv.commons.library.utility.DateUtility;
 import com.jwick.continental.deathagreement.builder.BetDTOBuilder;
@@ -20,6 +21,9 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
@@ -30,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -71,6 +76,89 @@ public class BetServiceImplOriginalTest {
         dateUtilityMockedStatic.close();
     }
 
+    @Test
+    public void shouldReturnMapWithBetListWhenFindPageByFilterIsCalled() {
+        // scenario
+        Long id = null;
+        Long idPunter = null;
+        Long idBetObject = null;
+        Double bet = null;
+        String bitcoinAddress = null;
+        UUID ticket = null;
+        String deathDate = null;
+        String status = "A";
+        String dateCreated = null;
+        String dateUpdated = null;
+
+        Map<String, Object> mapFieldsRequestMock = new HashMap<>();
+        mapFieldsRequestMock.put("id", id);
+        mapFieldsRequestMock.put("idPunter", idPunter);
+        mapFieldsRequestMock.put("idBetObject", idBetObject);
+        mapFieldsRequestMock.put("bet", bet);
+        mapFieldsRequestMock.put("bitcoinAddress", bitcoinAddress);
+        mapFieldsRequestMock.put("ticket", ticket);
+        mapFieldsRequestMock.put("deathDate", deathDate);
+        mapFieldsRequestMock.put("status", status);
+        mapFieldsRequestMock.put("dateCreated", dateCreated);
+        mapFieldsRequestMock.put("dateUpdated", dateUpdated);
+
+        RequestFilter requestFilterMock = new RequestFilter();
+        requestFilterMock.setQtdeRegistrosPorPagina(25);
+        requestFilterMock.setOrdemAsc(true);
+        requestFilterMock.setPagina(0);
+        requestFilterMock.setCamposFiltro(mapFieldsRequestMock);
+
+        List<Bet> betsFromRepository = new ArrayList<>();
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+
+        List<BetDTO> betsFiltered = betsFromRepository
+                .stream()
+                .map(m->betService.toDTO(m))
+                .collect(Collectors.toList());
+
+        Map<String,Object> mapResponseMock = new HashMap<>();
+        mapResponseMock.put("currentPage", 0);
+        mapResponseMock.put("totalItems", 4);
+        mapResponseMock.put("totalPages", 1);
+        mapResponseMock.put("pageBetItems", betsFiltered);
+
+        Pageable pageableMock = PageRequest.of(0,25);
+
+        PageImpl<Bet> pagedResponse =
+                new PageImpl<>(betsFromRepository,
+                        pageableMock,
+                        betsFromRepository.size());
+
+        Mockito.when(betRepositoryMock.findBetByFilter(pageableMock,
+            id,
+            idPunter,
+            idBetObject,
+            bet,
+            bitcoinAddress,
+            ticket,
+            deathDate,
+            status,
+            dateCreated,
+            dateUpdated
+        )).thenReturn(pagedResponse);
+
+        // action
+        Map<String, Object> result = betService.findPageByFilter(requestFilterMock);
+
+        // validate
+        Long currentPage = Long.valueOf(result.get("currentPage").toString());
+        Long totalItems = Long.valueOf(result.get("totalItems").toString());
+        Long totalPages = Long.valueOf(result.get("totalPages").toString());
+        List<BetDTO> betsResult = (List<BetDTO>) result.get("pageBetItems");
+
+        Assertions.assertEquals(0L, currentPage);
+        Assertions.assertEquals(4L, totalItems);
+        Assertions.assertEquals(1L, totalPages);
+        Assertions.assertEquals(4L, betsResult.size());
+    }
     @Test
     public void showReturnListOfBetWhenAskedForFindAllByStatus() {
         // scenario

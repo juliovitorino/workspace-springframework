@@ -29,6 +29,7 @@ public enum CodeGeneratorTags {
     NOW("\\$\\{now\\}"),
     AGORA("\\$\\{agora\\}"),
     MAGIC_CONTENT("\\$\\{magic-content\\}"),
+    MAGIC_CONTENT_FILTER("\\$\\{magic-content-filter\\}"),
     MAGIC_CONTENT_LONG("\\$\\{magic-content-long\\}"),
     MAGIC_CONTENT_SECONDARY("\\$\\{magic-content-secondary\\}"),
     CONVERT_FROM_FIELDTYPE_TO_FINDBYFILTERTYPE("\\$\\{convert-from-field-type-to-find-by-filter-type\\}"),

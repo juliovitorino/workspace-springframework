@@ -378,6 +378,8 @@ public abstract class AbstractCodeGenerator {
                 case Long:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
                     newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
@@ -387,6 +389,8 @@ public abstract class AbstractCodeGenerator {
                 case Date:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
                             "Date.from(LocalDate.of(2025,10,7).atStartOfDay(ZoneId.systemDefault()).toInstant())");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            '"' +"2025-10-07" + '"');
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             "Date.from(LocalDate.of(2027,7,25).atStartOfDay(ZoneId.systemDefault()).toInstant())");
                     newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
@@ -397,6 +401,8 @@ public abstract class AbstractCodeGenerator {
                 case Double:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
                     newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
@@ -406,9 +412,14 @@ public abstract class AbstractCodeGenerator {
 
                 case UUID:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
-                                    "UUID.fromString(" +
+                            "UUID.fromString(" +
                                     '"' + UUID.randomUUID().toString() + '"'+
-                            ")"
+                                    ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            "UUID.fromString(" +
+                                    '"' + UUID.randomUUID().toString() + '"'+
+                                    ")"
                     );
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                                     "UUID.fromString(" +
@@ -422,8 +433,13 @@ public abstract class AbstractCodeGenerator {
                 case String:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
                             '"' +
-                            StringUtility.getRandomCodeNumberUpperLower(50)+
+                                    StringUtility.getRandomCodeNumberUpperLower(50)+
                                     '"'
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                        '"' +
+                                StringUtility.getRandomCodeNumberUpperLower(50)+
+                                '"'
                     );
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             '"' +
@@ -439,6 +455,9 @@ public abstract class AbstractCodeGenerator {
                             "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
                              + StringUtility.getRandomMonth() + ","
                              + StringUtility.getRandomDay() + ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            '"' +"2025-10-07" + '"'
                     );
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
                             "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
