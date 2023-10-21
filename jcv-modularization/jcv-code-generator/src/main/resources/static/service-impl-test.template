@@ -1,6 +1,7 @@
 #include_once static/inc/open-source-copyright-mit.inc
 package ${package}.service.impl;
 
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.utility.DateTime;
 import br.com.jcv.commons.library.utility.DateUtility;
 import ${package}.builder.${classebase}DTOBuilder;
@@ -22,6 +23,9 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -33,6 +37,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -61,6 +66,8 @@ public class ${classebase}ServiceImplTest {
 
         uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
         dateUtilityMockedStatic = Mockito.mockStatic(DateUtility.class, Mockito.RETURNS_DEEP_STUBS);
+
+        uuidMockedStatic.when(() -> UUID.fromString(Mockito.anyString())).thenReturn(uuidMock);
     }
 
     @AfterAll
@@ -68,6 +75,65 @@ public class ${classebase}ServiceImplTest {
         uuidMockedStatic.close();
         dateUtilityMockedStatic.close();
     }
+
+    @Test
+    public void shouldReturnMapWith${classebase}ListWhenFindPageByFilterIsCalled() {
+        // scenario
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-variables.inc
+
+        Map<String, Object> mapFieldsRequestMock = new HashMap<>();
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-map.inc
+
+        RequestFilter requestFilterMock = new RequestFilter();
+        requestFilterMock.setQtdeRegistrosPorPagina(25);
+        requestFilterMock.setOrdemAsc(true);
+        requestFilterMock.setPagina(0);
+        requestFilterMock.setCamposFiltro(mapFieldsRequestMock);
+
+        List<${classebase}> ${lclassebase}sFromRepository = new ArrayList<>();
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+
+        List<${classebase}DTO> ${lclassebase}sFiltered = ${lclassebase}sFromRepository
+                .stream()
+                .map(m->${lclassebase}Service.toDTO(m))
+                .collect(Collectors.toList());
+
+        Map<String,Object> mapResponseMock = new HashMap<>();
+        mapResponseMock.put("currentPage", 0);
+        mapResponseMock.put("totalItems", 4);
+        mapResponseMock.put("totalPages", 1);
+        mapResponseMock.put("page${classebase}Items", ${lclassebase}sFiltered);
+
+        Pageable pageableMock = PageRequest.of(0,25);
+
+        PageImpl<${classebase}> pagedResponse =
+                new PageImpl<>(${lclassebase}sFromRepository,
+                        pageableMock,
+                        ${lclassebase}sFromRepository.size());
+
+        Mockito.when(${lclassebase}RepositoryMock.find${classebase}ByFilter(pageableMock,
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-pageable.inc && excludeCharAtEndOfLineFromLastField[+,]
+        )).thenReturn(pagedResponse);
+
+        // action
+        Map<String, Object> result = ${lclassebase}Service.findPageByFilter(requestFilterMock);
+
+        // validate
+        Long currentPage = Long.valueOf(result.get("currentPage").toString());
+        Long totalItems = Long.valueOf(result.get("totalItems").toString());
+        Long totalPages = Long.valueOf(result.get("totalPages").toString());
+        List<${classebase}DTO> ${lclassebase}sResult = (List<${classebase}DTO>) result.get("page${classebase}Items");
+
+        Assertions.assertEquals(0L, currentPage);
+        Assertions.assertEquals(4L, totalItems);
+        Assertions.assertEquals(1L, totalPages);
+        Assertions.assertEquals(4L, ${lclassebase}sResult.size());
+    }
+
+
     @Test
     public void showReturnListOf${classebase}WhenAskedForFindAllByStatus() {
         // scenario
