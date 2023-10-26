@@ -76,6 +76,65 @@ public class BetServiceImplOriginalTest {
         dateUtilityMockedStatic.close();
     }
 
+
+    @Test
+    public void shouldReturnListOfBetWhenFindAllByFilterIsCalled() {
+        // scenario
+        Long id = null;
+        Long idPunter = null;
+        Long idBetObject = null;
+        Double bet = null;
+        String bitcoinAddress = null;
+        UUID ticket = null;
+        String deathDate = null;
+        String status = "A";
+        String dateCreated = null;
+        String dateUpdated = null;
+
+        Map<String, Object> mapFieldsRequestMock = new HashMap<>();
+        mapFieldsRequestMock.put("id", id);
+        mapFieldsRequestMock.put("idPunter", idPunter);
+        mapFieldsRequestMock.put("idBetObject", idBetObject);
+        mapFieldsRequestMock.put("bet", bet);
+        mapFieldsRequestMock.put("bitcoinAddress", bitcoinAddress);
+        mapFieldsRequestMock.put("ticket", ticket);
+        mapFieldsRequestMock.put("deathDate", deathDate);
+        mapFieldsRequestMock.put("status", status);
+        mapFieldsRequestMock.put("dateCreated", dateCreated);
+        mapFieldsRequestMock.put("dateUpdated", dateUpdated);
+
+        RequestFilter requestFilterMock = new RequestFilter();
+        requestFilterMock.setQtdeRegistrosPorPagina(0);
+        requestFilterMock.setOrdemAsc(true);
+        requestFilterMock.setPagina(0);
+        requestFilterMock.setCamposFiltro(mapFieldsRequestMock);
+
+        List<Bet> betsFromRepository = new ArrayList<>();
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+        betsFromRepository.add(BetModelBuilder.newBetModelTestBuilder().now());
+
+        Mockito.when(betRepositoryMock.findBetByFilter(
+                id,
+                idPunter,
+                idBetObject,
+                bet,
+                bitcoinAddress,
+                ticket,
+                deathDate,
+                status,
+                dateCreated,
+                dateUpdated
+        )).thenReturn(betsFromRepository);
+
+        // action
+        List<BetDTO> result = betService.findAllByFilter(requestFilterMock);
+
+        // validate
+        Assertions.assertEquals(4L, result.size());
+    }
+
     @Test
     public void shouldReturnMapWithBetListWhenFindPageByFilterIsCalled() {
         // scenario
