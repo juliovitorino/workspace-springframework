@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-* ${classebase}Controller - Controller for ${classebase} API
+* ${classebase}CommoditieController - Controller for ${classebase} API
 *
 * @author ${autor}
 * @since ${agora}
@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/v1/api/${lclassebase}")
-public class ${classebase}Controller
+public class ${classebase}CommoditieController
 {
      @Autowired private ${classebase}Service ${lclassebase}Service;
 
