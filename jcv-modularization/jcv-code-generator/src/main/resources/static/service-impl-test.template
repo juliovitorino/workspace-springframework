@@ -76,6 +76,40 @@ public class ${classebase}ServiceImplTest {
         dateUtilityMockedStatic.close();
     }
 
+
+    @Test
+    public void shouldReturnListOf${classebase}WhenFindAllByFilterIsCalled() {
+        // scenario
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-variables.inc
+
+        Map<String, Object> mapFieldsRequestMock = new HashMap<>();
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-map.inc
+
+        RequestFilter requestFilterMock = new RequestFilter();
+        requestFilterMock.setQtdeRegistrosPorPagina(0);
+        requestFilterMock.setOrdemAsc(true);
+        requestFilterMock.setPagina(0);
+        requestFilterMock.setCamposFiltro(mapFieldsRequestMock);
+
+        List<${classebase}> ${lclassebase}sFromRepository = new ArrayList<>();
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+
+        Mockito.when(${lclassebase}RepositoryMock.find${classebase}ByFilter(
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-pageable.inc && excludeCharAtEndOfLineFromLastField[+,]
+        )).thenReturn(${lclassebase}sFromRepository);
+
+        // action
+        List<${classebase}> result = ${lclassebase}Service.findAllByFilter(requestFilterMock);
+
+        // validate
+        Assertions.assertEquals(4L, result.size());
+    }
+
+
+
     @Test
     public void shouldReturnMapWith${classebase}ListWhenFindPageByFilterIsCalled() {
         // scenario

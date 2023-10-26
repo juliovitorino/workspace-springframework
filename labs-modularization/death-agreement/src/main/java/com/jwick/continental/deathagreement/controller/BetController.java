@@ -26,6 +26,7 @@ import br.com.jcv.commons.library.commodities.dto.RequestFilter;
 import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
 
 import com.jwick.continental.deathagreement.dto.BetDTO;
+import com.jwick.continental.deathagreement.model.Bet;
 import com.jwick.continental.deathagreement.service.BetService;
 import com.jwick.continental.deathagreement.exception.BetNotFoundException;
 import com.jwick.continental.deathagreement.constantes.BetConstantes;
@@ -112,6 +113,22 @@ public class BetController
         }
     }
 
+
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Indica que o processo Bet foi executado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu algum problema inesperado"),
+    })
+
+    @GetMapping("/findAllByFilter")
+    public ResponseEntity<List<BetDTO>> findAllByFilter(@RequestBody RequestFilter filtro) {
+        try{
+            List<BetDTO> response = betService.findAllByFilter(filtro);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     @ApiResponses({
