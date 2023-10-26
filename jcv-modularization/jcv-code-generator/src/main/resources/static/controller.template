@@ -82,6 +82,16 @@ public class ${classebase}Controller
         }
     }
 
+#include_once static/inc/controller-swagger-annotations.inc
+    @GetMapping("/findAllByFilter")
+    public ResponseEntity<List<${classebase}DTO>> findAll${classebase}ByFilter(@RequestBody RequestFilter filtro) {
+        try{
+            List<${classebase}DTO> response = ${lclassebase}Service.findAllByFilter(filtro);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 #include_once static/inc/controller-swagger-annotations.inc
