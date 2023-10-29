@@ -8,10 +8,10 @@ import java.util.Arrays;
 
 @Getter
 public enum TargetFileEnum {
-    CodeGeneratorTansactionJpaConfig("CodeGeneratorTansactionJpaConfig", "/config/TansactionJpaConfig"),
+    CodeGeneratorTansactionJpaConfig("CodeGeneratorTansactionJpaConfig", "/config/TransactionJPAConfig"),
     CodeGeneratorBuilderModel("CodeGeneratorBuilderModel", "/builder/${classebase}ModelBuilder"),
     CodeGeneratorBuilder("CodeGeneratorBuilder", "/builder/${classebase}DTOBuilder"),
-    CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}Controller"),
+    CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}CommoditieController"),
     CodeGeneratorServiceImpl("CodeGeneratorServiceImpl", "/service/impl/${classebase}ServiceImpl"),
     CodeGeneratorServiceImplTest("CodeGeneratorServiceImplTest", "/service/impl/${classebase}ServiceImplTest"),
     CodeGeneratorService("CodeGeneratorService", "/service/${classebase}Service"),
