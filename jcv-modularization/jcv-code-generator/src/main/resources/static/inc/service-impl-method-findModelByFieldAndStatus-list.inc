@@ -16,7 +16,7 @@
                         HttpStatus.NOT_FOUND,
                         ${Uclassebase}_NOTFOUND_WITH_${Udto} + ${dto}))
                 );
-        return ${lclassebase}Data.isPresent() ? this.toDTO(${lclassebase}Data.get()) : null ;
+        return ${lclassebase}Data.map(this::toDTO).orElse(null);
     }
 
     @Override

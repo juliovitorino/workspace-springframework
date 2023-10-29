@@ -102,7 +102,7 @@ public class ${classebase}ServiceImplTest {
         )).thenReturn(${lclassebase}sFromRepository);
 
         // action
-        List<${classebase}> result = ${lclassebase}Service.findAllByFilter(requestFilterMock);
+        List<${classebase}DTO> result = ${lclassebase}Service.findAllByFilter(requestFilterMock);
 
         // validate
         Assertions.assertEquals(4L, result.size());
