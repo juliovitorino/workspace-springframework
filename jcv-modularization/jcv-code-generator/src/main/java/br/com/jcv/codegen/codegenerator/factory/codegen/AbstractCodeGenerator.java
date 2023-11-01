@@ -377,11 +377,11 @@ public abstract class AbstractCodeGenerator {
                     break;
                 case Integer:
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
-                            StringUtility.getRandomCodeNumber(5));
+                            String.valueOf(Integer.valueOf(StringUtility.getRandomCodeNumber(5))));
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
-                            StringUtility.getRandomCodeNumber(5));
+                            String.valueOf(Integer.valueOf(StringUtility.getRandomCodeNumber(5))));
                     newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
-                            StringUtility.getRandomCodeNumber(5));
+                            String.valueOf(Integer.valueOf(StringUtility.getRandomCodeNumber(5))));
                     newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
                             field.getFieldTableName());
                     break;
@@ -553,7 +553,6 @@ public abstract class AbstractCodeGenerator {
         fieldDescriptor.setFieldName(fieldItem.getName());
         String typeName = fieldItem.getType().getTypeName();
         fieldDescriptor.setFieldType(typeName.substring(typeName.lastIndexOf(".")+1));
-        log.info("getFieldDescriptor :: field type -> {}", typeName);
         fieldDescriptor.setFieldReferenceInDto(codeGeneratorFieldDescriptor.fieldReferenceInDto().isEmpty()
                 ?  fieldItem.getName()
                 : codeGeneratorFieldDescriptor.fieldReferenceInDto());
