@@ -1,6 +1,6 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
-package ${package}.enums;
+package br.com.jcv.commons.library.commodities.enums;
 
 import lombok.Getter;
 

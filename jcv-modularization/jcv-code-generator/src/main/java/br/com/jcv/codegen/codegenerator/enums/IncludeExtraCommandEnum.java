@@ -1,7 +1,6 @@
 package br.com.jcv.codegen.codegenerator.enums;
 
 import lombok.Getter;
-import org.h2.command.Command;
 
 import java.util.Arrays;
 

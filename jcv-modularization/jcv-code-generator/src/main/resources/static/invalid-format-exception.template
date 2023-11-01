@@ -1,7 +1,8 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
-package ${package}.exception;
+package br.com.jcv.commons.library.commodities.exception;
 
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
 import org.springframework.http.HttpStatus;
 
 import java.util.HashMap;

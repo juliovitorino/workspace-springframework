@@ -2,13 +2,15 @@
 
 package ${package}.controller;
 
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.commodities.enums.GenericStatusEnums;
+
 import ${package}.dto.${classebase}DTO;
 import ${package}.service.${classebase}Service;
-import ${package}.dto.RequestFilter;
 import ${package}.exception.${classebase}NotFoundException;
-import ${package}.exception.CommoditieBaseException;
-import ${package}.enums.GenericStatusEnums;
 import ${package}.constantes.${classebase}Constantes;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,24 +26,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import javax.validation.Valid;
 
 /**
-* ${classebase}Controller - Controller for ${classebase} API
+* ${classebase}CommoditieController - Controller for ${classebase} API
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino
 */
 
 @Slf4j
 @RestController
 @RequestMapping("/v1/api/${lclassebase}")
-public class ${classebase}Controller
+public class ${classebase}CommoditieController
 {
      @Autowired private ${classebase}Service ${lclassebase}Service;
 
@@ -81,6 +82,16 @@ public class ${classebase}Controller
         }
     }
 
+#include_once static/inc/controller-swagger-annotations.inc
+    @GetMapping("/findAllByFilter")
+    public ResponseEntity<List<${classebase}DTO>> findAll${classebase}ByFilter(@RequestBody RequestFilter filtro) {
+        try{
+            List<${classebase}DTO> response = ${lclassebase}Service.findAllByFilter(filtro);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 #include_once static/inc/controller-swagger-annotations.inc
@@ -160,7 +171,7 @@ public class ${classebase}Controller
             ${lclassebase}DTO.setId(id);
             ${lclassebase}DTO.setDateUpdated(new Date());
             ${classebase}DTO ${lclassebase}Saved = ${lclassebase}Service.salvar(${lclassebase}DTO);
-            return new ResponseEntity<>(${lclassebase}DTO, HttpStatus.OK);
+            return new ResponseEntity<>(${lclassebase}Saved, HttpStatus.OK);
         } catch(CommoditieBaseException e) {
             return new ResponseEntity(e.getMensagemResponse(), e.getHttpStatus());
         } catch (Exception e) {
@@ -173,12 +184,12 @@ public class ${classebase}Controller
     @RequestMapping(value = "/{id}",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> partialUpdateGeneric(
+    public ResponseEntity partialUpdateGeneric(
             @RequestBody Map<String, Object> updates,
             @PathVariable("id") Long id) {
         ${classebase}DTO ${lclassebase}Data = ${lclassebase}Service.findById(id);
         if (${lclassebase}Data == null || !${lclassebase}Service.partialUpdate(id, updates)) {
-            return (ResponseEntity<?>) ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("${classebase} atualizada");
     }

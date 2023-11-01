@@ -1,9 +1,9 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
-package ${package}.interfaces;
+package br.com.jcv.commons.library.commodities.service;
 
-import ${package}.dto.RequestFilter;
-import ${package}.dto.DTOPadrao;
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

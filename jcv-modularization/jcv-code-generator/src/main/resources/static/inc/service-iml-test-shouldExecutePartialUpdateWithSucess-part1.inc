@@ -1,0 +1,1 @@
+        map${classebase}DTOMock.put(${classebase}Constantes.${Udto},${magic-content});

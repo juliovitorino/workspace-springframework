@@ -4,7 +4,7 @@ pipeline {
         stage("Build Commons Library") {
             steps {
                 dir("jcv-modularization/jcv-commons-library") {
-                    sh 'mvn clean package -DskipTests'
+                    sh 'mvn clean install -DskipTests'
                 }
             }
         }

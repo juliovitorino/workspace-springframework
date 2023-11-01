@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface CodeGeneratorFieldDescriptor {
     String fieldReferenceInDto() default "";
     String fieldDescription() default  "";
+    String regexValidation() default "";
 }

@@ -1,10 +1,9 @@
 package br.com.jcv.commons.library.commodities.exception;
 
 
-import br.com.jcv.commons.library.commodities.MensagemResponse;
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 @Getter
 public class CommoditieBaseException extends RuntimeException{
     public static final String DEFAULT_SIGNER_UNKNOWN_CODE = "SGNR-0000";

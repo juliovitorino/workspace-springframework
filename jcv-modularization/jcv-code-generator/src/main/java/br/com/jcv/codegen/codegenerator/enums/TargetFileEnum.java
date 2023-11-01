@@ -8,8 +8,12 @@ import java.util.Arrays;
 
 @Getter
 public enum TargetFileEnum {
-    CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}Controller"),
+    CodeGeneratorTansactionJpaConfig("CodeGeneratorTansactionJpaConfig", "/config/TransactionJPAConfig"),
+    CodeGeneratorBuilderModel("CodeGeneratorBuilderModel", "/builder/${classebase}ModelBuilder"),
+    CodeGeneratorBuilder("CodeGeneratorBuilder", "/builder/${classebase}DTOBuilder"),
+    CodeGeneratorController("CodeGeneratorController", "/controller/${classebase}CommoditieController"),
     CodeGeneratorServiceImpl("CodeGeneratorServiceImpl", "/service/impl/${classebase}ServiceImpl"),
+    CodeGeneratorServiceImplTest("CodeGeneratorServiceImplTest", "/service/impl/${classebase}ServiceImplTest"),
     CodeGeneratorService("CodeGeneratorService", "/service/${classebase}Service"),
     CodeGeneratorCommoditieService("CodeGeneratorCommoditieService", "/interfaces/CommoditieBaseService"),
     CodeGeneratorRepository("CodeGeneratorRepository", "/repository/${classebase}Repository"),

@@ -1,8 +1,9 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
-package ${package}.dto;
+package br.com.jcv.commons.library.commodities.dto;
 
 import ${package}.constantes.${classebase}Constantes;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;

@@ -1,20 +1,25 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
 package ${package}.dto;
+import br.com.jcv.commons.library.commodities.dto.MensagemResponse;
+import br.com.jcv.commons.library.commodities.dto.DTOPadrao;
+import br.com.jcv.commons.library.commodities.annotation.RegexValidation;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import lombok.*;
 import ${package}.constantes.${classebase}Constantes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 /**
 * ${classebase}DTO - Data Transfer Object
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 
 @NoArgsConstructor
@@ -22,7 +27,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ${classebase}DTO extends DTOPadrao implements Serializable

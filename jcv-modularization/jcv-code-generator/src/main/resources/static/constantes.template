@@ -7,11 +7,9 @@ package ${package}.constantes;
 *
 * @author ${autor}
 * @since ${agora}
-* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 
-public class ${classebase}Constantes
-{
-
+public class ${classebase}Constantes {
+    private ${classebase}Constantes() {}
 #include static/inc/public-static-final-string.inc
 }

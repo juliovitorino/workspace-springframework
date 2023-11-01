@@ -1,0 +1,415 @@
+#include_once static/inc/open-source-copyright-mit.inc
+package ${package}.service.impl;
+
+import br.com.jcv.commons.library.commodities.dto.RequestFilter;
+import br.com.jcv.commons.library.utility.DateTime;
+import br.com.jcv.commons.library.utility.DateUtility;
+import ${package}.builder.${classebase}DTOBuilder;
+import ${package}.builder.${classebase}ModelBuilder;
+import ${package}.dto.${classebase}DTO;
+import ${package}.exception.${classebase}NotFoundException;
+import ${package}.model.${classebase};
+import ${package}.repository.${classebase}Repository;
+import ${package}.service.${classebase}Service;
+import ${package}.constantes.${classebase}Constantes;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+
+@TestInstance(PER_CLASS)
+public class ${classebase}ServiceImplTest {
+    private static final UUID uuidMock = UUID.fromString("3dc936e6-478e-4d21-b167-67dee8b730af");
+    private static MockedStatic<UUID> uuidMockedStatic;
+    private static MockedStatic<DateUtility> dateUtilityMockedStatic;
+
+#include static/inc/service-impl-test-static-var.inc
+
+    @Mock
+    private ${classebase}Repository ${lclassebase}RepositoryMock;
+
+    @InjectMocks
+    private ${classebase}Service ${lclassebase}Service;
+    final DateTime dateTimeMock = Mockito.mock(DateTime.class);
+
+    @BeforeAll
+    public void setup() {
+        Mockito.when(dateTimeMock.getToday()).thenReturn(DateUtility.getDate(12,10,2023));
+        Mockito.when(dateTimeMock.now()).thenReturn(DateUtility.getDate(12,10,2023));
+
+        ${lclassebase}Service = new ${classebase}ServiceImpl();
+        MockitoAnnotations.initMocks(this);
+
+        uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.RETURNS_DEEP_STUBS);
+        dateUtilityMockedStatic = Mockito.mockStatic(DateUtility.class, Mockito.RETURNS_DEEP_STUBS);
+
+        uuidMockedStatic.when(() -> UUID.fromString(Mockito.anyString())).thenReturn(uuidMock);
+    }
+
+    @AfterAll
+    public void tearDown() {
+        uuidMockedStatic.close();
+        dateUtilityMockedStatic.close();
+    }
+
+
+    @Test
+    public void shouldReturnListOf${classebase}WhenFindAllByFilterIsCalled() {
+        // scenario
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-variables.inc
+
+        Map<String, Object> mapFieldsRequestMock = new HashMap<>();
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-map.inc
+
+        RequestFilter requestFilterMock = new RequestFilter();
+        requestFilterMock.setQtdeRegistrosPorPagina(0);
+        requestFilterMock.setOrdemAsc(true);
+        requestFilterMock.setPagina(0);
+        requestFilterMock.setCamposFiltro(mapFieldsRequestMock);
+
+        List<${classebase}> ${lclassebase}sFromRepository = new ArrayList<>();
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+
+        Mockito.when(${lclassebase}RepositoryMock.find${classebase}ByFilter(
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-pageable.inc && excludeCharAtEndOfLineFromLastField[+,]
+        )).thenReturn(${lclassebase}sFromRepository);
+
+        // action
+        List<${classebase}DTO> result = ${lclassebase}Service.findAllByFilter(requestFilterMock);
+
+        // validate
+        Assertions.assertEquals(4L, result.size());
+    }
+
+
+
+    @Test
+    public void shouldReturnMapWith${classebase}ListWhenFindPageByFilterIsCalled() {
+        // scenario
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-variables.inc
+
+        Map<String, Object> mapFieldsRequestMock = new HashMap<>();
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-map.inc
+
+        RequestFilter requestFilterMock = new RequestFilter();
+        requestFilterMock.setQtdeRegistrosPorPagina(25);
+        requestFilterMock.setOrdemAsc(true);
+        requestFilterMock.setPagina(0);
+        requestFilterMock.setCamposFiltro(mapFieldsRequestMock);
+
+        List<${classebase}> ${lclassebase}sFromRepository = new ArrayList<>();
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        ${lclassebase}sFromRepository.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+
+        List<${classebase}DTO> ${lclassebase}sFiltered = ${lclassebase}sFromRepository
+                .stream()
+                .map(m->${lclassebase}Service.toDTO(m))
+                .collect(Collectors.toList());
+
+        Map<String,Object> mapResponseMock = new HashMap<>();
+        mapResponseMock.put("currentPage", 0);
+        mapResponseMock.put("totalItems", 4);
+        mapResponseMock.put("totalPages", 1);
+        mapResponseMock.put("page${classebase}Items", ${lclassebase}sFiltered);
+
+        Pageable pageableMock = PageRequest.of(0,25);
+
+        PageImpl<${classebase}> pagedResponse =
+                new PageImpl<>(${lclassebase}sFromRepository,
+                        pageableMock,
+                        ${lclassebase}sFromRepository.size());
+
+        Mockito.when(${lclassebase}RepositoryMock.find${classebase}ByFilter(pageableMock,
+#include static/inc/service-impl-test-shouldReturnMapWithModelListWhenFindPageByFilterIsCalled-pageable.inc && excludeCharAtEndOfLineFromLastField[+,]
+        )).thenReturn(pagedResponse);
+
+        // action
+        Map<String, Object> result = ${lclassebase}Service.findPageByFilter(requestFilterMock);
+
+        // validate
+        Long currentPage = Long.valueOf(result.get("currentPage").toString());
+        Long totalItems = Long.valueOf(result.get("totalItems").toString());
+        Long totalPages = Long.valueOf(result.get("totalPages").toString());
+        List<${classebase}DTO> ${lclassebase}sResult = (List<${classebase}DTO>) result.get("page${classebase}Items");
+
+        Assertions.assertEquals(0L, currentPage);
+        Assertions.assertEquals(4L, totalItems);
+        Assertions.assertEquals(1L, totalPages);
+        Assertions.assertEquals(4L, ${lclassebase}sResult.size());
+    }
+
+
+    @Test
+    public void showReturnListOf${classebase}WhenAskedForFindAllByStatus() {
+        // scenario
+        List<${classebase}> listOf${classebase}ModelMock = new ArrayList<>();
+        listOf${classebase}ModelMock.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+        listOf${classebase}ModelMock.add(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().now());
+
+        Mockito.when(${lclassebase}RepositoryMock.findAllByStatus("A")).thenReturn(listOf${classebase}ModelMock);
+
+        // action
+        List<${classebase}DTO> listOf${classebase}s = ${lclassebase}Service.findAllByStatus("A");
+
+        // validate
+        Assertions.assertTrue(!listOf${classebase}s.isEmpty());
+        Assertions.assertEquals(2, listOf${classebase}s.size());
+    }
+    @Test
+    public void shouldReturn${classebase}NotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Long idMock = ${magic-content-long};
+        Optional<${classebase}> ${lclassebase}NonExistentMock = Optional.empty();
+        Mockito.when(${lclassebase}RepositoryMock.findById(idMock)).thenReturn(${lclassebase}NonExistentMock);
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()->${lclassebase}Service.updateStatusById(idMock, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldThrow${classebase}NotFoundExceptionWhenUpdateStatusByIdForInexistentId() {
+        // scenario
+        Long idMock = ${magic-content-long};
+        Mockito.when(${lclassebase}RepositoryMock.findById(idMock))
+                .thenThrow(new ${classebase}NotFoundException(${Uclassebase}_NOTFOUND_WITH_ID,
+                HttpStatus.NOT_FOUND,
+                ${Uclassebase}_NOTFOUND_WITH_ID ));
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()->${lclassebase}Service.updateStatusById(idMock, "A"));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+    }
+    @Test
+    public void shouldReturn${classebase}DTOAfterUpdateStatusById() {
+        // scenario
+        Long idMock = ${magic-content-long};
+        Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(
+                ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+                        .id(idMock)
+#include static/inc/service-impl-test-shouldReturnModelDTOAfterUpdateStatusById-part1.inc && excludeFields[id,status,dateCreated,dateUpdated]
+                        .status("X")
+                        .now()
+        );
+        ${classebase} ${lclassebase}ToSaveMock = ${lclassebase}ModelMock.orElse(null);
+        ${classebase} ${lclassebase}SavedMck = ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-impl-test-shouldReturnModelDTOAfterUpdateStatusById-part2.inc && excludeFields[status,dateCreated,dateUpdated]
+                        .status("A")
+                        .now();
+        Mockito.when(${lclassebase}RepositoryMock.findById(idMock)).thenReturn(${lclassebase}ModelMock);
+        Mockito.when(${lclassebase}RepositoryMock.save(${lclassebase}ToSaveMock)).thenReturn(${lclassebase}SavedMck);
+
+        // action
+        ${classebase}DTO result = ${lclassebase}Service.updateStatusById(idMock, "A");
+
+        // validate
+        Assertions.assertEquals("A",result.getStatus());
+
+    }
+
+    @Test
+    public void shouldSearch${classebase}ByAnyNonExistenceIdAndReturn${classebase}NotFoundException() {
+        // scenario
+        Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()-> ${lclassebase}Service.findById(-1000L));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+    }
+    @Test
+    public void shouldSearch${classebase}ByIdAndReturnDTO() {
+        // scenario
+        Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-impl-test-shouldSearchModelByIdAndReturnDTO-fields.inc && excludeFields[status,dateCreated,dateUpdated]
+                .status("A")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now());
+        Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(${lclassebase}ModelMock);
+
+        // action
+        ${classebase}DTO result = ${lclassebase}Service.findById(1L);
+
+        // validate
+        Assertions.assertInstanceOf(${classebase}DTO.class,result);
+    }
+    @Test
+    public void shouldDelete${classebase}ByIdWithSucess() {
+        // scenario
+        Optional<${classebase}> ${lclassebase} = Optional.ofNullable(${classebase}ModelBuilder.new${classebase}ModelTestBuilder().id(1L).now());
+        Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(${lclassebase});
+
+        // action
+        ${lclassebase}Service.delete(1L);
+
+        // validate
+        Mockito.verify(${lclassebase}RepositoryMock,Mockito.times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void whenTryDeleteNotExistence${classebase}ShouldReturn${classebase}NotFoundException() {
+        // scenario
+        Mockito.when(${lclassebase}RepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(
+                ${classebase}NotFoundException.class, () -> ${lclassebase}Service.delete(1L)
+        );
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains(${Uclassebase}_NOTFOUND_WITH_ID));
+    }
+
+    @Test
+    public void ShouldSaveUpdateExisting${classebase}WithSucess() {
+        // scenario
+        ${classebase}DTO ${lclassebase}DTOMock = ${classebase}DTOBuilder.new${classebase}DTOTestBuilder()
+#include static/inc/service-impl-test-ShouldSaveUpdateExisting-fields-part1.inc && excludeFields[status,dateCreated,dateUpdated]
+                .status("P")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now();
+        ${classebase} ${lclassebase}Mock = ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-impl-test-ShouldSaveUpdateExisting-fields-part2.inc && excludeFields[status,dateCreated,dateUpdated]
+                .status("P")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now();
+        ${classebase} ${lclassebase}SavedMock = ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-impl-test-ShouldSaveUpdateExisting-fields-part2.inc && excludeFields[status,dateCreated,dateUpdated]
+                .status("P")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now();
+
+        Mockito.when(${lclassebase}RepositoryMock.save(${lclassebase}Mock)).thenReturn(${lclassebase}SavedMock);
+
+        // action
+        ${classebase}DTO ${lclassebase}Saved = ${lclassebase}Service.salvar(${lclassebase}DTOMock);
+
+        // validate
+        Assertions.assertInstanceOf(${classebase}DTO.class, ${lclassebase}Saved);
+        Assertions.assertNotNull(${lclassebase}Saved.getId());
+    }
+
+    @Test
+    public void ShouldSaveNew${classebase}WithSucess() {
+        // scenario
+        ${classebase}DTO ${lclassebase}DTOMock = ${classebase}DTOBuilder.new${classebase}DTOTestBuilder()
+                .id(null)
+#include static/inc/service-impl-test-ShouldSaveNew-fields-part1.inc && excludeFields[id,status,dateCreated,dateUpdated]
+                .status("P")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now();
+        ${classebase} ${lclassebase}ModelMock = ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+                .id(null)
+#include static/inc/service-impl-test-ShouldSaveNew-fields-part2.inc && excludeFields[id,status,dateCreated,dateUpdated]
+                .status("P")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now();
+        ${classebase} ${lclassebase}SavedMock = ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+                .id(501L)
+#include static/inc/service-impl-test-ShouldSaveNew-fields-part2.inc && excludeFields[id,status,dateCreated,dateUpdated]
+                .status("P")
+                .dateCreated(dateTimeMock.getToday())
+                .dateUpdated(dateTimeMock.getToday())
+                .now();
+
+        Mockito.when(${lclassebase}RepositoryMock.save(${lclassebase}ModelMock)).thenReturn(${lclassebase}SavedMock);
+
+        // action
+        ${classebase}DTO ${lclassebase}Saved = ${lclassebase}Service.salvar(${lclassebase}DTOMock);
+
+        // validate
+        Assertions.assertInstanceOf(${classebase}DTO.class, ${lclassebase}Saved);
+        Assertions.assertNotNull(${lclassebase}Saved.getId());
+        Assertions.assertEquals("P",${lclassebase}Saved.getStatus());
+    }
+
+    @Test
+    public void shouldExecutePartialUpdateWithSucess() {
+        // scenario
+        Map<String, Object> map${classebase}DTOMock = new HashMap<>();
+#include static/inc/service-iml-test-shouldExecutePartialUpdateWithSucess-part1.inc && excludeFields[id,dateCreated,dateUpdated]
+
+        Optional<${classebase}> ${lclassebase}ModelMock = Optional.ofNullable(
+                ${classebase}ModelBuilder.new${classebase}ModelTestBuilder()
+#include static/inc/service-iml-test-shouldExecutePartialUpdateWithSucess-part2.inc && excludeFields[dateCreated,dateUpdated]
+                        .now()
+        );
+
+        Mockito.when(${lclassebase}RepositoryMock.findById(1L)).thenReturn(${lclassebase}ModelMock);
+
+        // action
+        boolean executed = ${lclassebase}Service.partialUpdate(1L, map${classebase}DTOMock);
+
+        // validate
+        Assertions.assertTrue(executed);
+
+    }
+    @Test
+    public void shouldReturn${classebase}NotFoundExceptionWhenTrySearchNotExistentId() {
+        // scenario
+        Map<String, Object> map${classebase}DTOMock = new HashMap<>();
+#include static/inc/service-iml-test-shouldReturnModelNotFoundExceptionWhenTrySearchNotExistentId-part1.inc && excludeFields[id,dateCreated,dateUpdated]
+
+        Mockito.when(${lclassebase}RepositoryMock.findById(1L)).thenReturn(Optional.empty());
+
+        // action
+        ${classebase}NotFoundException exception = Assertions.assertThrows(${classebase}NotFoundException.class,
+                ()->${lclassebase}Service.partialUpdate(1L, map${classebase}DTOMock));
+
+        // validate
+        Assertions.assertTrue(exception.getMessage().contains("${classebase} não encontrada com id = "));
+        Assertions.assertEquals(404,exception.getHttpStatus().value());
+
+    }
+
+#include static/inc/service-imp-test-shouldReturnModelListWhenFindAllModelByFieldAndStatus.inc && excludeFields[status]
+#include static/inc/service-imp-test-shouldReturnDTOWhenFindByFieldAndStatus.inc && excludeFields[status,dateCreated,dateUpdated]
+#include static/inc/service-imp-test-shouldReturnDTOWhenUpdateExistingFieldById.inc && excludeFields[id,status,dateCreated,dateUpdated]
+
+#include static/inc/service-impl-test-showReturnExistingModelDTOWhenFindModelByFieldAndStatusActiveAnonimous.inc && excludeFields[status,dateCreated,dateUpdated]
+}
+

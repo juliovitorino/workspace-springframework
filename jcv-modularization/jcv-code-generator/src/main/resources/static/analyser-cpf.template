@@ -1,10 +1,10 @@
 #include_once static/inc/open-source-copyright-mit.inc
 
-package ${package}.analyser;
+package br.com.jcv.commons.library.commodities.analyser;
 
-import ${package}.constantes.RegexConstantes;
-import ${package}.constantes.GenericConstantes;
-import ${package}.exception.AnalyserException;
+import br.com.jcv.commons.library.commodities.constantes.RegexConstantes;
+import br.com.jcv.commons.library.commodities.constantes.GenericConstantes;
+import br.com.jcv.commons.library.commodities.exception.AnalyserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

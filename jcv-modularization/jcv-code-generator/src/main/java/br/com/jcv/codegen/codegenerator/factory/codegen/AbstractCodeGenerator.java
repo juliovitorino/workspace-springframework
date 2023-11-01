@@ -1,27 +1,37 @@
 package br.com.jcv.codegen.codegenerator.factory.codegen;
 
-import br.com.jcv.codegen.codegenerator.enums.CodeGeneratorTags;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorDescriptor;
 import br.com.jcv.codegen.codegenerator.annotation.CodeGeneratorFieldDescriptor;
 import br.com.jcv.codegen.codegenerator.dto.CodeGeneratorDTO;
 import br.com.jcv.codegen.codegenerator.dto.FieldDescriptor;
+import br.com.jcv.codegen.codegenerator.dto.WritableCode;
+import br.com.jcv.codegen.codegenerator.enums.CodeGeneratorTags;
+import br.com.jcv.codegen.codegenerator.enums.FieldTypeConverterEnum;
+import br.com.jcv.codegen.codegenerator.enums.FieldTypeEnum;
 import br.com.jcv.codegen.codegenerator.enums.IncludeExtraCommandEnum;
 import br.com.jcv.codegen.codegenerator.exception.CodeGeneratorFolderStructureNotFound;
+import br.com.jcv.commons.library.commodities.exception.CommoditieBaseException;
+import br.com.jcv.commons.library.utility.StringUtility;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.Assert;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +41,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.UUID;
 
 @Slf4j
 public abstract class AbstractCodeGenerator {
@@ -43,9 +54,20 @@ public abstract class AbstractCodeGenerator {
     @Autowired protected ResourceLoader resourceLoader;
 
     protected void readTemplate(String template, StringBuffer sb, CodeGeneratorDTO codeGeneratorDTO){
-        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + template);
+//        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + template);
         try {
-            Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
+            ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
+//            Resource[] allResources = resourcePatResolver.getResources("classpath*:static/*.template");
+            Resource[] allResources = resourcePatResolver.getResources("classpath*:" + template);
+            if(allResources.length == 0) {
+                throw new FileNotFoundException("The file named as " + template + " not found in JAR file. Check it out!");
+            }
+            if(allResources.length > 1) {
+                throw new RuntimeException("There are " + String.valueOf(allResources.length) + " of " + template + ". Only must be one!");
+            }
+
+            InputStream isTemplate = allResources[0].getInputStream();
+            Scanner scannerFileTemplate = new Scanner(isTemplate);
             while( scannerFileTemplate.hasNextLine()) {
                 final String line = scannerFileTemplate.nextLine();
                 boolean isIncludeTag = line.indexOf(INCLUDE) == 0 ;
@@ -161,9 +183,20 @@ public abstract class AbstractCodeGenerator {
 
     protected StringBuffer readFile(String filePath) {
         StringBuffer sb = new StringBuffer();
-        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + filePath);
+//        Resource fileTemplateResource = resourceLoader.getResource("classpath:" + filePath);
+
         try {
-            Scanner scannerFileTemplate = new Scanner(fileTemplateResource.getFile());
+            ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
+            Resource[] allResources = resourcePatResolver.getResources("classpath*:" + filePath);
+            if(allResources.length == 0) {
+                throw new FileNotFoundException("The file named as " + filePath + " not found in JAR file. Check it out!");
+            }
+            if(allResources.length > 1) {
+                throw new RuntimeException("There are " + String.valueOf(allResources.length) + " of " + filePath + ". Only must be one!");
+            }
+
+            InputStream isTemplate = allResources[0].getInputStream();
+            Scanner scannerFileTemplate = new Scanner(isTemplate);
             while( scannerFileTemplate.hasNextLine()) {
                 sb.append(scannerFileTemplate.nextLine());
                 sb.append(System.getProperty("line.separator"));
@@ -204,7 +237,7 @@ public abstract class AbstractCodeGenerator {
             codegen.setTableName(tableAnnotation.name());
             codegen.setSchema(tableAnnotation.schema());
         } else {
-            codegen.setTableName(inputClassModel.getName());
+            codegen.setTableName(codegen.getBaseClass());
             codegen.setSchema(null);
         }
 
@@ -217,7 +250,7 @@ public abstract class AbstractCodeGenerator {
 
     private void createFolderStructureIfNeed(CodeGeneratorDTO codegen) {
         final String PING = "/ping.txt";
-        final String[] folders = new String[] {"config","analyser","constantes","controller","dto","enums"
+        final String[] folders = new String[] {"config","builder","analyser","constantes","controller","dto","enums"
                 ,"exception","interfaces","repository","service","service/impl"};
 
         log.info("code generator Output Directory -> {}", codegen.getOutputDir());
@@ -230,6 +263,7 @@ public abstract class AbstractCodeGenerator {
                 System.out.println("*** You must have to create and check the following folder structure");
                 System.out.println(codegen.getOutputDir());
                 System.out.println("+-- /analyser");
+                System.out.println("+-- /builder");
                 System.out.println("+-- /config");
                 System.out.println("+-- /constantes");
                 System.out.println("+-- /controller");
@@ -271,6 +305,11 @@ public abstract class AbstractCodeGenerator {
         final String schemap = codegen.getSchema() != null && !codegen.getSchema().isEmpty()
                 ? codegen.getSchema().concat(".")
                 : ""  ;
+        final FieldDescriptor fieldStatus = codegen.getFieldDescriptorList()
+                .stream()
+                .filter(fieldItem -> fieldItem.getFieldName().equals("status"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("changeTagsUsing :: There is no field [status] definded in Model " + codegen.getBaseClass()));
         final FieldDescriptor fieldPK = codegen.getFieldDescriptorList()
                 .stream()
                 .filter(FieldDescriptor::isPrimaryKey)
@@ -279,6 +318,7 @@ public abstract class AbstractCodeGenerator {
         log.debug("changeTagsUsing :: PK => {}", gson.toJson(fieldPK));
 
         String newContent = content.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+        newContent = newContent.replaceAll(CodeGeneratorTags.STATUS_CAMPO.getTag(), fieldStatus.getFieldTableName());
         newContent = newContent.replaceAll(CodeGeneratorTags.PROJETO.getTag(), codegen.getProject());
         newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
         newContent = newContent.replaceAll(CodeGeneratorTags.AUTOR.getTag(), codegen.getBaseClass());
@@ -292,8 +332,13 @@ public abstract class AbstractCodeGenerator {
         newContent = newContent.replaceAll(CodeGeneratorTags.PK.getTag(), fieldPK.getFieldTableName());
         newContent = newContent.replaceAll(CodeGeneratorTags.PKDTO.getTag(), fieldPK.getFieldReferenceInDto());
         newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+        newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toUpperCase());
+        newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_LONG.getTag(),
+                Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
         if(field != null) {
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS.getTag(), codegen.getBaseClass());
+            newContent = newContent.replaceAll(CodeGeneratorTags.REGEX_VALIDATION.getTag(), getRegexValidationAnnotation(field.getRegexValidation()));
+            newContent = newContent.replaceAll(CodeGeneratorTags.STATUS_CAMPO.getTag(), fieldStatus.getFieldTableName());
             newContent = newContent.replaceAll(CodeGeneratorTags.PROJETO.getTag(), codegen.getProject());
             newContent = newContent.replaceAll(CodeGeneratorTags.AUTHOR.getTag(), codegen.getBaseClass());
             newContent = newContent.replaceAll(CodeGeneratorTags.AUTOR.getTag(), codegen.getBaseClass());
@@ -301,6 +346,7 @@ public abstract class AbstractCodeGenerator {
             newContent = newContent.replaceAll(CodeGeneratorTags.AGORA.getTag(), Calendar.getInstance().getTime().toString());
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_PACKAGE.getTag(), codegen.getBasePackage());
             newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_LOWER.getTag(), codegen.getBaseClass().toLowerCase());
+            newContent = newContent.replaceAll(CodeGeneratorTags.BASE_CLASS_UPPER.getTag(), codegen.getBaseClass().toUpperCase());
             newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMAP.getTag(), schemap);
             newContent = newContent.replaceAll(CodeGeneratorTags.SCHEMA.getTag(), codegen.getSchema());
             newContent = newContent.replaceAll(CodeGeneratorTags.TABELA.getTag(), codegen.getTableName());
@@ -312,8 +358,114 @@ public abstract class AbstractCodeGenerator {
             newContent = newContent.replaceAll(CodeGeneratorTags.UDTO.getTag(), field.getFieldReferenceInDto().toUpperCase());
             newContent = newContent.replaceAll(CodeGeneratorTags.CCDTO.getTag(), camelCase(field.getFieldReferenceInDto()));
             newContent = newContent.replaceAll(CodeGeneratorTags.DTO.getTag(), field.getFieldReferenceInDto());
+            newContent = newContent.replaceAll(CodeGeneratorTags.CONVERT_FROM_FIELDTYPE_TO_FINDBYFILTERTYPE.getTag(),
+                    (FieldTypeConverterEnum.fromFieldType(field.getFieldType())).getFindByFilterType());
+            newContent = newContent.replaceAll(CodeGeneratorTags.CONVERT_FROM_FIELDTYPE_TO_VALUEOF.getTag(),
+                    (FieldTypeConverterEnum.fromFieldType(field.getFieldType())).getValueOf());
+            newContent = newContent.replaceAll(CodeGeneratorTags.CONVERT_FROM_FIELDTYPE_TO_CASTVALUE.getTag(),
+                    (FieldTypeConverterEnum.fromFieldType(field.getFieldType())).getCastType());
+            switch (FieldTypeEnum.fromType(field.getFieldType())) {
+                case Long:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(5)) + "L");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
+                    break;
+
+                case Date:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            "Date.from(LocalDate.of(2025,10,7).atStartOfDay(ZoneId.systemDefault()).toInstant())");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            '"' +"2025-10-07" + '"');
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            "Date.from(LocalDate.of(2027,7,25).atStartOfDay(ZoneId.systemDefault()).toInstant())");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            "to_char(" + field.getFieldTableName() + ", 'YYYY-MM-DD')");
+                    break;
+
+
+                case Double:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            Long.valueOf(StringUtility.getRandomCodeNumber(4))+ ".0");
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
+                    break;
+
+
+                case UUID:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            "UUID.fromString(" +
+                                    '"' + UUID.randomUUID().toString() + '"'+
+                                    ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            "UUID.fromString(" +
+                                    '"' + UUID.randomUUID().toString() + '"'+
+                                    ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                                    "UUID.fromString(" +
+                                    '"' + UUID.randomUUID().toString() + '"'+
+                            ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
+                    break;
+
+                case String:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            '"' +
+                                    StringUtility.getRandomCodeNumberUpperLower(50)+
+                                    '"'
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                        '"' +
+                                StringUtility.getRandomCodeNumberUpperLower(50)+
+                                '"'
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            '"' +
+                            StringUtility.getRandomCodeNumberUpperLower(50)+
+                                    '"'
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            field.getFieldTableName());
+                    break;
+
+                case LocalDate:
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT.getTag(),
+                            "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
+                             + StringUtility.getRandomMonth() + ","
+                             + StringUtility.getRandomDay() + ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_FILTER.getTag(),
+                            '"' +"2025-10-07" + '"'
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.MAGIC_CONTENT_SECONDARY.getTag(),
+                            "LocalDate.of(" + Long.valueOf(StringUtility.getRandomCodeNumber(4)) + ","
+                             + StringUtility.getRandomMonth() + ","
+                             + StringUtility.getRandomDay() + ")"
+                    );
+                    newContent = newContent.replaceAll(CodeGeneratorTags.CAMPO_DATE_FIX.getTag(),
+                            "to_char(" + field.getFieldTableName() + ", 'YYYY-MM-DD')");
+                    break;
+
+            }
         }
         return newContent;
+    }
+
+    private String getRegexValidationAnnotation(String regexValidation) {
+        if(regexValidation.isEmpty()) return "";
+        return "@RegexValidation(regex = " + String.valueOf('"') + regexValidation + String.valueOf('"') +")";
     }
 
     private String camelCase(String field) {
@@ -395,6 +547,7 @@ public abstract class AbstractCodeGenerator {
                 ?  fieldItem.getName()
                 : codeGeneratorFieldDescriptor.fieldReferenceInDto());
         fieldDescriptor.setFieldDescription(codeGeneratorFieldDescriptor.fieldDescription());
+        fieldDescriptor.setRegexValidation(codeGeneratorFieldDescriptor.regexValidation());
 
         log.info("getFieldDescriptor :: collecting info for @Column Annotation for field -> {}", fieldItem.getName());
         Column columnAnnotation = fieldItem.getAnnotation(Column.class);
@@ -420,4 +573,35 @@ public abstract class AbstractCodeGenerator {
         }
         return fieldDescriptor;
     }
+
+
+    protected void flushCode(List<WritableCode> codes) {
+        for(WritableCode writableCode: codes) {
+            log.info("flushCode :: is flushing source code -> {}.{}",
+                    writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                    writableCode.getTargetFileCodeInfo().getTargetExtension());
+
+            try {
+                writeCode(writableCode.getSourceCode(),
+                        writableCode.getCodeGenerator(),
+                        writableCode.getTargetFileCodeInfo().getTargetPathFile(),
+                        writableCode.getTargetFileCodeInfo().getTargetExtension());
+            } catch (IOException e) {
+                throw new CommoditieBaseException(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        }
+
+    }
+
+    private void writeCode(StringBuffer code, CodeGeneratorDTO codegen, String filename, String extension) throws IOException {
+
+        String outputFileName = codegen.getOutputDir() + "/" + codegen.getBasePackageSlash() +filename + "." + extension;
+        FileOutputStream fos = new FileOutputStream(outputFileName);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        try (fos; bos; DataOutputStream outStream = new DataOutputStream(bos)) {
+            outStream.write(code.toString().getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+
 }

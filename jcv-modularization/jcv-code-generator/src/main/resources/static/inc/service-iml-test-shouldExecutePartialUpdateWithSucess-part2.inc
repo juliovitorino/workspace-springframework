@@ -1,0 +1,1 @@
+                        .${dto}(${magic-content-secondary})

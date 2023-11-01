@@ -6,11 +6,13 @@ import java.util.Arrays;
 
 @Getter
 public enum CodeGeneratorTags {
-
+    REGEX_VALIDATION("\\$\\{regexValidation\\}"),
+    STATUS_CAMPO("\\$\\{campostatus\\}"),
     PROJECT("\\$\\{project\\}"),
     PROJETO("\\$\\{projeto\\}"),
     FIELD("\\$\\{field\\}"),
     CAMPO("\\$\\{campo\\}"),
+    CAMPO_DATE_FIX("\\$\\{campo-date-fix\\}"),
     TABLE("\\$\\{table\\}"),
     TABELA("\\$\\{tabela\\}"),
     PKDTO("\\$\\{pkdto\\}"),
@@ -26,9 +28,17 @@ public enum CodeGeneratorTags {
     AUTOR("\\$\\{autor\\}"),
     NOW("\\$\\{now\\}"),
     AGORA("\\$\\{agora\\}"),
+    MAGIC_CONTENT("\\$\\{magic-content\\}"),
+    MAGIC_CONTENT_FILTER("\\$\\{magic-content-filter\\}"),
+    MAGIC_CONTENT_LONG("\\$\\{magic-content-long\\}"),
+    MAGIC_CONTENT_SECONDARY("\\$\\{magic-content-secondary\\}"),
+    CONVERT_FROM_FIELDTYPE_TO_FINDBYFILTERTYPE("\\$\\{convert-from-field-type-to-find-by-filter-type\\}"),
+    CONVERT_FROM_FIELDTYPE_TO_VALUEOF("\\$\\{value-of\\}"),
+    CONVERT_FROM_FIELDTYPE_TO_CASTVALUE("\\$\\{cast-value\\}"),
     BASE_PACKAGE("\\$\\{package\\}"),
     BASE_CLASS("\\$\\{classebase\\}"),
-    BASE_CLASS_LOWER("\\$\\{lclassebase\\}")
+    BASE_CLASS_LOWER("\\$\\{lclassebase\\}"),
+    BASE_CLASS_UPPER("\\$\\{Uclassebase\\}")
     ;
 
     private String tag;
