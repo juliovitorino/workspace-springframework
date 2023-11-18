@@ -40,6 +40,10 @@ public class DateUtility {
         calendar.set(YEAR, yy);
         return calendar.getTime();
     }
+
+    public static Date getDate(Long time) {
+        return new Date(time);
+    }
     public static Date getDate(LocalDate localDate) {
         assert localDate != null;
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
