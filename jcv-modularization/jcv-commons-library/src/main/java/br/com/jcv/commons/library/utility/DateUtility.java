@@ -2,6 +2,7 @@ package br.com.jcv.commons.library.utility;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +53,10 @@ public class DateUtility {
         return from(getDate(dd,mm,yy));
     }
 
+    public static LocalDate toLocalDate(String dataConverter, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return LocalDate.parse(dataConverter,formatter);
+    }
 
     public static boolean isSameDay(Date date1, Date date2) {
         Calendar calendar1 = Calendar.getInstance();
