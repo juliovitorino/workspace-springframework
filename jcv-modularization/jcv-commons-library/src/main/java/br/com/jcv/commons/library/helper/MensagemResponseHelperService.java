@@ -6,7 +6,7 @@ public class MensagemResponseHelperService {
 
     private MensagemResponseHelperService() {}
 
-    public MensagemResponse getInstance(String msgcode, String message){
+    public static MensagemResponse getInstance(String msgcode, String message){
         return MensagemResponse.builder()
                 .msgcode(msgcode)
                 .mensagem(message)
