@@ -155,10 +155,30 @@ public class HttpURLConnectionImpl implements HttpURLConnection{
 	}
 
 	@Override
+	public <C> C sendGET(String url,
+						  Map<String,String> header,
+						  Map<String, String> params,
+						  Class<C> typeToConvert) throws IOException, CommoditieBaseException {
+		return send("GET", url, header,params, typeToConvert);
+
+	}
+
+
+	@Override
 	public <C> C sendPOST(String url,
-							Map<String,String> header,
-							Map<String, String> params,
-							Class<C> typeToConvert) throws IOException, CommoditieBaseException {
+						 Map<String,String> header,
+						 Map<String, String> params,
+						 Class<C> typeToConvert) throws IOException, CommoditieBaseException {
+		return send("POST", url, header,params, typeToConvert);
+
+	}
+
+
+	private <C> C send(String methodRequest,
+					  String url,
+						  Map<String,String> header,
+						  Map<String, String> params,
+						  Class<C> typeToConvert) throws IOException, CommoditieBaseException {
 
 		List<NameValuePair> collectParams = null;
 
@@ -168,7 +188,7 @@ public class HttpURLConnectionImpl implements HttpURLConnection{
 		java.net.HttpURLConnection con = (java.net.HttpURLConnection) obj.openConnection();
 		con.setReadTimeout(10000);
 		con.setConnectTimeout(15000);
-		con.setRequestMethod("POST");
+		con.setRequestMethod(methodRequest);
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
 		if(Objects.nonNull(header)) header.forEach(con::setRequestProperty);
