@@ -29,6 +29,8 @@ public interface HttpURLConnection {
 
 	String sendGET(String url) throws IOException;
 	<C> C sendGET(String url,
+				   Class<C> typeToConvert) throws IOException, CommoditieBaseException;
+	<C> C sendGET(String url,
 				   Map<String,String> header,
 				   Map<String, String> params,
 				   Class<C> typeToConvert) throws IOException, CommoditieBaseException;
