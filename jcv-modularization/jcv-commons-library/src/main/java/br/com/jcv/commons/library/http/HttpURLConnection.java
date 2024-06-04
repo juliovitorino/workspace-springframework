@@ -28,6 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 public interface HttpURLConnection {
 
 	String sendGET(String url) throws IOException;
+	<C> C sendGET(String url,
+				   Class<C> typeToConvert) throws IOException, CommoditieBaseException;
+	<C> C sendGET(String url,
+				   Map<String,String> header,
+				   Map<String, String> params,
+				   Class<C> typeToConvert) throws IOException, CommoditieBaseException;
 	<T,C> C sendPOST(String url, T body, Class<C> typeToConvert) throws IOException, CommoditieBaseException;
 	<T,C> C sendPOST(String url, Map<String,String> header, T body, Class<C> typeToConvert) throws IOException, CommoditieBaseException ;
 	<C> C sendPOST(String url,
