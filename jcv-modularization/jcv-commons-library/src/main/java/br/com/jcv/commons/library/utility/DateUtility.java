@@ -1,6 +1,7 @@
 package br.com.jcv.commons.library.utility;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -23,6 +24,18 @@ public class DateUtility {
         calendar.add(DAY_OF_MONTH, days);
         return calendar.getTime();
     }
+
+    public static LocalDateTime addDaysLDT(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, days);
+        Date result = calendar.getTime();
+        return result.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
+
     public static Date getDateWithDiffBetweenDaysFromNow(int days) {
         return addDays(new Date(), days);
     }
