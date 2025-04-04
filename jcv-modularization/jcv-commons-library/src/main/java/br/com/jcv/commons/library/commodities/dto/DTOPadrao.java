@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -22,6 +23,6 @@ public class DTOPadrao implements Serializable {
 
     private Long id;
     private String status;
-    private Date dateCreated;
-    private Date dateUpdated;
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateUpdated;
 }
